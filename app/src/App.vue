@@ -1,17 +1,19 @@
 <template>
   <div>
-    {{hello}}
+    <Header/>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Header from './components/Header'
+import Footer from './components/Footer'
 export default {
   name: 'App',
-  data() {
-    return {
-      hello: '我是根组件'
-    }
-  },
+  components: {
+    Header,
+    Footer
+  }
 }
 </script>
 
