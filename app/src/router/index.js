@@ -15,18 +15,22 @@ export default new VueRouter({
         {
             path: '/home',
             component: Home,
+            meta: {isShowFooter: true}
         },
         {
             path: '/search',
             component: Search,
+            meta: {isShowFooter: true}
         },
         {
             path: '/login',
             component: Login,
+            meta: {isShowFooter: false}
         },
         {
             path: '/register',
-            component: Register
+            component: Register,
+            meta: {isShowFooter: false}
         },
         // 重定向，在项目跑起来的时候，访问"/"，立马定向到首页
         {
