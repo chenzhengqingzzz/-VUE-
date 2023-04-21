@@ -10,6 +10,10 @@ Vue.component(TypeNav.name, TypeNav)
 // 关闭Vue生产提示
 Vue.config.productionTip = false
 
+// 测试
+import { reqCategoryList } from "@/api";
+reqCategoryList()
+
 
 new Vue({
   render: h => h(App),

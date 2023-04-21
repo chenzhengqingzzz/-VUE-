@@ -18,12 +18,12 @@ requests.interceptors.request.use((config) => {
     return config
 })
 // 响应拦截器
-requests.interceptors.response((response) => {
+requests.interceptors.response.use((response) => {
     // 请求成功的回调函数：服务器响应的数据回来以后，响应拦截器可以检测到并做一些事情
     return response.data
 }, (error) => {
     // 请求失败的回调函数
-    console.log("服务器相应失败" + error);
+    console.log("服务器响应失败" + error);
     // 这里终止Promise链
     return Promise.reject(new Error('Fail'))
 })
