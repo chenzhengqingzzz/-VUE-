@@ -28,7 +28,7 @@ const requests = axios.create({
 })
 /**
  * @description: 请求拦截器：在发请求之前，它可以检测到，并做一些事情
- * @return {*} 
+ * @return {Object} 
  */
 requests.interceptors.request.use((config) => {
     // config是一个配置对象，对象里面有一个属性很重要：headers请求头
@@ -42,7 +42,7 @@ requests.interceptors.request.use((config) => {
 })
 /**
  * @description: 响应拦截器
- * @return {*}
+ * @return {Object}
  */
 requests.interceptors.response.use((response) => {
     // 请求成功的回调函数：服务器响应的数据回来以后，响应拦截器可以检测到并做一些事情

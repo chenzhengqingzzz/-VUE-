@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:15:28
+ * @LastEditTime: 2023-04-23 18:53:08
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/index.vue
  * @Description: 路由组件——主页（Home）
  * 
@@ -32,6 +32,8 @@ import Rank from '@/pages/Home/Rank'
 import Like from '@/pages/Home/Like'
 import Floor from '@/pages/Home/Floor'
 import Brand from '@/pages/Home/Brand'
+// 引入mapState
+import { mapState } from "vuex";
 export default {
   name: 'Home',
   components: {
@@ -41,7 +43,16 @@ export default {
     Like,
     Floor,
     Brand
-  }
+  },
+  computed: {
+    ...mapState([])
+  },
+  methods: {
+    add(){
+      // 派发action
+      this.$store.dispatch('add')
+    }
+  },
 }
 </script>
 
