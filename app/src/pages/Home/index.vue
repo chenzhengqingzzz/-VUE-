@@ -1,3 +1,14 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-23 17:02:24
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-23 17:15:28
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/index.vue
+ * @Description: 路由组件——主页（Home）
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <div>
     <!-- 三级联动全局组件 它已经注册为全局组件了，因此不需要引入 -->
