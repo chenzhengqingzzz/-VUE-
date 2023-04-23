@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:44:48
+ * @LastEditTime: 2023-04-23 17:55:30
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -24,7 +24,7 @@ import Register from '@/pages/Register'
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
 let originReplace = VueRouter.prototype.replace
-// 重写push|replace方法
+// 重写push|replace方法 用于解决多次push、replace的报错，实际对页面影响
 /**
  * @description: 重写的push方法
  * @param {*} location 告诉原来的push方法，往哪里跳转，传递哪些参数
