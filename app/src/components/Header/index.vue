@@ -1,3 +1,14 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-23 17:02:24
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-23 17:37:53
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
+ * @Description: 全局组件——头部(Header)
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <!-- 头部 -->
   <header class="header">
@@ -57,9 +68,12 @@ export default {
       keyWord: '',
     }
   },
-  methods: {
-    // 搜索按钮的回调函数，需要向Search路由进行跳转
+  methods: {   
     goSearch(){
+      /**
+       * @description: 搜索按钮的回调函数，需要向Search路由进行跳转
+       * @return {*}
+       */      
       // 路由传递参数：
       // 第一种：字符串形式
       // this.$router.push('/search/' + this.keyWord + '?k=' + this.keyWord.toUpperCase())

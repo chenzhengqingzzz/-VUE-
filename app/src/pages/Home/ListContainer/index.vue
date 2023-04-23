@@ -1,3 +1,14 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-23 17:02:24
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-23 17:38:57
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
+ * @Description: 主页组件的子组件——列表(ListContainer)
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <!--列表-->
   <div class="list-container">

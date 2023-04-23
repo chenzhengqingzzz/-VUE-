@@ -1,4 +1,15 @@
-// 路由器，配置路由器的地方
+/*
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-23 17:02:24
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-23 17:44:48
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
+ * @Description: 路由器，配置路由器的地方
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+ */
+
 import Vue from "vue";
 import VueRouter from "vue-router";
 // 使用插件
@@ -14,9 +25,13 @@ import Register from '@/pages/Register'
 let originPush = VueRouter.prototype.push
 let originReplace = VueRouter.prototype.replace
 // 重写push|replace方法
-// 第一个参数：告诉原来的push方法，往哪里跳转，传递哪些参数
-// 第二个参数：成功的回调
-// 第三个参数：失败的回调
+/**
+ * @description: 重写的push方法
+ * @param {*} location 告诉原来的push方法，往哪里跳转，传递哪些参数
+ * @param {*} resolve 成功的回调
+ * @param {*} reject 失败的回调
+ * @return {*}
+ */
 VueRouter.prototype.push = function(location, resolve, reject) {
     if (resolve && reject) {
         // call/apply的区别：
@@ -27,7 +42,12 @@ VueRouter.prototype.push = function(location, resolve, reject) {
         originPush.call(this, location, () => {}, () => {})
     }
 }
-VueRouter.prototype.replace = function(location, resolve, reject) {
+/**
+ * @description: 重写的replace方法方法
+ * @param {*} 上同
+ * @return {*}
+ */
+VueRouter.prototype.replace = function(location, resolve, reject) {  
     if (resolve && reject) {
         originReplace.call(this, location, () => {}, () => {})
     }else{

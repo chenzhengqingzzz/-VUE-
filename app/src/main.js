@@ -1,3 +1,14 @@
+/*
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-23 17:02:24
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-23 17:45:20
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
+ * @Description: 整个应用的入口文件
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+ */
 import Vue from 'vue'
 import App from './App.vue'
 // 引入路由
