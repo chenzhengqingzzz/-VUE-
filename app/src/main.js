@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 18:27:32
+ * @LastEditTime: 2023-04-24 15:54:40
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -17,17 +17,12 @@ import router from '@/router'
 import store from '@/store'
 
 // 三级联动组件---全局组件
-import TypeNav from '@/pages/Home/TypeNav'
+import TypeNav from '@/components/TypeNav'
 // 第一个参数：全局组件的名字 第二个参数：哪一个组件
 Vue.component(TypeNav.name, TypeNav)
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false
-
-// 测试
-import { reqCategoryList } from "@/api";
-reqCategoryList()
-
 
 new Vue({
   render: h => h(App),
