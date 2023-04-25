@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-25 14:48:19
+ * @LastEditTime: 2023-04-25 17:03:13
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -70,6 +70,7 @@
 
 <script>
 import { mapState } from "vuex";
+import throttle from 'lodash/throttle'
 export default {
   name: "TypeNav",
   data() {
@@ -96,16 +97,28 @@ export default {
   },
   methods: {
     /**
-     * @description: 鼠标进入修改响应式数据currentIndex
+     * @description: 鼠标进入修改响应式数据currentIndex 没有给这个函数做节流
      * @param {*} index 鼠标移上某一个一级分类的元素索引值
      * @return {*}
      */
-    changeIndex(index) {
-      // 正常情况（用户慢慢地操作）：鼠标进入，每一个一级分类h3都会触发鼠标进入事件
-      // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分的h3触发了
-      // 就是因为用户行为过快，倒是溜溜球反应不过来。如果当前回调函数中有大量业务，就会出现卡顿
-      this.currentIndex = index;
-    },
+    // changeIndex(index) {
+    //   // 正常情况（用户慢慢地操作）：鼠标进入，每一个一级分类h3都会触发鼠标进入事件
+    //   // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分的h3触发了
+    //   // 就是因为用户行为过快，导致浏览器反应不过来。如果当前回调函数中有大量业务，就会出现卡顿
+    //   this.currentIndex = index;
+    // },
+    
+    // es6写法无法操作lodash的对象“_” 所以我们必须用es5的key:value写法
+    /**
+     * @description: 三级联动菜单中一级分类选中的节流
+     * @param {Function} 需要做节流的函数
+     * @param {[wait=0]} 在 wait 秒内最多执行 Function 函数
+     * @return {*}
+     */
+    changeIndex: throttle(function(index){
+      this.currentIndex = index
+    }, 50),
+
     /**
      * @description: 一级分类鼠标移出事件的回调
      * @return {*}
