@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-24 19:33:07
+ * @LastEditTime: 2023-04-25 14:18:31
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -16,6 +16,7 @@
       <!-- 事件委派 鼠标离开h2和h3才会让currentIndex变回-1 -->
       <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
+        <!-- 三级联动 -->
         <div class="sort">
           <div class="all-sort-list2">
             <div
@@ -25,9 +26,10 @@
               :class="{ cur: currentIndex == index }"
             >
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}-{{ index }}</a>
+                <a href="">{{ c1.categoryName }}</a>
               </h3>
-              <div class="item-list clearfix">
+              <!-- 二级、三级分类 -->
+              <div class="item-list clearfix" :style="{display: currentIndex == index ? 'block' : 'none'}">
                 <div
                   class="subitem"
                   v-for="(c2, index) in c1.categoryChild"
@@ -220,12 +222,6 @@ export default {
                   }
                 }
               }
-            }
-          }
-
-          &:hover {
-            .item-list {
-              display: block;
             }
           }
         }
