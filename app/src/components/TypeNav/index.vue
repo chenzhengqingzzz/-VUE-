@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-25 17:03:13
+ * @LastEditTime: 2023-04-25 19:38:53
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -18,7 +18,9 @@
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
         <div class="sort">
-          <div class="all-sort-list2">
+          <!-- 事件委派 谁需要这个事件的回调就给谁用 -->
+          <div class="all-sort-list2" @click="goSearch">
+            <!-- 一级分类 -->
             <div
               class="item"
               v-for="(c1, index) in categoryList"
@@ -26,10 +28,17 @@
               :class="{ cur: currentIndex == index }"
             >
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}</a>
+                <a
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId"
+                  >{{ c1.categoryName }}</a
+                >
               </h3>
               <!-- 二级、三级分类 -->
-              <div class="item-list clearfix" :style="{display: currentIndex == index ? 'block' : 'none'}">
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+              >
                 <div
                   class="subitem"
                   v-for="(c2, index) in c1.categoryChild"
@@ -37,14 +46,22 @@
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId"
+                        >{{ c2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
                       <em
                         v-for="(c3, index) in c2.categoryChild"
                         :key="c3.categoryId"
                       >
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId"
+                          >{{ c3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -70,7 +87,7 @@
 
 <script>
 import { mapState } from "vuex";
-import throttle from 'lodash/throttle'
+import throttle from "lodash/throttle";
 export default {
   name: "TypeNav",
   data() {
@@ -107,7 +124,7 @@ export default {
     //   // 就是因为用户行为过快，导致浏览器反应不过来。如果当前回调函数中有大量业务，就会出现卡顿
     //   this.currentIndex = index;
     // },
-    
+
     // es6写法无法操作lodash的对象“_” 所以我们必须用es5的key:value写法
     /**
      * @description: 三级联动菜单中一级分类选中的节流
@@ -115,8 +132,8 @@ export default {
      * @param {[wait=0]} 在 wait 秒内最多执行 Function 函数
      * @return {*}
      */
-    changeIndex: throttle(function(index){
-      this.currentIndex = index
+    changeIndex: throttle(function (index) {
+      this.currentIndex = index;
     }, 50),
 
     /**
@@ -126,6 +143,42 @@ export default {
     leaveIndex() {
       // 直接调用上面的函数，传入null更改currentIndex
       this.changeIndex(null);
+    },
+
+    /**
+     * @description: 路由跳转到的Search组件的回调
+     * @return {*}
+     */
+    goSearch(e) {
+      // 最好的解决方案：编程式路由导航+事件委派
+      // 利用事件委派存在的一些问题：1.点击的不一定是a标签 2.如何获取参数【1、2、3级分类的产品名字、id】
+      // 我们需要点击a标签的时候才会进行路由跳转【怎么能确定点击的一定是a标签】
+      // 即使我们能确定点击的是a标签，是如何区分一级、二级、三级的a标签呢
+      // 第一个问题：把子节点当中的a标签，加上我们自定义的属性data-categoryName，其余子节点是没有的
+      // ES6写法：解构
+      // html中会把大写转为小写
+      let { categoryname, category1id, category2id, category3id } =
+        e.target.dataset;
+      //categoryname存在，表示为a标签
+      if (categoryname) {
+        // 整理路由跳转的参数
+        let location = { name: "Search" }; // 路由跳转的name
+        let query = { categoryName: categoryname }; // 路由的query参数
+        if (category1id) {
+          // category1id一级a标签
+          query.category1Id = category1id;
+        } else if (category2id) {
+          // category2id二级a标签
+          query.category2Id = category2id;
+        } else {
+          // category3id三级a标签
+          query.category3Id = category3id;
+        }
+        // 整理完参数，将两个对象合二为一
+        location.query = query;
+        // 这样就可以携带query参数进行路由跳转操作
+        this.$router.push(location);
+      }
     },
   },
 };
