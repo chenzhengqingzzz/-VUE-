@@ -1,0 +1,39 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-04-25 15:30:42
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-04-25 16:33:54
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/防抖与节流/02_节流.html
+ * @Description: 节流(throttle)：在规定的间隔事件范围内不会重复触发回调，只有大于这个时间间隔才会触发回调，把频繁触发变为少量触发
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/lodash.js"></script>
+</head>
+<body>
+    <div>
+        <h1>我是计数器<span>0</span></h1>
+        <button>点我+1</button>
+    </div>
+    <script>
+        let span = document.querySelector('span')
+        let button = document.querySelector('button')
+        let count = 0
+        button.onclick = _.throttle(function(){
+            // 节流：目前这个回调函数1s执行一次
+            // 假如这里面有很多业务代码，则可以给浏览器很充裕的时间去解析
+            count++
+            span.innerHTML = count
+            console.log('执行');
+        })
+    </script>
+</body>
+</html>

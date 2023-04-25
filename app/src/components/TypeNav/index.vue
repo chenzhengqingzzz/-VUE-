@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-25 14:18:31
+ * @LastEditTime: 2023-04-25 14:48:19
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -101,6 +101,9 @@ export default {
      * @return {*}
      */
     changeIndex(index) {
+      // 正常情况（用户慢慢地操作）：鼠标进入，每一个一级分类h3都会触发鼠标进入事件
+      // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分的h3触发了
+      // 就是因为用户行为过快，倒是溜溜球反应不过来。如果当前回调函数中有大量业务，就会出现卡顿
       this.currentIndex = index;
     },
     /**
