@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-26 18:48:05
+ * @LastEditTime: 2023-04-26 19:52:24
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -111,9 +111,6 @@ export default {
    * @return {*}
    */
   mounted() {
-    // 通知Vuex发请求，获取数据存储于仓库中
-    // 使用命名空间后，必须指定某一个小仓库对应的actions
-    this.$store.dispatch("home/categoryList");
     // 当路由调到search并且组件挂载完毕，让存放在data中的isShow属性变为false
     if (this.$route.path != "/home") {
       this.isShow = false;
