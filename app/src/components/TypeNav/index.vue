@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-25 19:38:53
+ * @LastEditTime: 2023-04-26 18:48:05
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -13,63 +13,70 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <!-- 事件委派 鼠标离开h2和h3才会让currentIndex变回-1 -->
-      <div @mouseleave="leaveIndex">
+      <!-- 事件委派 鼠标离开h2和h3才会让currentIndex变回-1 以及离开或进入标题时h1的显示与隐藏 -->
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
-        <div class="sort">
-          <!-- 事件委派 谁需要这个事件的回调就给谁用 -->
-          <div class="all-sort-list2" @click="goSearch">
-            <!-- 一级分类 -->
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex == index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
-              <!-- 二级、三级分类 -->
+        <!-- 过渡动画 -->
+        <transition
+          name="animate__animated animate__bounce"
+          enter-active-class="animate__fadeIn"
+          leave-active-class="animate__fadeOut"
+        >
+          <div class="sort" v-show="isShow">
+            <!-- 事件委派 谁需要这个事件的回调就给谁用 -->
+            <div class="all-sort-list2" @click="goSearch">
+              <!-- 一级分类 -->
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex == index }"
               >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
+                <!-- 二级、三级分类 -->
                 <div
-                  class="subitem"
-                  v-for="(c2, index) in c1.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="(c3, index) in c2.categoryChild"
-                        :key="c3.categoryId"
-                      >
+                  <div
+                    class="subitem"
+                    v-for="(c2, index) in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
                         <a
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em
+                          v-for="(c3, index) in c2.categoryChild"
+                          :key="c3.categoryId"
+                        >
+                          <a
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -88,12 +95,15 @@
 <script>
 import { mapState } from "vuex";
 import throttle from "lodash/throttle";
+import "animate.css";
 export default {
   name: "TypeNav",
   data() {
     return {
       // 存储用户鼠标移上哪一个一级分类
       currentIndex: null,
+      // 存储是否显示一二三级菜单的标识
+      isShow: true,
     };
   },
   /**
@@ -104,6 +114,10 @@ export default {
     // 通知Vuex发请求，获取数据存储于仓库中
     // 使用命名空间后，必须指定某一个小仓库对应的actions
     this.$store.dispatch("home/categoryList");
+    // 当路由调到search并且组件挂载完毕，让存放在data中的isShow属性变为false
+    if (this.$route.path != "/home") {
+      this.isShow = false;
+    }
   },
   computed: {
     ...mapState({
@@ -137,12 +151,16 @@ export default {
     }, 50),
 
     /**
-     * @description: 一级分类鼠标移出事件的回调
+     * @description: 一级分类鼠标移出事件的回调 在Search组件有额外效果：移出不显示
      * @return {*}
      */
-    leaveIndex() {
+    leaveShow() {
       // 直接调用上面的函数，传入null更改currentIndex
       this.changeIndex(null);
+      // 判断如果是非Home组件的时候才会执行
+      if (this.$route.path != "/home") {
+        this.isShow = false;
+      }
     },
 
     /**
@@ -179,6 +197,14 @@ export default {
         // 这样就可以携带query参数进行路由跳转操作
         this.$router.push(location);
       }
+    },
+
+    /**
+     * @description: 当鼠标移入的时候，让商品分类列表进行展示
+     * @return {*}
+     */
+    enterShow() {
+      this.isShow = true;
     },
   },
 };
@@ -300,6 +326,15 @@ export default {
         }
       }
     }
+    // // 过渡动画的样式
+    // // 过渡动画开始状态（进入）
+    // .sort-enter {
+    //   height: 461px;
+    // }
+    // // 定义动画时间、速率
+    // .sort-enter-active {
+    //   transition: all .5s linear;
+    // }
   }
 }
 </style>

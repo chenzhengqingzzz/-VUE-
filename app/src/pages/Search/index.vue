@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:41:43
+ * @LastEditTime: 2023-04-25 19:53:54
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -11,16 +11,14 @@
 -->
 <template>
   <div>
-    我是搜索
-    <h1>params参数---{{$route.params.keyWord}}</h1>
-    <h1>query参数---{{$route.query.k}}</h1>
+    <!-- Search模块 -->
+    <TypeNav/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Search',
-  props: ['keyWord', 'k']
 }
 </script>
 
