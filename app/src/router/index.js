@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:55:30
+ * @LastEditTime: 2023-04-26 20:49:29
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -77,7 +77,7 @@ export default new VueRouter({
             props: ($route) => {
                 return {
                     keyWord: $route.params.keyWord,
-                    k: $route.query.k
+                    // big: $route.query.big
                 }
             }
         },

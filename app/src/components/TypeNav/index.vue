@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-26 19:52:24
+ * @LastEditTime: 2023-04-27 16:59:16
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/TypeNav/index.vue
  * @Description: 全局组件——商品分类导航、三级联动菜单(TypeNav)
  * 
@@ -189,10 +189,14 @@ export default {
           // category3id三级a标签
           query.category3Id = category3id;
         }
-        // 整理完参数，将两个对象合二为一
-        location.query = query;
-        // 这样就可以携带query参数进行路由跳转操作
-        this.$router.push(location);
+        // 判断：如果路由跳转带有了params参数，我们要捎带传递过去
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          // 整理完参数，将两个对象合二为一
+          location.query = query;
+          // 这样就可以携带query参数进行路由跳转操作
+          this.$router.push(location);
+        }
       }
     },
 

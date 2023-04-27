@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 18:18:58
+ * @LastEditTime: 2023-04-27 16:52:36
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -51,7 +51,11 @@
             class="input-error input-xxlarge"
             v-model="keyWord"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="goSearch"
+          >
             搜索
           </button>
         </form>
@@ -65,26 +69,32 @@ export default {
   name: "Header",
   data() {
     return {
-      keyWord: '',
-    }
+      keyWord: "",
+    };
   },
-  methods: {   
+  methods: {
     /**
      * @description: 搜索按钮的回调函数，需要向Search路由进行跳转
      * @return {*}
      */
-    goSearch(){   
+    goSearch() {
       // 路由传递参数：
       // 第一种：字符串形式
       // this.$router.push('/search/' + this.keyWord + '?k=' + this.keyWord.toUpperCase())
       // 第二种：模板字符串
       // this.$router.push(`/search/${this.keyWord}?k=${this.keyWord.toUpperCase()}`)
       // 第三种：对象写法
-      this.$router.push({
-        name: 'Search',
-        params: {keyWord: this.keyWord},
-        query: {k: this.keyWord.toUpperCase()}
-      })
+      // 如果有query参数 则也带过去
+      if (this.$route.query) {
+        let location = {
+          name: "Search",
+          params: {
+            keyWord: this.keyWord || undefined,
+          },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
+      }
 
       // -------------------------------------------------------------------------------------------------
       // 面试题1：路由传递参数（对象写法）path是否可以结合params参数一起使用？
@@ -118,7 +128,7 @@ export default {
       //   params: {keyWord: '' || undefined},
       //   query: {k: this.keyWord.toUpperCase()}
       // })
-    }
+    },
   },
 };
 </script>
