@@ -31,7 +31,7 @@ export default {
     // 通知Vuex发请求，获取数据存储于仓库中
     // 使用命名空间后，必须指定某一个小仓库对应的actions
     // 把在TypeNav组件发的请求放到了全局组件App中，代表了只会发送一次，有利于性能节省
-    this.$store.dispatch("home/categoryList");
+    this.$store.dispatch("home/getCategoryList");
   },
 };
 </script>

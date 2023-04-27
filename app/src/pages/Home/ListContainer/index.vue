@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:38:57
+ * @LastEditTime: 2023-04-27 20:15:56
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
  * @Description: 主页组件的子组件——列表(ListContainer)
  * 
@@ -112,8 +112,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "ListContainer",
+  /**
+   * @description: 派发actions，通过Vuex发起ajax请求，将数据存储在仓库中
+   * @return {*}
+   */
+  mounted() {
+    this.$store.dispatch("home/getBannerList");
+  },
+  computed: {
+    ...mapState({
+      // bannerList: (state) => {
+      //   return state.home.bannerList
+      // }
+      bannerList: state => state.home.bannerList
+    })
+  },
 };
 </script>
 

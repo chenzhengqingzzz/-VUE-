@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-24 15:54:40
+ * @LastEditTime: 2023-04-27 18:12:21
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -15,6 +15,8 @@ import App from './App.vue'
 import router from '@/router'
 // 引入仓库
 import store from '@/store'
+// 引入mockServer.js --- mock数据
+import '@/mock/mockSever'
 
 // 三级联动组件---全局组件
 import TypeNav from '@/components/TypeNav'
