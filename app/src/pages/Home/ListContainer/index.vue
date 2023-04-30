@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-27 20:15:56
+ * @LastEditTime: 2023-04-30 20:54:07
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
  * @Description: 主页组件的子组件——列表(ListContainer)
  * 
@@ -17,18 +17,13 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div
+              class="swiper-slide"
+              v-for="(carousel, index) in bannerList"
+              :key="carousel.id"
+            >
+              <img :src="carousel.imgUrl" />
             </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
           </div>
           <!-- 如果需要分页器 -->
           <div class="swiper-pagination"></div>
@@ -113,6 +108,7 @@
 
 <script>
 import { mapState } from "vuex";
+import Swiper from "swiper";
 export default {
   name: "ListContainer",
   /**
@@ -121,14 +117,49 @@ export default {
    */
   mounted() {
     this.$store.dispatch("home/getBannerList");
+    // 在new Swiper实例之前，页面中的结构必须得先有 现在如果把new Swiper实例放在这里则不行
+    // 因为dispatch当中涉及到异步语句，导致v-for遍历的时候结构还不完全
   },
   computed: {
     ...mapState({
       // bannerList: (state) => {
       //   return state.home.bannerList
       // }
-      bannerList: state => state.home.bannerList
-    })
+      bannerList: (state) => state.home.bannerList,
+    }),
+  },
+  watch: {
+    // 监听bannerList数据的变化
+    bannerList: {
+      /**
+       * @description: 通过watch监听bannerList属性的属性值的变化，如果执行handler方法，代表组件实例身上这个属性的属性值已经有了变化
+       * @param {*} newVal
+       * @param {*} oldVal
+       * @return {*}
+       */
+      handler(newVal, oldVal) {
+        // 当前这个函数执行，只能保证bannerList数据已经有了，但是你没办法保证v-for已经执行结束了
+        // v-for执行完毕才会有结构
+        this.$nextTick(() => {
+          // 当你真行这个回调的时候，保证服务器数据回来了，v-for执行完毕了【轮播图的解构一定会有的】
+          var mySwiper = new Swiper(".swiper-container", {
+            loop: true, // 循环模式选项
+
+            // 如果需要分页器
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
   },
 };
 </script>
