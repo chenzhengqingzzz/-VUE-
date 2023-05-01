@@ -3,29 +3,38 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 18:47:19
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-30 18:22:24
+ * @LastEditTime: 2023-05-01 14:22:23
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/home/index.js
  * @Description: Home模块的小仓库
  *
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved.
  */
 
-import { reqGetCategoryList, reqGetBannerList } from "@/api";
+import { reqGetCategoryList, reqGetBannerList, reqGetFloorList } from "@/api";
 // 仓库存储数据的地方
 const state = {
   // state中数据的默认初始值别瞎写，根据接口的返回值来决定初始值
+
+  // 存储三级菜单的数据
   categoryList: [],
+  // 轮播图的数据
   bannerList: [],
+  // floor组件的数据
+  floorList: []
 };
 // 修改state的唯一手段
 const mutations = {
-  //
   UPDATECATEGORYLIST(state, categoryList) {
     state.categoryList = categoryList;
   },
+
   UPDATEBANNERLIST(state, bannerList) {
     state.bannerList = bannerList;
   },
+
+  UPDATEFLOORLIST(state, floorList){
+    state.floorList = floorList
+  }
 };
 // 可以书写自己的业务逻辑，也可以处理异步
 const actions = {
@@ -73,6 +82,24 @@ const actions = {
       }
     );
   },
+
+  /**
+   * @description: 获取首页下层“家用电器”、“手机通讯”的数据
+   * @param {*} context 上下文
+   * @return {*}
+   */
+  getFloorList(context){
+    reqGetFloorList().then(
+      (res) => {
+        if (res.code === 200) {
+          context.commit('UPDATEFLOORLIST', res.data)
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
 };
 // getters理解为计算属性，更多用于简化仓库数据，让组件获取仓库的数据更加方便
 const getters = {};

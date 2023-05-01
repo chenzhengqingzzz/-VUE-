@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-30 20:54:07
+ * @LastEditTime: 2023-05-01 16:19:18
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
  * @Description: 主页组件的子组件——列表(ListContainer)
  * 
@@ -141,7 +141,7 @@ export default {
         // 当前这个函数执行，只能保证bannerList数据已经有了，但是你没办法保证v-for已经执行结束了
         // v-for执行完毕才会有结构
         this.$nextTick(() => {
-          // 当你真行这个回调的时候，保证服务器数据回来了，v-for执行完毕了【轮播图的解构一定会有的】
+          // 当你执行这个回调的时候，保证服务器数据回来了，v-for执行完毕了【轮播图的解构一定会有的】
           var mySwiper = new Swiper(".swiper-container", {
             loop: true, // 循环模式选项
 

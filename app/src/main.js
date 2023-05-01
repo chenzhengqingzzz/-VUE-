@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-27 18:12:21
+ * @LastEditTime: 2023-05-01 14:49:59
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -28,10 +28,15 @@ Vue.component(TypeNav.name, TypeNav)
 // 关闭Vue生产提示
 Vue.config.productionTip = false
 
+
 new Vue({
   render: h => h(App),
   // 注册路由 以下的写法是key-value一致省略value
   router,
   // 注册仓库，组件实例的身上会多一个属性：$store
   store,
+  // 安装全局事件总线
+  beforeCreate(){
+    Vue.prototype.$bus = this
+  }
 }).$mount('#app')

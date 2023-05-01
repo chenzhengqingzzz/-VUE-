@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-27 20:38:43
+ * @LastEditTime: 2023-05-01 14:08:03
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -28,7 +28,7 @@ export const reqGetCategoryList = () => {
 }
 
 /**
- * @description: 轮播图的接口 是get请求 无参数
+ * @description: 首页轮播图的接口 是get请求 无参数
  * @url /mock/banner
  * @return {Object: Promise}
  */
@@ -36,5 +36,17 @@ export const reqGetBannerList = () => {
     return mockRequests({
         method: 'GET',
         url: '/banner'
+    })
+}
+
+/**
+ * @description: 首页下层“家用电器”、“手机通讯”接口 是get请求 无参数
+ * @url /mock/floor
+ * @return {Object: Promise}
+ */
+export const reqGetFloorList = () => {
+    return mockRequests({
+        method: 'GET',
+        url: '/floor'
     })
 }
