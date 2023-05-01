@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 16:19:18
+ * @LastEditTime: 2023-05-01 22:47:00
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
  * @Description: 主页组件的子组件——列表(ListContainer)
  * 
@@ -15,23 +15,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div
-              class="swiper-slide"
-              v-for="(carousel, index) in bannerList"
-              :key="carousel.id"
-            >
-              <img :src="carousel.imgUrl" />
-            </div>
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :carouselList="bannerList"/>
       </div>
       <div class="right">
         <div class="news">
@@ -108,7 +92,6 @@
 
 <script>
 import { mapState } from "vuex";
-import Swiper from "swiper";
 export default {
   name: "ListContainer",
   /**
@@ -127,39 +110,6 @@ export default {
       // }
       bannerList: (state) => state.home.bannerList,
     }),
-  },
-  watch: {
-    // 监听bannerList数据的变化
-    bannerList: {
-      /**
-       * @description: 通过watch监听bannerList属性的属性值的变化，如果执行handler方法，代表组件实例身上这个属性的属性值已经有了变化
-       * @param {*} newVal
-       * @param {*} oldVal
-       * @return {*}
-       */
-      handler(newVal, oldVal) {
-        // 当前这个函数执行，只能保证bannerList数据已经有了，但是你没办法保证v-for已经执行结束了
-        // v-for执行完毕才会有结构
-        this.$nextTick(() => {
-          // 当你执行这个回调的时候，保证服务器数据回来了，v-for执行完毕了【轮播图的解构一定会有的】
-          var mySwiper = new Swiper(".swiper-container", {
-            loop: true, // 循环模式选项
-
-            // 如果需要分页器
-            pagination: {
-              el: ".swiper-pagination",
-              clickable: true,
-            },
-
-            // 如果需要前进后退按钮
-            navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            },
-          });
-        });
-      },
-    },
   },
 };
 </script>

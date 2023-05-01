@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 14:49:59
+ * @LastEditTime: 2023-05-01 18:23:22
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -24,6 +24,9 @@ import 'swiper/css/swiper.css'
 import TypeNav from '@/components/TypeNav'
 // 第一个参数：全局组件的名字 第二个参数：哪一个组件
 Vue.component(TypeNav.name, TypeNav)
+// 轮播图组件---全局组件
+import Carousel from '@/components/Carousel'
+Vue.component(Carousel.name, Carousel)
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false

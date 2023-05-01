@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 17:30:59
+ * @LastEditTime: 2023-05-01 22:46:53
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/Floor/index.vue
  * @Description: 主页组件的子组件——楼层(Floor)
  * 
@@ -17,8 +17,12 @@
         <h3 class="fl">{{ list.name }}</h3>
         <div class="fr">
           <ul class="nav-tabs clearfix">
-            <li class="active" v-for="(nav, index) in list.navList" :key="index">
-              <a href="#tab1" data-toggle="tab">{{nav.text}}</a>
+            <li
+              class="active"
+              v-for="(nav, index) in list.navList"
+              :key="index"
+            >
+              <a href="#tab1" data-toggle="tab">{{ nav.text }}</a>
             </li>
           </ul>
         </div>
@@ -35,24 +39,8 @@
               <img :src="list.imgUrl" />
             </div>
             <div class="floorBanner">
-              <div class="swiper-container" id="floor1Swiper">
-                <div class="swiper-wrapper">
-                  <!-- 轮播图 -->
-                  <div
-                    class="swiper-slide"
-                    v-for="(carousel, index) in list.carouselList"
-                    :key="carousel.id"
-                  >
-                    <img :src="carousel.imgUrl" />
-                  </div>
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-
-                <!-- 如果需要导航按钮 -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-              </div>
+              <!-- 轮播图 -->
+              <Carousel :carouselList="list.carouselList"/>
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -83,7 +71,6 @@
 </template>
 
 <script>
-import Swiper from "swiper";
 export default {
   name: "Floor",
   props: ["list"],
@@ -104,21 +91,21 @@ export default {
     // 前面在ListContainer的mounted中使用swiper的时候是不可以的 为什么现在就可以了？
     // 因为在前面书写轮播图的时候，是在当前组件的内部发请求，动态渲染结构【前台至少服务器数据需要回来】，因此之前的写法是不行的
     // 现在的这种写法可以 是因为请求是父组件发的
-    var mySwiper = new Swiper(".swiper-container", {
-      loop: true, // 循环模式选项
+    // var mySwiper = new Swiper(".swiper-container", {
+    //   loop: true, // 循环模式选项
 
-      // 如果需要分页器
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
+    //   // 如果需要分页器
+    //   pagination: {
+    //     el: ".swiper-pagination",
+    //     clickable: true,
+    //   },
 
-      // 如果需要前进后退按钮
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
+    //   // 如果需要前进后退按钮
+    //   navigation: {
+    //     nextEl: ".swiper-button-next",
+    //     prevEl: ".swiper-button-prev",
+    //   },
+    // });
   },
 };
 </script>
