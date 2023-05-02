@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 19:56:04
+ * @LastEditTime: 2023-05-02 20:22:41
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -144,7 +144,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import SearchSelector from "./SearchSelector/SearchSelector";
+import SearchSelector from "./SearchSelector";
 export default {
   name: "Search",
   components: {
