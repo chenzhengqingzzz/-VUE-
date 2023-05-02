@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-01 18:14:05
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 23:15:50
+ * @LastEditTime: 2023-05-02 15:06:18
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Carousel/index.vue
  * @Description: 全局组件——轮播图
  * 
@@ -38,7 +38,7 @@ export default {
     carouselList: {
       // 立即监听一次 不管数据有没有变化
       immediate: true,
-      // 为什么watch监听不到list：因为这个数据从来没有发生变化（数据是父组件给的，父组件给的时候就是一个对象）
+      // 为什么watch监听不到carouselList：因为这个数据从来没有发生变化（数据是父组件给的，父组件给的时候就是一个对象）
       handler() {
         // 只能监听到数据已经有了，但是v-for动态渲染结构我们还是没有办法确定的，因此还是需要用nextTick
         this.$nextTick(function () {

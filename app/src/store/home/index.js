@@ -41,7 +41,7 @@ const actions = {
   /**
    * @description: 通过API里面的接口函数调用，向服务器发请求，获取服务器的数据
    * @param {*} context 上下文
-   * @return {Object}
+   * @return {Object: Promise}
    */
   async getCategoryList(context) {
     // 要拿到Promise成功的结果，需要加上await 前面需要加上async
@@ -68,7 +68,7 @@ const actions = {
   /**
    * @description: 获取首页轮播图的数据
    * @param {*} context 上下文
-   * @return {*}
+   * @return {Object: Promise}
    */
   getBannerList(context) {
     reqGetBannerList().then(
@@ -86,7 +86,7 @@ const actions = {
   /**
    * @description: 获取首页下层“家用电器”、“手机通讯”的数据
    * @param {*} context 上下文
-   * @return {*}
+   * @return {Object: Promise}
    */
   getFloorList(context){
     reqGetFloorList().then(
