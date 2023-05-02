@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-27 16:52:36
+ * @LastEditTime: 2023-05-02 18:35:56
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -49,7 +49,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="keyWord"
+            v-model="keyword"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -69,7 +69,7 @@ export default {
   name: "Header",
   data() {
     return {
-      keyWord: "",
+      keyword: "",
     };
   },
   methods: {
@@ -80,16 +80,16 @@ export default {
     goSearch() {
       // 路由传递参数：
       // 第一种：字符串形式
-      // this.$router.push('/search/' + this.keyWord + '?k=' + this.keyWord.toUpperCase())
+      // this.$router.push('/search/' + this.keyword + '?k=' + this.keyword.toUpperCase())
       // 第二种：模板字符串
-      // this.$router.push(`/search/${this.keyWord}?k=${this.keyWord.toUpperCase()}`)
+      // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
       // 第三种：对象写法
       // 如果有query参数 则也带过去
       if (this.$route.query) {
         let location = {
           name: "Search",
           params: {
-            keyWord: this.keyWord || undefined,
+            keyword: this.keyword || undefined,
           },
         };
         location.query = this.$route.query;
@@ -101,8 +101,8 @@ export default {
       // 答：路由跳转传参的时候，对象的写法可以使name、path形式，但是需要注意的是：path这种写法是不能与params参数一起使用
       // this.$router.push({
       //   path: '/search',
-      //   params: {keyWord: this.keyWord},
-      //   query: {k: this.keyWord.toUpperCase()}
+      //   params: {keyword: this.keyword},
+      //   query: {k: this.keyword.toUpperCase()}
       // })
 
       // 面试题2：如何指定params参数可传可不传？
@@ -110,23 +110,23 @@ export default {
       // 答：如何指定params参数可传可不传？ --在配置路由的时候，在占位的后面加上一个问号
       // this.$router.push({
       //   name: 'Search',
-      //   query: {k: this.keyWord.toUpperCase()}
+      //   query: {k: this.keyword.toUpperCase()}
       // })
 
       // 面试题3：params参数可传也可不传，但是如果传递的是空串，如何解决？
       // 答：使用undefined解决：params参数可传可不传（空的字符串）
       // this.$router.push({
       //   name: 'Search',
-      //   params: {keyWord: '' || undefined},
-      //   query: {k: this.keyWord.toUpperCase()}
+      //   params: {keyword: '' || undefined},
+      //   query: {k: this.keyword.toUpperCase()}
       // })
 
       // 面试题4：路由组件能否传递props数据？
       // 答：可以，有三种写法，需要在路由器中配置
       // this.$router.push({
       //   name: 'Search',
-      //   params: {keyWord: '' || undefined},
-      //   query: {k: this.keyWord.toUpperCase()}
+      //   params: {keyword: '' || undefined},
+      //   query: {k: this.keyword.toUpperCase()}
       // })
     },
   },

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-26 20:49:29
+ * @LastEditTime: 2023-05-02 18:41:36
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -65,7 +65,7 @@ export default new VueRouter({
         },
         {
             name: 'Search',
-            path: '/search/:keyWord?',
+            path: '/search/:keyword?',
             component: Search,
             meta: {isShowFooter: true},
             // 路由组件可以传递props数据
@@ -76,7 +76,7 @@ export default new VueRouter({
             // 3.函数写法 可以把params参数、query参数通过props传递给路由组件
             props: ($route) => {
                 return {
-                    keyWord: $route.params.keyWord,
+                    keyword: $route.params.keyword,
                     // big: $route.query.big
                 }
             }

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 18:47:22
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 17:26:06
+ * @LastEditTime: 2023-05-02 18:52:27
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/search/index.js
  * @Description: Search模块的小仓库
  * 
@@ -33,7 +33,6 @@ const actions = {
         reqGetSearchInfo(value).then(
             (res) => {
                 if (res.code === 200) {
-                    console.log(res);
                     context.commit('UPDATESEARCHLIST', res.data)
                 }
             },
