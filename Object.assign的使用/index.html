@@ -1,0 +1,41 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-05-02 19:13:55
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-05-02 19:20:31
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/Object.assign的使用/index.html
+ * @Description: Object.assign的基本使用
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let searchParams = {
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "",
+        pageNo: 1,
+        pageSize: 3,
+        props: [],
+        trademark: "",
+      };
+      let query = { category1Id: "110", categoryName: "手机" };
+      let params = { keyword: "华为" };
+
+      // 后者两个对象会与第一个对象进行合并
+      console.log(Object.assign(searchParams, query, params));
+    </script>
+  </body>
+</html>
