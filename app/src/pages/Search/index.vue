@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 20:22:41
+ * @LastEditTime: 2023-05-03 14:07:41
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -151,7 +151,7 @@ export default {
     SearchSelector,
   },
   data() {
-    return {  
+    return {
       // 带给服务器的参数
       searchParams: {
         category1Id: "",
@@ -180,7 +180,7 @@ export default {
      * @description: ES6新增语法，合并对象
      * @return {*}
      */
-    Object.assign(this.searchParams, this.$route.query, this.$route.params)
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
     // 在发请求之前带给服务器的参数【searchParams参数发生变化】
@@ -204,6 +204,30 @@ export default {
     getData(params) {
       // 派发action
       this.$store.dispatch("search/getSearchList", params);
+    },
+  },
+  // 数据监听：监听组件实例身上的属性的属性值变化
+  watch: {
+    /**
+     * @description: 监听路由的信息是否发生改变 如果发生变化则再次发请求
+     * @param {*} newVal 发生变化后的$route
+     * @param {*} oldVal 发生变化前的$route
+     * @return {*}
+     */
+    $route(newVal, oldVal) {
+      // 这里面数据结构简单，不需要使用深度监听
+      // 再次发请求之前，我们需要整理带给服务器的参数
+      Object.assign(this.searchParams, newVal.params, newVal.query);
+      // 再次发请求
+      this.getData(this.searchParams);
+      // 每一次请求完毕，应该把相应的1、2、3级分类的id置空，让他能接受下一次相应的id
+      this.searchParams.category1Id = '';
+      this.searchParams.category2Id = '';
+      this.searchParams.category3Id = '';
+      // 下一次点击其他分类的时候清空关键词 因为不知道用户在搜索之后会点击哪个分类
+      this.$route.params.keyword = '' || null
+      // 为什么categoryName为什么不用置空？
+      // 因为每一次路由发生变化的时候，这个属性值会发生变化
     },
   },
 };
