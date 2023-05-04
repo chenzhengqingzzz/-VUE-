@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-03 14:07:41
+ * @LastEditTime: 2023-05-04 17:59:51
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -23,10 +23,14 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类的面包屑 -->
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{ searchParams.categoryName }}<i @click="removeBreadCategoryName">×</i>
+            </li>
+            <!-- 关键字的面包屑 -->
+            <li class="with-x" v-show="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeBreadKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -205,6 +209,47 @@ export default {
       // 派发action
       this.$store.dispatch("search/getSearchList", params);
     },
+
+    /**
+     * @description: 删除面包屑中分类名字的回调
+     * @return {*}
+     */
+    removeBreadCategoryName() {
+      // 和watch那里一样 把带给服务器的参数置空
+      // 后台规定，带给服务器的参数是可有可无的，如果属性值为空的字符串还是会把相应的字段带给服务器
+      // 如果把字段变成undefined，当前这个字段就不会返回给服务器
+      this.searchParams.categoryName = "" || undefined;
+      this.searchParams.category1Id = "" || undefined;
+      this.searchParams.category2Id = "" || undefined;
+      this.searchParams.category3Id = "" || undefined;
+      // 路由参数变，watch里面会自动发请求，所以不需要额外发请求
+      // this.getData(this.searchParams);
+      // 地址栏也需要修改：进行路由跳转(自己跳自己)
+      // 路由中包含params参数的情况
+      if (this.$route.params) {
+        this.$router.push({ name: "Search", params: this.$route.params });
+      }
+    },
+
+    /**
+     * @description: 删除面包屑中关键字的回调
+     * @return {*}
+     */
+    removeBreadKeyword(){
+      // 给服务器带的searchParams中的keyword属性置空
+      this.searchParams.keyword = '' || null
+      // 这里也不需要额外发送请求，因为下面已经对路由进行了操作
+      // this.getData(this.searchParams)
+      // 既然用户都点击删除了关键字产生的面包屑，咱们自然而然应该清空搜索框的文字（v-model绑定了Header组件）
+      // 使用全局事件总线通知兄弟组件Header清除keyword
+      this.$bus.$emit('clearKeyword')
+      // 进行路由的跳转
+      // 地址栏也需要修改：进行路由跳转(自己跳自己)
+      // 路由中包含query参数的情况
+      if (this.$route.query) {
+        this.$router.push({name: 'Search', query: this.$route.query})
+      }
+    }
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
   watch: {
@@ -221,11 +266,12 @@ export default {
       // 再次发请求
       this.getData(this.searchParams);
       // 每一次请求完毕，应该把相应的1、2、3级分类的id置空，让他能接受下一次相应的id
-      this.searchParams.category1Id = '';
-      this.searchParams.category2Id = '';
-      this.searchParams.category3Id = '';
+      this.searchParams.category1Id = "" || undefined;
+      this.searchParams.category2Id = "" || undefined;
+      this.searchParams.category3Id = "" || undefined;
       // 下一次点击其他分类的时候清空关键词 因为不知道用户在搜索之后会点击哪个分类
-      this.$route.params.keyword = '' || null
+      // 另外这里如果为undefined可能会导致removeCategoryName的路由跳转出现异常 所以用null占位
+      this.$route.params.keyword = "" || null;
       // 为什么categoryName为什么不用置空？
       // 因为每一次路由发生变化的时候，这个属性值会发生变化
     },

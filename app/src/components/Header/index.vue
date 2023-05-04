@@ -72,6 +72,12 @@ export default {
       keyword: "",
     };
   },
+  mounted() {
+    // 监听全局事件总线以清除关键字
+    this.$bus.$on('clearKeyword', () => {
+      this.keyword = ''
+    })
+  },
   methods: {
     /**
      * @description: 搜索按钮的回调函数，需要向Search路由进行跳转
