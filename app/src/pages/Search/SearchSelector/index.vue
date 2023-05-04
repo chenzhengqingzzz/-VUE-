@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="(trademark, index) in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li v-for="(trademark, index) in trademarkList" :key="trademark.tmId" @click="trademarkHandler(trademark)">{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -32,7 +32,18 @@ import { mapGetters } from 'vuex'
     name: 'SearchSelector',
     computed: {
       ...mapGetters('search', ['trademarkList', 'attrsList'])
-    }
+    },
+    methods: {
+      /**
+       * @description: 点击品牌栏后的事件处理回调
+       * @return {*}
+       */
+      trademarkHandler(trademark){
+        // 在我们点击了品牌的东西之后，我们仍然需要整理参数，向服务器发送我们的请求
+        // 我们应该在父组件Search发送请求，在这个子组件产生的数据我们必须传给父组件 我们可以使用自定义事件解决
+        this.$emit('trademarkInfo', trademark)
+      }
+    },
   }
 </script>
 

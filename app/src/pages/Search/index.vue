@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-04 17:59:51
+ * @LastEditTime: 2023-05-04 21:06:35
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -23,19 +23,24 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <!-- 分类的面包屑 -->
+            <!-- 分类categoryName的面包屑 -->
             <li class="with-x" v-show="searchParams.categoryName">
               {{ searchParams.categoryName }}<i @click="removeBreadCategoryName">×</i>
             </li>
-            <!-- 关键字的面包屑 -->
+            <!-- 关键字keyword的面包屑 -->
             <li class="with-x" v-show="searchParams.keyword">
               {{ searchParams.keyword }}<i @click="removeBreadKeyword">×</i>
+            </li>
+            <!-- 品牌trademark的面包屑 -->
+            <li class="with-x" v-show="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1] }}<i @click="removeBreadTrademark">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <!-- 自定义事件 -->
+        <SearchSelector @trademarkInfo="trademarkInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -249,6 +254,31 @@ export default {
       if (this.$route.query) {
         this.$router.push({name: 'Search', query: this.$route.query})
       }
+    },
+
+    /**
+     * @description: 子组件通过自定义事件给父组件传递过来的数据
+     * @param {*} trademark 子组件传入的对象
+     * @return {*}
+     */
+    trademarkInfo(trademark){
+      // 整理品牌字段参数 "ID:品牌名称"
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      // 再次发请求 获取Search模块列表数据进行展示
+      // 不需要判断是因为我们没有修改路由 不会引起watch的回调函数执行
+      this.getData(this.searchParams)
+    },
+
+    /**
+     * @description: 删除面包屑中品牌信息的回调
+     * @return {*}
+     */
+    removeBreadTrademark(){
+      // 置空
+      // 这里如果用undefined或者null的话 由于v-show只是隐藏而不是销毁结构，所以会引起控制台警告 但是如果像我这样用空字符串的话不利于性能节省
+      this.searchParams.trademark = ''
+      // 再次发请求
+      this.getData(this.searchParams)
     }
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
@@ -271,7 +301,8 @@ export default {
       this.searchParams.category3Id = "" || undefined;
       // 下一次点击其他分类的时候清空关键词 因为不知道用户在搜索之后会点击哪个分类
       // 另外这里如果为undefined可能会导致removeCategoryName的路由跳转出现异常 所以用null占位
-      this.$route.params.keyword = "" || null;
+      // 这句代码需要注释 不然在我们清除面包屑的时候会连同query一起删除
+      // this.$route.params.keyword = "" || null;
       // 为什么categoryName为什么不用置空？
       // 因为每一次路由发生变化的时候，这个属性值会发生变化
     },
