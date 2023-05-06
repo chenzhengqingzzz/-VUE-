@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-04 21:06:35
+ * @LastEditTime: 2023-05-06 23:16:28
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -25,7 +25,8 @@
           <ul class="fl sui-tag">
             <!-- 分类categoryName的面包屑 -->
             <li class="with-x" v-show="searchParams.categoryName">
-              {{ searchParams.categoryName }}<i @click="removeBreadCategoryName">×</i>
+              {{ searchParams.categoryName
+              }}<i @click="removeBreadCategoryName">×</i>
             </li>
             <!-- 关键字keyword的面包屑 -->
             <li class="with-x" v-show="searchParams.keyword">
@@ -33,14 +34,23 @@
             </li>
             <!-- 品牌trademark的面包屑 -->
             <li class="with-x" v-show="searchParams.trademark">
-              {{ searchParams.trademark.split(":")[1] }}<i @click="removeBreadTrademark">×</i>
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeBreadTrademark">×</i>
+            </li>
+            <!-- 商品属性attrId、attrName、attrValue的面包屑 由于props是数组 里面有多个元素的时候我们需要遍历生成多个面包屑 -->
+            <li
+              class="with-x"
+              v-for="(attrItem, index) in searchParams.props"
+              :key="attrItem.attrId"
+            >
+              {{ attrItem.split(":")[1] }}<i @click="removeBreadAttr(index)">x</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <!-- 自定义事件 -->
-        <SearchSelector @trademarkInfo="trademarkInfo"/>
+        <!-- 自定义事件 @事件名="事件回调名" -->
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -240,46 +250,82 @@ export default {
      * @description: 删除面包屑中关键字的回调
      * @return {*}
      */
-    removeBreadKeyword(){
+    removeBreadKeyword() {
       // 给服务器带的searchParams中的keyword属性置空
-      this.searchParams.keyword = '' || null
+      this.searchParams.keyword = "" || null;
       // 这里也不需要额外发送请求，因为下面已经对路由进行了操作
       // this.getData(this.searchParams)
       // 既然用户都点击删除了关键字产生的面包屑，咱们自然而然应该清空搜索框的文字（v-model绑定了Header组件）
       // 使用全局事件总线通知兄弟组件Header清除keyword
-      this.$bus.$emit('clearKeyword')
+      this.$bus.$emit("clearKeyword");
       // 进行路由的跳转
       // 地址栏也需要修改：进行路由跳转(自己跳自己)
       // 路由中包含query参数的情况
       if (this.$route.query) {
-        this.$router.push({name: 'Search', query: this.$route.query})
+        this.$router.push({ name: "Search", query: this.$route.query });
       }
     },
 
     /**
-     * @description: 子组件通过自定义事件给父组件传递过来的数据
+     * @description: 子组件通过自定义事件给父组件传递过来的品牌数据
      * @param {*} trademark 子组件传入的对象
      * @return {*}
      */
-    trademarkInfo(trademark){
+    trademarkInfo(trademark) {
       // 整理品牌字段参数 "ID:品牌名称"
-      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
-      // 再次发请求 获取Search模块列表数据进行展示
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      // 再次发请求 带刚刚拼接好的参数传给服务器 以达到搜索目的
       // 不需要判断是因为我们没有修改路由 不会引起watch的回调函数执行
-      this.getData(this.searchParams)
+      this.getData(this.searchParams);
     },
 
     /**
      * @description: 删除面包屑中品牌信息的回调
      * @return {*}
      */
-    removeBreadTrademark(){
+    removeBreadTrademark() {
       // 置空
       // 这里如果用undefined或者null的话 由于v-show只是隐藏而不是销毁结构，所以会引起控制台警告 但是如果像我这样用空字符串的话不利于性能节省
-      this.searchParams.trademark = ''
+      this.searchParams.trademark = "";
       // 再次发请求
+      this.getData(this.searchParams);
+    },
+
+    /**
+     * @description: 子组件通过自定义事件给父组件传递过来的商品属性数据
+     * @param {*} attrId 子组件传过来的商品属性ID
+     * @param {*} attrValue 子组件传过来的商品属性值
+     * @param {*} attrName 子组件传过来的商品属性名
+     * @return {*}
+     */
+    attrInfo(attrId, attrName, attrValue) {
+      // 整理参数格式 ["属性ID:属性值:属性名"]
+      const propElement = `${attrId}:${attrValue}:${attrName}`;
+      // 由于props是数组 我们每次push之前需要进行判断是否有重复元素
+      if (this.searchParams.props.indexOf(propElement) == -1) {
+        this.searchParams.props.push(propElement);
+        // 再次发请求 带刚刚拼接好的参数传给服务器 以达到搜索目的
+        this.getData(this.searchParams);
+      }
+    },
+
+    /** 
+     * @description: 删除面包屑中商品属性的回调
+     * @param {*} index 由于我们遍历了多个 所以删除的时候要传入被删除的那个元素的索引值
+     * @return {*}
+     */
+    removeBreadAttr(index) {
+      // 这里另一种数组过滤方法想再实现以下
+      // const a = this.searchParams.props.filter((element) => {
+      //   deletedPropElement == element
+      // })
+      // console.log(a);
+      //  再次发请求
+      // this.getData(this.searchParams);
+
+      this.searchParams.props.splice(index, 1)
       this.getData(this.searchParams)
-    }
+    },
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
   watch: {

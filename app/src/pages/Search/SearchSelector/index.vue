@@ -12,11 +12,13 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
+    <!-- 平台售卖属性的地方 -->
     <div class="type-wrap" v-for="(attr, index) in attrsList" :key="attr.attrId">
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue, index) in attr.attrValueList" :key="index">
+          <!-- 平台相应售卖属性的属性值 如运行内存的4G、8G、16G 点击事件中我们点击属性值 要根据服务器接口传入相应的id name value -->
+          <li v-for="(attrValue, index) in attr.attrValueList" :key="index" @click="attrHandler(attr.attrId, attr.attrName, attrValue)">
             <a>{{attrValue}}</a>
           </li>
         </ul>
@@ -42,6 +44,17 @@ import { mapGetters } from 'vuex'
         // 在我们点击了品牌的东西之后，我们仍然需要整理参数，向服务器发送我们的请求
         // 我们应该在父组件Search发送请求，在这个子组件产生的数据我们必须传给父组件 我们可以使用自定义事件解决
         this.$emit('trademarkInfo', trademark)
+      },
+
+      /**
+       * @description: 点击平台售卖属性后的事件处理回调
+       * @param {*} attr 所点击属性值所属的那个对象 包含id 属性的key
+       * @param {*} attrValue 具体的属性值 比如4G、8G
+       * @return {*}
+       */
+      attrHandler(attrId, attrName, attrValue){
+        // ["属性ID:属性值:属性名"]
+        this.$emit('attrInfo', attrId, attrName, attrValue)
       }
     },
   }
