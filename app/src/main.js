@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 15:57:25
+ * @LastEditTime: 2023-05-07 17:10:35
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -20,6 +20,7 @@ import '@/mock/mockSever'
 // 引入Swiper的样式
 import 'swiper/css/swiper.css'
 
+
 // 三级联动组件---全局组件
 import TypeNav from '@/components/TypeNav'
 // 第一个参数：全局组件的名字 第二个参数：哪一个组件
@@ -27,6 +28,11 @@ Vue.component(TypeNav.name, TypeNav)
 // 轮播图组件---全局组件
 import Carousel from '@/components/Carousel'
 Vue.component(Carousel.name, Carousel)
+
+// 按需引入ElementUI
+import { Icon } from 'element-ui'
+// 应用ElementUI
+Vue.component(Icon.name, Icon)
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false
