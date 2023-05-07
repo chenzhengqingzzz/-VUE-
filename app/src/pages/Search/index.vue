@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-06 23:16:28
+ * @LastEditTime: 2023-05-07 15:47:43
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -43,7 +43,9 @@
               v-for="(attrItem, index) in searchParams.props"
               :key="attrItem.attrId"
             >
-              {{ attrItem.split(":")[1] }}<i @click="removeBreadAttr(index)">x</i>
+            <!-- 删除面包屑 我们传入被删除的那个项 -->
+              {{ attrItem.split(":")[1]
+              }}<i @click="removeBreadAttr(attrItem)">x</i>
             </li>
           </ul>
         </div>
@@ -160,6 +162,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapGetters } from "vuex";
@@ -309,22 +312,22 @@ export default {
       }
     },
 
-    /** 
+    /**
      * @description: 删除面包屑中商品属性的回调
      * @param {*} index 由于我们遍历了多个 所以删除的时候要传入被删除的那个元素的索引值
      * @return {*}
      */
-    removeBreadAttr(index) {
-      // 这里另一种数组过滤方法想再实现以下
-      // const a = this.searchParams.props.filter((element) => {
-      //   deletedPropElement == element
-      // })
-      // console.log(a);
+    removeBreadAttr(deletedPropElement) {
+      // 以被删除的数组元素为依据 并用数组过滤方法实现
+      this.searchParams.props = this.searchParams.props.filter((element) => {
+        return element != deletedPropElement
+      })
       //  再次发请求
-      // this.getData(this.searchParams);
+      this.getData(this.searchParams);
 
-      this.searchParams.props.splice(index, 1)
-      this.getData(this.searchParams)
+      // 以索引值为删除的依据
+      // this.searchParams.props.splice(index, 1);
+      // this.getData(this.searchParams);
     },
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
