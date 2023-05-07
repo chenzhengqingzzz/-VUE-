@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-07 15:47:43
+ * @LastEditTime: 2023-05-07 17:50:54
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -43,7 +43,7 @@
               v-for="(attrItem, index) in searchParams.props"
               :key="attrItem.attrId"
             >
-            <!-- 删除面包屑 我们传入被删除的那个项 -->
+              <!-- 删除面包屑 我们传入被删除的那个项 -->
               {{ attrItem.split(":")[1]
               }}<i @click="removeBreadAttr(attrItem)">x</i>
             </li>
@@ -60,23 +60,34 @@
             <div class="navbar-inner filter">
               <!-- 商品排序 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <!-- 表示当前这个属性里面包含1这个标识的时候赋予其active这个类名 -->
+                <!-- 这里isOrderOne、isOrderTwo、isOrderAsc、isOrderDesc是计算属性，如果不使用计算属性，就要在页面中写很长的代码-->
+                <li :class="{ active: isOrderOne }">
+                  <!-- 使用了ElementUI组件库 -->
+                  <a
+                    >综合
+                    <span
+                      :class="{
+                        'el-icon-top': isOrderAsc,
+                        'el-icon-bottom': isOrderDesc,
+                      }"
+                      v-show="isOrderOne"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <!-- 表示当前这个属性里面包含2这个标识的时候赋予其active这个类名 -->
+                <li :class="{ active: isOrderTwo }">
+                  <!-- 使用了ElementUI组件库 -->
+                  <a
+                    >价格
+                    <span
+                      :class="{
+                        'el-icon-top': isOrderAsc,
+                        'el-icon-bottom': isOrderDesc,
+                      }"
+                      v-show="isOrderTwo"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -163,7 +174,6 @@
   </div>
 </template>
 
-
 <script>
 import { mapGetters } from "vuex";
 import SearchSelector from "./SearchSelector";
@@ -176,15 +186,23 @@ export default {
     return {
       // 带给服务器的参数
       searchParams: {
+        // 产品相应的Id
         category1Id: "",
         category2Id: "",
         category3Id: "",
+        // 产品的名字
         categoryName: "",
+        // 搜索的关键字
         keyword: "",
-        order: "",
+        // 排序 初始状态应该是综合|降序
+        order: "1:desc",
+        // 第几页
         pageNo: 1,
+        // 每一页展示条数
         pageSize: 3,
+        // 平台属性的操作
         props: [],
+        // 品牌
         trademark: "",
       },
     };
@@ -216,6 +234,38 @@ export default {
 
     // 使用getters的简化写法 需要提前在仓库中配置好 第一个参数为命名空间 第二个为对应的getters
     ...mapGetters("search", ["goodsList"]),
+
+    /**
+     * @description: 判断data中order这个属性里面有没有1这个标识 1代表选中综合
+     * @return {Boolean} 用于class-active的布尔值
+     */
+    isOrderOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+
+    /**
+     * @description: 判断data中order这个属性里面有没有2这个标识 2代表选中价格
+     * @return {Boolean} 用于class-active的布尔值
+     */
+    isOrderTwo() {
+      return this.searchParams.order.indexOf("2") != -1;
+    },
+
+    /**
+     * @description: 判断data中order这个属性里面有没有asc这个标识 asc代表选升序 箭头向上
+     * @return {*} 用于class-top的布尔值
+     */
+    isOrderAsc() {
+      return this.searchParams.order.indexOf("asc") != -1;
+    },
+
+    /**
+     * @description: 判断data中order这个属性里面有没有desc这个标识 desc代表选降序 箭头向下
+     * @return {Boolean} 用于class-bottom的布尔值
+     */
+    isOrderDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
   },
   methods: {
     /**
@@ -320,8 +370,8 @@ export default {
     removeBreadAttr(deletedPropElement) {
       // 以被删除的数组元素为依据 并用数组过滤方法实现
       this.searchParams.props = this.searchParams.props.filter((element) => {
-        return element != deletedPropElement
-      })
+        return element != deletedPropElement;
+      });
       //  再次发请求
       this.getData(this.searchParams);
 
