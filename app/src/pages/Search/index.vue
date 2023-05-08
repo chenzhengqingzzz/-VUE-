@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-07 17:50:54
+ * @LastEditTime: 2023-05-08 22:12:41
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -62,7 +62,7 @@
               <ul class="sui-nav">
                 <!-- 表示当前这个属性里面包含1这个标识的时候赋予其active这个类名 -->
                 <!-- 这里isOrderOne、isOrderTwo、isOrderAsc、isOrderDesc是计算属性，如果不使用计算属性，就要在页面中写很长的代码-->
-                <li :class="{ active: isOrderOne }">
+                <li :class="{ active: isOrderOne }" @click="changeOrder('1')">
                   <!-- 使用了ElementUI组件库 -->
                   <a
                     >综合
@@ -76,7 +76,7 @@
                   ></a>
                 </li>
                 <!-- 表示当前这个属性里面包含2这个标识的时候赋予其active这个类名 -->
-                <li :class="{ active: isOrderTwo }">
+                <li :class="{ active: isOrderTwo }" @click="changeOrder('2')">
                   <!-- 使用了ElementUI组件库 -->
                   <a
                     >价格
@@ -379,6 +379,30 @@ export default {
       // this.searchParams.props.splice(index, 1);
       // this.getData(this.searchParams);
     },
+
+    /**
+     * @description: 排序的操作
+     * @param {*} flag 它是一个标记 代表用户点击的是综合（1）还是价格（2）【用户点击的时候传递】
+     * @return {*}
+     */
+    changeOrder(flag){
+      // 读取存放在data中的order
+      let originOrder = this.searchParams.order
+      let originFlag = originOrder.split(':')[0] // 1 或 2
+      let originSort = originOrder.split(':')[1] // desc 或 asc
+      let newOrder = ''
+      // 这是确定点击了综合选项
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${originSort == 'desc'? 'asc': 'desc'}`
+      }else{
+        // 这里flag的值为2
+        newOrder = `${flag}:${'desc'}` // 这里走完之后 下面会重新赋值 会引起originOrder、originFlag的变化，则如果我们点击了一次价格 下一次点击的话会走上面的if判断
+      }
+      // 将新order赋给searchParams 我们下一次进入这个函数的时候 originOrder、originFlag可能会是新的值
+      this.searchParams.order = newOrder
+      // 再次发请求
+      this.getData(this.searchParams)
+    }
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
   watch: {
