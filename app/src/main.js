@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-07 17:10:35
+ * @LastEditTime: 2023-05-09 14:26:20
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -28,6 +28,9 @@ Vue.component(TypeNav.name, TypeNav)
 // 轮播图组件---全局组件
 import Carousel from '@/components/Carousel'
 Vue.component(Carousel.name, Carousel)
+// 分页器组件---全局组件
+import Pagination from '@/components/Pagination'
+Vue.component(Pagination.name, Pagination)
 
 // 按需引入ElementUI
 import { Icon } from 'element-ui'
