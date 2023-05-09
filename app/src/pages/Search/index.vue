@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 14:27:57
+ * @LastEditTime: 2023-05-09 15:22:05
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -363,14 +363,14 @@ export default {
       let originFlag = originOrder.split(':')[0] // 1 或 2
       let originSort = originOrder.split(':')[1] // desc 或 asc
       let newOrder = ''
-      // 这是确定点击了综合选项
+      // 判断的是多次点击的是不是同一个标签
       if (flag == originFlag) {
         newOrder = `${originFlag}:${originSort == 'desc'? 'asc': 'desc'}`
       }else{
-        // 这里flag的值为2
+        // 这是每次点击另一个标签会走的判断
         newOrder = `${flag}:${'desc'}` // 这里走完之后 下面会重新赋值 会引起originOrder、originFlag的变化，则如果我们点击了一次价格 下一次点击的话会走上面的if判断
       }
-      // 将新order赋给searchParams 我们下一次进入这个函数的时候 originOrder、originFlag可能会是新的值
+      // 将newOrder赋给searchParams 我们下一次进入这个函数的时候 originOrder、originFlag可能会是新的值
       this.searchParams.order = newOrder
       // 再次发请求
       this.getData(this.searchParams)
