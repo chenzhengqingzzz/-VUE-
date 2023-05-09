@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-09 14:17:19
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 17:32:46
+ * @LastEditTime: 2023-05-09 18:11:43
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Pagination/index.vue
  * @Description: 全局组件——分页器(Pagination)
  * 
@@ -11,18 +11,17 @@
 -->
 <template>
   <div class="pagination">
+    <!-- 左边部分 -->
     <button>上一页</button>
-    <button>1</button>
-    <button>···</button>
+    <button v-show="startNumAndEndNum.start > 1">1</button>
+    <button v-show="startNumAndEndNum.start > 2">···</button>
 
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <!-- 中间部分 -->
+    <button v-for="(page, index) in startNumAndEndNum.end" :key="index" v-show="page >= startNumAndEndNum.start">{{page}}</button>
 
-    <button>···</button>
-    <button>{{ totalPage }}</button>
+    <!-- 下边部分 -->
+    <button v-show="startNumAndEndNum.end < totalPage - 1">···</button>
+    <button v-show="startNumAndEndNum.end < totalPage">{{ totalPage }}</button>
     <button>下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
@@ -72,6 +71,7 @@ export default {
           start = totalPage - continues + 1
         }
       }
+      return {start, end}
     },
   },
 };
