@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 15:22:05
+ * @LastEditTime: 2023-05-09 16:22:16
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -139,7 +139,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination/>
+          <Pagination :pageNo="1" :pageSize="5" :total="91" :continues="5"/>
         </div>
       </div>
     </div>

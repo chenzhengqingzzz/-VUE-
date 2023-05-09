@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-09 14:17:19
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 14:44:59
+ * @LastEditTime: 2023-05-09 17:32:46
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Pagination/index.vue
  * @Description: 全局组件——分页器(Pagination)
  * 
@@ -22,22 +22,64 @@
     <button>7</button>
 
     <button>···</button>
-    <button>9</button>
+    <button>{{ totalPage }}</button>
     <button>下一页</button>
 
-    <button style="margin-left: 30px">共 60 条</button>
+    <button style="margin-left: 30px">共 {{ total }} 条</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "Pagination",
+  props: ["pageNo", "pageSize", "total", "continues"],
+  computed: {
+    /**
+     * @description: 计算出总共的页数
+     * @return {*}
+     */
+    totalPage() {
+      // 向上取整
+      return Math.ceil(this.total / this.pageSize);
+    },
+    /**
+     * @description: 计算出连续的页码中起始数字与结束数字[连续的页码数至少为5]
+     * @return {*}
+     */
+    startNumAndEndNum() {
+      // 解构
+      const { continues, pageNo, totalPage } = this;
+      // 先定义两个变量存储起始页码和结束页码
+      let start = 0,
+        end = 0;
+      // 当总页数没有连续页码数多的时候（特殊情况） 走这个判断处理这个情况
+      if (continues > totalPage) {
+        start = 1;
+        end = totalPage;
+      } else {
+        // 总页码数大于等于连续页码数的时候（正常情况）
+        // continues向下取整
+        start = pageNo - Math.floor(continues / 2);
+        end = pageNo + Math.floor(continues / 2);
+        // start为负数或0的时候 我们需要纠正显示的分页
+        if (start < 1) {
+          start = 1;
+          end = continues;
+        }
+        // 当end大于总页码的时候（特殊情况） 我们需要纠正显示的分页
+        if (end > totalPage) {
+          end = totalPage;
+          start = totalPage - continues + 1
+        }
+      }
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .pagination {
-    text-align: center;
+  text-align: center;
   button {
     margin: 0 5px;
     background-color: #f4f4f5;
