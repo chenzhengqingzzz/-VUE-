@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 18:10:33
+ * @LastEditTime: 2023-05-10 14:16:56
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -139,7 +139,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination :pageNo="27" :pageSize="3" :total="91" :continues="5"/>
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import SearchSelector from "./SearchSelector";
 export default {
   name: "Search",
@@ -168,8 +168,8 @@ export default {
         keyword: "",
         // 排序 初始状态应该是综合|降序
         order: "1:desc",
-        // 第几页
-        pageNo: 1,
+        // 当前所处第几页
+        pageNo: 5,
         // 每一页展示条数
         pageSize: 3,
         // 平台属性的操作
@@ -206,6 +206,11 @@ export default {
 
     // 使用getters的简化写法 需要提前在仓库中配置好 第一个参数为命名空间 第二个为对应的getters
     ...mapGetters("search", ["goodsList"]),
+
+    // 从仓库中捞取Search模块展示产品一共有多少数据
+    ...mapState('search', {
+      total: state => state.searchList.total
+    }),
 
     /**
      * @description: 判断data中order这个属性里面有没有1这个标识 1代表选中综合
@@ -292,7 +297,7 @@ export default {
     },
 
     /**
-     * @description: 子组件通过自定义事件给父组件传递过来的品牌数据
+     * @description: 子组件SearchInfo通过自定义事件给父组件传递过来的品牌数据
      * @param {*} trademark 子组件传入的对象
      * @return {*}
      */
@@ -317,7 +322,7 @@ export default {
     },
 
     /**
-     * @description: 子组件通过自定义事件给父组件传递过来的商品属性数据
+     * @description: 子组件SearchInfo通过自定义事件给父组件传递过来的商品属性数据
      * @param {*} attrId 子组件传过来的商品属性ID
      * @param {*} attrValue 子组件传过来的商品属性值
      * @param {*} attrName 子组件传过来的商品属性名
@@ -372,6 +377,18 @@ export default {
       }
       // 将newOrder赋给searchParams 我们下一次进入这个函数的时候 originOrder、originFlag可能会是新的值
       this.searchParams.order = newOrder
+      // 再次发请求
+      this.getData(this.searchParams)
+    },
+
+    /**
+     * @description: 子组件Pagination通过自定义事件给父组件传递过来的当前页码
+     * @param {*} receivedPageNo 从子组件接收到的当前页码
+     * @return {*}
+     */
+    getPageNo(receivedPageNo){
+      // 整理带给服务器的参数
+      this.searchParams.pageNo = receivedPageNo
       // 再次发请求
       this.getData(this.searchParams)
     }

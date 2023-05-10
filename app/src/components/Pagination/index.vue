@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-09 14:17:19
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-09 18:11:43
+ * @LastEditTime: 2023-05-10 14:33:10
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Pagination/index.vue
  * @Description: 全局组件——分页器(Pagination)
  * 
@@ -12,17 +12,17 @@
 <template>
   <div class="pagination">
     <!-- 左边部分 -->
-    <button>上一页</button>
-    <button v-show="startNumAndEndNum.start > 1">1</button>
+    <button :disabled="pageNo == 1" @click="$emit('getPageNo', pageNo - 1)">上一页</button>
+    <button v-show="startNumAndEndNum.start > 1" @click="$emit('getPageNo', 1)">1</button>
     <button v-show="startNumAndEndNum.start > 2">···</button>
 
     <!-- 中间部分 -->
-    <button v-for="(page, index) in startNumAndEndNum.end" :key="index" v-show="page >= startNumAndEndNum.start">{{page}}</button>
+    <button v-for="(page, index) in startNumAndEndNum.end" :key="index" v-show="page >= startNumAndEndNum.start" @click="$emit('getPageNo', page)">{{page}}</button>
 
     <!-- 下边部分 -->
     <button v-show="startNumAndEndNum.end < totalPage - 1">···</button>
-    <button v-show="startNumAndEndNum.end < totalPage">{{ totalPage }}</button>
-    <button>下一页</button>
+    <button v-show="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo', totalPage)">{{ totalPage }}</button>
+    <button :disabled="pageNo == totalPage" @click="$emit('getPageNo', pageNo + 1)">下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
   </div>
@@ -35,7 +35,7 @@ export default {
   computed: {
     /**
      * @description: 计算出总共的页数
-     * @return {*}
+     * @return {Number}
      */
     totalPage() {
       // 向上取整
@@ -43,7 +43,7 @@ export default {
     },
     /**
      * @description: 计算出连续的页码中起始数字与结束数字[连续的页码数至少为5]
-     * @return {*}
+     * @return {Object}
      */
     startNumAndEndNum() {
       // 解构
@@ -60,7 +60,7 @@ export default {
         // continues向下取整
         start = pageNo - Math.floor(continues / 2);
         end = pageNo + Math.floor(continues / 2);
-        // start为负数或0的时候 我们需要纠正显示的分页
+        // start为负数或0的时候（特殊情况） 我们需要纠正显示的分页
         if (start < 1) {
           start = 1;
           end = continues;
