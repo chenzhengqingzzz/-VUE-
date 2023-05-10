@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-10 14:16:56
+ * @LastEditTime: 2023-05-10 16:56:48
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -102,9 +102,10 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank">
+                    <!-- 在路由跳转的时候要记得带参数 -->
+                    <router-link :to="`/detail/${good.id}`">
                       <img :src="good.defaultImg" />
-                    </a>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -139,7 +140,13 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -208,8 +215,8 @@ export default {
     ...mapGetters("search", ["goodsList"]),
 
     // 从仓库中捞取Search模块展示产品一共有多少数据
-    ...mapState('search', {
-      total: state => state.searchList.total
+    ...mapState("search", {
+      total: (state) => state.searchList.total,
     }),
 
     /**
@@ -362,23 +369,23 @@ export default {
      * @param {*} flag 它是一个标记 代表用户点击的是综合（1）还是价格（2）【用户点击的时候传递】
      * @return {*}
      */
-    changeOrder(flag){
+    changeOrder(flag) {
       // 读取存放在data中的order
-      let originOrder = this.searchParams.order
-      let originFlag = originOrder.split(':')[0] // 1 或 2
-      let originSort = originOrder.split(':')[1] // desc 或 asc
-      let newOrder = ''
+      let originOrder = this.searchParams.order;
+      let originFlag = originOrder.split(":")[0]; // 1 或 2
+      let originSort = originOrder.split(":")[1]; // desc 或 asc
+      let newOrder = "";
       // 判断的是多次点击的是不是同一个标签
       if (flag == originFlag) {
-        newOrder = `${originFlag}:${originSort == 'desc'? 'asc': 'desc'}`
-      }else{
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+      } else {
         // 这是每次点击另一个标签会走的判断
-        newOrder = `${flag}:${'desc'}` // 这里走完之后 下面会重新赋值 会引起originOrder、originFlag的变化，则如果我们点击了一次价格 下一次点击的话会走上面的if判断
+        newOrder = `${flag}:${"desc"}`; // 这里走完之后 下面会重新赋值 会引起originOrder、originFlag的变化，则如果我们点击了一次价格 下一次点击的话会走上面的if判断
       }
       // 将newOrder赋给searchParams 我们下一次进入这个函数的时候 originOrder、originFlag可能会是新的值
-      this.searchParams.order = newOrder
+      this.searchParams.order = newOrder;
       // 再次发请求
-      this.getData(this.searchParams)
+      this.getData(this.searchParams);
     },
 
     /**
@@ -386,12 +393,12 @@ export default {
      * @param {*} receivedPageNo 从子组件接收到的当前页码
      * @return {*}
      */
-    getPageNo(receivedPageNo){
+    getPageNo(receivedPageNo) {
       // 整理带给服务器的参数
-      this.searchParams.pageNo = receivedPageNo
+      this.searchParams.pageNo = receivedPageNo;
       // 再次发请求
-      this.getData(this.searchParams)
-    }
+      this.getData(this.searchParams);
+    },
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
   watch: {

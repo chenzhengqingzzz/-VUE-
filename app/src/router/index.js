@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-10 15:39:44
+ * @LastEditTime: 2023-05-10 21:52:41
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -86,7 +86,7 @@ export default new VueRouter({
         {
             name: 'Detail',
             // 路由跳转的时候带上产品id给详情页
-            path: '/detail:skuid',
+            path: '/detail/:skuid',
             component: Detail,
             meta: {isShowFooter: true}
         },
@@ -105,5 +105,17 @@ export default new VueRouter({
             path: '*',
             redirect: '/home'
         }
-    ]
+    ],
+    // 滚动行为
+    /**
+     * @description: Vue官方指定的滚动行为配置
+     * @param {*} to 跳转的目标路由
+     * @param {*} from 跳转前所在的路由
+     * @param {*} savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用
+     * @return {Object}
+     */
+    scrollBehavior(to, from, savedPosition){
+        return {x: 0, y: 0, behavior: 'smooth'}
+    }
+
 })
