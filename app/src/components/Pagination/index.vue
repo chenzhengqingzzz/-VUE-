@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-09 14:17:19
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-10 14:33:10
+ * @LastEditTime: 2023-05-10 14:46:52
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Pagination/index.vue
  * @Description: 全局组件——分页器(Pagination)
  * 
@@ -12,17 +12,44 @@
 <template>
   <div class="pagination">
     <!-- 左边部分 -->
-    <button :disabled="pageNo == 1" @click="$emit('getPageNo', pageNo - 1)">上一页</button>
-    <button v-show="startNumAndEndNum.start > 1" @click="$emit('getPageNo', 1)">1</button>
+    <button :disabled="pageNo == 1" @click="$emit('getPageNo', pageNo - 1)">
+      上一页
+    </button>
+    <button
+      v-show="startNumAndEndNum.start > 1"
+      @click="$emit('getPageNo', 1)"
+      :class="{ active: pageNo == 1 }"
+    >
+      1
+    </button>
     <button v-show="startNumAndEndNum.start > 2">···</button>
 
     <!-- 中间部分 -->
-    <button v-for="(page, index) in startNumAndEndNum.end" :key="index" v-show="page >= startNumAndEndNum.start" @click="$emit('getPageNo', page)">{{page}}</button>
+    <button
+      v-for="(page, index) in startNumAndEndNum.end"
+      :key="index"
+      v-show="page >= startNumAndEndNum.start"
+      @click="$emit('getPageNo', page)"
+      :class="{ active: pageNo == page }"
+    >
+      {{ page }}
+    </button>
 
     <!-- 下边部分 -->
     <button v-show="startNumAndEndNum.end < totalPage - 1">···</button>
-    <button v-show="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo', totalPage)">{{ totalPage }}</button>
-    <button :disabled="pageNo == totalPage" @click="$emit('getPageNo', pageNo + 1)">下一页</button>
+    <button
+      v-show="startNumAndEndNum.end < totalPage"
+      @click="$emit('getPageNo', totalPage)"
+      :class="{ active: pageNo == totalPage }"
+    >
+      {{ totalPage }}
+    </button>
+    <button
+      :disabled="pageNo == totalPage"
+      @click="$emit('getPageNo', pageNo + 1)"
+    >
+      下一页
+    </button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
   </div>
@@ -68,10 +95,10 @@ export default {
         // 当end大于总页码的时候（特殊情况） 我们需要纠正显示的分页
         if (end > totalPage) {
           end = totalPage;
-          start = totalPage - continues + 1
+          start = totalPage - continues + 1;
         }
       }
-      return {start, end}
+      return { start, end };
     },
   },
 };
@@ -109,5 +136,8 @@ export default {
       color: #fff;
     }
   }
+}
+.active {
+  background: skyblue;
 }
 </style>

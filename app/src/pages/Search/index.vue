@@ -169,7 +169,7 @@ export default {
         // 排序 初始状态应该是综合|降序
         order: "1:desc",
         // 当前所处第几页
-        pageNo: 5,
+        pageNo: 1,
         // 每一页展示条数
         pageSize: 3,
         // 平台属性的操作
