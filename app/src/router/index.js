@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-03 13:31:30
+ * @LastEditTime: 2023-05-10 15:39:44
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -20,6 +20,7 @@ import Home from '../pages/Home'
 import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import Detail from '@/pages/Detail'
 
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -65,6 +66,7 @@ export default new VueRouter({
         },
         {
             name: 'Search',
+            // ?代表参数可传可不传
             path: '/search/:keyword?',
             component: Search,
             meta: {isShowFooter: true},
@@ -82,6 +84,13 @@ export default new VueRouter({
             }
         },
         {
+            name: 'Detail',
+            // 路由跳转的时候带上产品id给详情页
+            path: '/detail:skuid',
+            component: Detail,
+            meta: {isShowFooter: true}
+        },
+        {
             path: '/login',
             component: Login,
             meta: {isShowFooter: false}
@@ -89,7 +98,7 @@ export default new VueRouter({
         {
             path: '/register',
             component: Register,
-            meta: {isShowFooter: false}
+            meta: {isShowFooter: false},
         },
         // 重定向，在项目跑起来的时候，访问"/"，立马定向到首页
         {
