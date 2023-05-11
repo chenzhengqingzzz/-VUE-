@@ -16,21 +16,24 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <!-- 又是因为异步 可能传入子组件的东西是空的 会出现undefined警告 根据传过去的类型来决定传空数组还是空对象 -->
+          <!-- <Zoom :skuImageList="skuInfo.skuImageList || [{}]"/> -->
+          <!-- 我们决定在子组件接收的props附一个默认值 -->
+          <Zoom :skuImageList="skuInfo.skuImageList"/>
           <!-- 小图列表 -->
           <ImageList />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h3>
-            <p class="news">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</p>
+            <h3 class="InfoName">{{skuInfo.skuName}}</h3>
+            <p class="news">{{skuInfo.skuDesc}}</p>
             <div class="priceArea">
               <div class="priceArea1">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
+                  <em>{{skuInfo.price}}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -362,7 +365,7 @@ import { mapGetters } from 'vuex'
     },
     computed: {
       // 配合命名空间使用
-      ...mapGetters('detail', ['categoryView'])
+      ...mapGetters('detail', ['categoryView', 'skuInfo'])
     }
   }
 </script>

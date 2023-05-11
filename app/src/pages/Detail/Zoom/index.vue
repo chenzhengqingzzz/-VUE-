@@ -1,9 +1,20 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-05-10 15:28:57
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-05-11 21:17:32
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/Zoom/index.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
+    <img :src="skuImageList[0].imgUrl" />
     <div class="event"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="skuImageList[0].imgUrl" />
     </div>
     <div class="mask"></div>
   </div>
@@ -12,6 +23,18 @@
 <script>
   export default {
     name: "Zoom",
+    props: {
+      skuImageList: {
+        type: Array,
+        // 又是因为异步 可能传入子组件的东西是空的 会出现undefined警告 根据传过来的类型来决定传空数组还是空对象
+        default: () => {
+          return [{}]
+        }
+      }
+    },
+    mounted() {
+      console.log(this.skuImageList);
+    },
   }
 </script>
 
