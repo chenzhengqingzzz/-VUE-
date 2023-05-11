@@ -3,9 +3,9 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 21:17:32
+ * @LastEditTime: 2023-05-11 22:21:56
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/Zoom/index.vue
- * @Description: 
+ * @Description: Detail中左侧的放大镜组件
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
 -->
@@ -31,9 +31,6 @@
           return [{}]
         }
       }
-    },
-    mounted() {
-      console.log(this.skuImageList);
     },
   }
 </script>

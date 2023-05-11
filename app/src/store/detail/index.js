@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-11 15:11:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 19:16:26
+ * @LastEditTime: 2023-05-11 21:39:14
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/detail/index.js
  * @Description: Detail模块的小仓库
  * 
@@ -43,18 +43,30 @@ const actions = {
 // 简化数据
 const getters = {
     /**
-     * @description: getters简化数据 下同
+     * @description: 路径导航简化的数据
      * @param {*} state 当前仓库中的state
      * @return {*}
      */
     categoryView(state){
-        // 当前计算出的categoryView属性值至少是一个空对象 假的报错不会有了
+        // 当前计算出的categoryView属性值至少是一个空对象 假的报错不会有了 下同
         return state.goodInfo.categoryView || {}
     },
+    /**
+     * @description: 产品信息简化的数据
+     * @param {*} state
+     * @return {*}
+     */
     skuInfo(state){
         return state.goodInfo.skuInfo || {}
     },
-    
+    /**
+     * @description: 售卖属性简化的数据
+     * @param {*} state
+     * @return {*}
+     */
+    spuSaleAttrList(state){
+        return state.goodInfo.spuSaleAttrList || []
+    }
 }
 export default {
     namespaced: true,

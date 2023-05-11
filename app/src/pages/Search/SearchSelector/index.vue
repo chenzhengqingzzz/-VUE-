@@ -1,3 +1,14 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-05-02 15:08:54
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-05-11 22:18:53
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/SearchSelector/index.vue
+ * @Description: Search页面中搜索页面相关参数的展示页面 它可以和父组件的面包屑等进行交互
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <div class="clearfix selector">
     <div class="type-wrap logo">

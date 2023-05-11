@@ -1,3 +1,14 @@
+<!--
+ * @Author: czqzzzzzz(czq)
+ * @Email: tenchenzhengqing@qq.com
+ * @Date: 2023-05-10 15:28:57
+ * @LastEditors: czqzzzzzz(czq)
+ * @LastEditTime: 2023-05-11 22:17:44
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/index.vue
+ * @Description: 路由组件———详情(Detail)
+ * 
+ * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+-->
 <template>
   <div class="detail">
     <!-- 商品分类导航 -->
@@ -18,10 +29,10 @@
           <!--放大镜效果-->
           <!-- 又是因为异步 可能传入子组件的东西是空的 会出现undefined警告 根据传过去的类型来决定传空数组还是空对象 -->
           <!-- <Zoom :skuImageList="skuInfo.skuImageList || [{}]"/> -->
-          <!-- 我们决定在子组件接收的props附一个默认值 -->
+          <!-- 我们决定在子组件接收的props附一个默认值 下面的小图传props逻辑相同 -->
           <Zoom :skuImageList="skuInfo.skuImageList"/>
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :skuImageList="skuInfo.skuImageList"/>
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
