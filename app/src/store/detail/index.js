@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-11 15:11:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 15:27:03
+ * @LastEditTime: 2023-05-11 17:31:01
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/detail/index.js
  * @Description: Detail模块的小仓库
  * 
@@ -40,7 +40,13 @@ const actions = {
         )
     }
 }
-const getters = {}
+// 简化数据
+const getters = {
+    categoryView(state){
+        // 当前计算出的categoryView属性值至少是一个空对象 假的报错不会有了
+        return state.goodInfo.categoryView || {}
+    }
+}
 export default {
     namespaced: true,
     state,
