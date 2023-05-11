@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 17:23:53
+ * @LastEditTime: 2023-05-11 15:08:33
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -72,5 +72,18 @@ export const reqGetSearchInfo = (params) => {
         method: 'POST',
         url: '/list',
         data: params // 当前这个接口给服务器传递一个默认参数（params至少得是一个空对象 否则返回失败）
+    })
+}
+
+/**
+ * @description: 在搜索列表时点击具体商品获取商品详情时请求数据 是get请求 需要带参数 
+ * @url `/item/${skuId}`
+ * @param {*} skuId 从goodsList获取的产品Id
+ * @return {Object: Promise}
+ */
+export const reqGetGoodInfo = (skuId) => {
+    return requests({
+        method: 'GET',
+        url: `/item/${skuId}`
     })
 }

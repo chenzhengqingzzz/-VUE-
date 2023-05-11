@@ -352,11 +352,14 @@
 
   export default {
     name: 'Detail',
-    
     components: {
       ImageList,
       Zoom
-    }
+    },
+    mounted() {
+      // 派发action获取产品详情的信息，注意根据接口要求携带params参数
+      this.$store.dispatch('detail/getGoodInfo', this.$route.params.skuid)
+    },
   }
 </script>
 
