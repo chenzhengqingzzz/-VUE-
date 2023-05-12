@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 22:20:12
+ * @LastEditTime: 2023-05-12 22:41:53
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/ImageList/index.vue
  * @Description: Detail组件中图片下方的预览的轮播图组件
  * 
@@ -35,6 +35,21 @@ export default {
       default: () => {
         return [{}];
       },
+    },
+  },
+  watch: {
+    skuImageList(newVal, oldVal) {
+      this.$nextTick(() => {
+        new Swiper(".swiper-container", {
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+          // 显示几个图片的设置
+          slidesPerView: 3
+        });
+      });
     },
   },
 };
