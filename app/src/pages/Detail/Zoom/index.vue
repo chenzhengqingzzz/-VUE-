@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-13 16:45:45
+ * @LastEditTime: 2023-05-13 18:11:46
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/Zoom/index.vue
  * @Description: Detail中左侧的放大镜组件
  * 
@@ -47,6 +47,11 @@
       })
     },
     methods: {
+      /**
+       * @description: 鼠标移动涉及到的处理逻辑 主要是绿色方块的位置 放大镜的效果
+       * @param {*} e 事件对象
+       * @return {*}
+       */
       mousemoveHandler(e){
         let mask = this.$refs.mask
         let big = this.$refs.big

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-12 18:55:34
+ * @LastEditTime: 2023-05-13 18:33:50
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/index.vue
  * @Description: 路由组件———详情(Detail)
  * 
@@ -109,9 +109,9 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum"/>
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : skuNum = 1">-</a>
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -363,6 +363,12 @@ export default {
     ImageList,
     Zoom,
   },
+  data() {
+    return {
+      // 购买产品的个数
+      skuNum: 1
+    }
+  },
   mounted() {
     // 派发action获取产品详情的信息，注意根据接口要求携带params参数
     this.$store.dispatch("detail/getGoodInfo", this.$route.params.skuid);
@@ -384,6 +390,20 @@ export default {
         item.isChecked = '0'
       });
       clickedAttrValue.isChecked = '1'
+    },
+    /**
+     * @description: 表单元素修改产品个数
+     * @param {*} e 事件对象
+     * @return {*}
+     */
+    changeSkuNum(e){
+      let val = e.target.value * 1
+      // 如果用户输入进来的数据非法
+      if (isNaN(val) || val < 1) {
+        this.skuNum = 1
+      }else{
+        this.skuNum = Math.floor(val)
+      }
     }
   },
 };
