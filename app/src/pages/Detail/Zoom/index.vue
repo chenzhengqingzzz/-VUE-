@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 22:21:56
+ * @LastEditTime: 2023-05-13 16:45:45
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/Zoom/index.vue
  * @Description: Detail中左侧的放大镜组件
  * 
@@ -11,18 +11,25 @@
 -->
 <template>
   <div class="spec-preview">
-    <img :src="skuImageList[0].imgUrl" />
-    <div class="event"></div>
+    <img :src="skuImageList[showImageIndex].imgUrl" />
+    <div class="event" @mousemove="mousemoveHandler"></div>
     <div class="big">
-      <img :src="skuImageList[0].imgUrl" />
+      <img :src="skuImageList[showImageIndex].imgUrl" ref="big"/>
     </div>
-    <div class="mask"></div>
+    <!-- 绿色蒙板 -->
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
   export default {
     name: "Zoom",
+    data() {
+      return {
+        // 应该展示图片的索引值
+        showImageIndex: 0
+      }
+    },
     props: {
       skuImageList: {
         type: Array,
@@ -30,6 +37,33 @@
         default: () => {
           return [{}]
         }
+      }
+    },
+    mounted() {
+      // 全局事件总线获取兄弟组件传递来的索引值
+      this.$bus.$on('getIndex', (index) => {
+        // 修改响应式数据
+        this.showImageIndex = index
+      })
+    },
+    methods: {
+      mousemoveHandler(e){
+        let mask = this.$refs.mask
+        let big = this.$refs.big
+        // 计算之后的left|top值
+        let left = e.offsetX - mask.offsetWidth / 2
+        let top = e.offsetY - mask.offsetHeight / 2
+        // 约束范围
+        if (left <= 0) left = 0
+        if (left >= mask.offsetWidth) left = mask.offsetWidth
+        if (top <= 0) top = 0
+        if (top >= mask.offsetHeight) top = mask.offsetHeight
+        // 修改元素的left|top属性值
+        mask.style.left = left + 'px'
+        mask.style.top = top + 'px'
+        // 由于big是2倍的img 所以我们放大操作需要带倍数
+        big.style.left = -2 * left + 'px'
+        big.style.top = -2 * top + 'px'
       }
     },
   }

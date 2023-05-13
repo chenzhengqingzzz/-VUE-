@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-12 22:41:53
+ * @LastEditTime: 2023-05-13 15:23:53
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/ImageList/index.vue
  * @Description: Detail组件中图片下方的预览的轮播图组件
  * 
@@ -17,7 +17,7 @@
         v-for="(slide, index) in skuImageList"
         :key="slide.id"
       >
-        <img :src="slide.imgUrl" />
+        <img :src="slide.imgUrl" :class="{active: currentIndex == index}" @click="changeCurrentIndex(index)"/>
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -29,6 +29,12 @@
 import Swiper from "swiper";
 export default {
   name: "ImageList",
+  data() {
+    return {
+      // 和三级分类菜单的套路一样 给每个image赋一个currentIndex 遍历的index等于currentIndex才会给新的类名
+      currentIndex: 0
+    }
+  },
   props: {
     skuImageList: {
       type: Array,
@@ -47,10 +53,25 @@ export default {
             prevEl: ".swiper-button-prev",
           },
           // 显示几个图片的设置
-          slidesPerView: 3
+          slidesPerView: 3,
+          // 每一次切换图片个数
+          slidesPerGroup: 1
         });
       });
     },
+  },
+  methods: {
+    /**
+     * @description: 点击图片的回调 
+     * @param {*} index v-for遍历所对应的图片的索引值
+     * @return {*}
+     */
+    changeCurrentIndex(index){
+      // 修改响应式数据
+      this.currentIndex = index
+      // 使用全局事件总线传给兄弟组件被修改后的索引值
+      this.$bus.$emit('getIndex', index)
+    }
   },
 };
 </script>
@@ -80,10 +101,6 @@ export default {
         padding: 1px;
       }
 
-      &:hover {
-        border: 2px solid #f60;
-        padding: 1px;
-      }
     }
   }
 
