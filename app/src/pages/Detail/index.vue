@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 16:16:20
+ * @LastEditTime: 2023-05-14 17:36:38
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/index.vue
  * @Description: 路由组件———详情(Detail)
  * 
@@ -431,18 +431,30 @@ export default {
       // 派发action 注意根据接口要求携带参数
       // 当前这里是派发了action 也向服务器发送了请求
       // 我们需要判断加入购物车是成功了还是失败了 成功就跳转路由 失败了就需要给用户提示
-      this.$store.dispatch("detail/getAddOrUpdateShopCart", {
+      this.$store
+        .dispatch("detail/getAddOrUpdateShopCart", {
           skuId: this.$route.params.skuid,
           skuNum: this.skuNum,
         })
         .then(
           // 成功时 进行路由的跳转
-          this.$router.push({name: 'AddCartSuccess'})
-          )
+          this.$router.push(
+            {
+              name: "AddCartSuccess",
+              // 直接传对象会发现地址栏不可读，很乱 我们决定使用query只传skuNum，至于skuInfo我们存在sessionStorage中
+              // 一些简单的数据skuNum，通过query形式给路由组件传递过去
+              // 产品信息的数据skuInfo【比较复杂】 通过sessionStorage存储（不持久化 会话结束之后数据小的时候）
+              // 要注意的是，本地存储|会话存储：一般存储的是字符串
+              query: { skuNum: this.skuNum },
+            }, 
+          ),
+          // 向本地存储存入我们的商品信息 并且将我们传入的对象使用stringify转化为字符串存入sessionStorage
+          sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
+        )
         .catch(
           // 失败的时候提示错误信息
           (err) => alert(err.message)
-          );
+        );
     },
   },
 };
