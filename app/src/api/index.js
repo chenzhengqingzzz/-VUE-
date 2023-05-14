@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-11 15:08:33
+ * @LastEditTime: 2023-05-13 19:19:48
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -85,5 +85,18 @@ export const reqGetGoodInfo = (skuId) => {
     return requests({
         method: 'GET',
         url: `/item/${skuId}`
+    })
+}
+
+/**
+ * @description: 将产品添加到购物车中或更新某一个产品的个数
+ * @param {*} skuId 被操作的商品Id
+ * @param {*} skuNum 商品数量 正数代表增加 负数代表减少
+ * @return {Object: Promise}
+ */
+export const reqGetAddOrUpdateShopCart = (skuId, skuNum) => {
+    return requests({
+        method: 'POST',
+        url: `/cart/addToCart/${skuId}/${skuNum}`
     })
 }
