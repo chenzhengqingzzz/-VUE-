@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-13 19:19:48
+ * @LastEditTime: 2023-05-14 16:06:59
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -97,6 +97,6 @@ export const reqGetGoodInfo = (skuId) => {
 export const reqGetAddOrUpdateShopCart = (skuId, skuNum) => {
     return requests({
         method: 'POST',
-        url: `/cart/addToCart/${skuId}/${skuNum}`
+        url: `/cart/addToCart1/${skuId}/${skuNum}`
     })
 }

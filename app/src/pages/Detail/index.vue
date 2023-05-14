@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-10 15:28:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-13 18:33:50
+ * @LastEditTime: 2023-05-14 16:16:20
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Detail/index.vue
  * @Description: 路由组件———详情(Detail)
  * 
@@ -99,9 +99,16 @@
                 <dd
                   changepirce="0"
                   :class="{ active: spuSaleAttrValue.isChecked == 1 }"
-                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList"
+                  v-for="(
+                    spuSaleAttrValue, index
+                  ) in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)"
+                  @click="
+                    changeActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -109,12 +116,23 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum"/>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
                 <a href="javascript:" class="plus" @click="skuNum++">+</a>
-                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : skuNum = 1">-</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 以前咱们的路由跳转都是正常的不带参的，这里加入购物车进行路由跳转之前要把产品信息发请求给服务器-->
+                <a @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -366,8 +384,8 @@ export default {
   data() {
     return {
       // 购买产品的个数
-      skuNum: 1
-    }
+      skuNum: 1,
+    };
   },
   mounted() {
     // 派发action获取产品详情的信息，注意根据接口要求携带params参数
@@ -384,27 +402,48 @@ export default {
      * @param {*} attrValueList 被点击的属性值外面的那一层数组 这个数组里面有其他对象
      * @return {*}
      */
-    changeActive(clickedAttrValue, attrValueList){
+    changeActive(clickedAttrValue, attrValueList) {
       // 遍历，会遍历到被点击的属性所在对象以及其他兄弟对象
-      attrValueList.forEach(item => {
-        item.isChecked = '0'
+      attrValueList.forEach((item) => {
+        item.isChecked = "0";
       });
-      clickedAttrValue.isChecked = '1'
+      clickedAttrValue.isChecked = "1";
     },
     /**
      * @description: 表单元素修改产品个数
      * @param {*} e 事件对象
      * @return {*}
      */
-    changeSkuNum(e){
-      let val = e.target.value * 1
+    changeSkuNum(e) {
+      let val = e.target.value * 1;
       // 如果用户输入进来的数据非法
       if (isNaN(val) || val < 1) {
-        this.skuNum = 1
-      }else{
-        this.skuNum = Math.floor(val)
+        this.skuNum = 1;
+      } else {
+        this.skuNum = Math.floor(val);
       }
-    }
+    },
+    /**
+     * @description: 点击“加入购物车”按钮的回调
+     * @return {*}
+     */
+    addShopCart() {
+      // 派发action 注意根据接口要求携带参数
+      // 当前这里是派发了action 也向服务器发送了请求
+      // 我们需要判断加入购物车是成功了还是失败了 成功就跳转路由 失败了就需要给用户提示
+      this.$store.dispatch("detail/getAddOrUpdateShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        })
+        .then(
+          // 成功时 进行路由的跳转
+          this.$router.push({name: 'AddCartSuccess'})
+          )
+        .catch(
+          // 失败的时候提示错误信息
+          (err) => alert(err.message)
+          );
+    },
   },
 };
 </script>

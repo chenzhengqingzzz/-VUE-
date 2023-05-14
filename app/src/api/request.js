@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-24 17:26:05
+ * @LastEditTime: 2023-05-14 16:01:57
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/request.js
  * @Description: 对axios进行二次封装以满足项目的自定义需求，需要注意其暴露的是二次封装的requests
  * 

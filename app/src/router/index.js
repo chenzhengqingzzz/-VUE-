@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-10 21:52:41
+ * @LastEditTime: 2023-05-14 16:12:42
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -21,6 +21,7 @@ import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -88,6 +89,12 @@ export default new VueRouter({
             // 路由跳转的时候带上产品id给详情页
             path: '/detail/:skuid',
             component: Detail,
+            meta: {isShowFooter: true}
+        },
+        {
+            name: 'AddCartSuccess',
+            path: '/addcartsuccess',
+            component: AddCartSuccess,
             meta: {isShowFooter: true}
         },
         {

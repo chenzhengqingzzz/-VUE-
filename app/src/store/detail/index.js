@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-11 15:11:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 15:38:57
+ * @LastEditTime: 2023-05-14 16:30:45
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/detail/index.js
  * @Description: Detail模块的小仓库
  *
@@ -49,13 +49,16 @@ const actions = {
       // 加入购物车成功的回调
       // 由于发完这个请求之后服务器没有返回数据 只是通知我们成功所以我们不需要三连环存储数据
       (res) => {
+        // 要注意，在axios里，状态码200~299都被定义为成功
+        // 我们自定义状态码200才是我们添加商品成功
         if (res.code === 200) {
-          console.log("请求成功:", res);
-        } else {
-          console.log("请求失败:", res);
+            return 'ok'
+        }else{
+            // 这里终止Promise链
+            return Promise.reject(new Error('faile'))
         }
       }
-    );
+    )
   },
 };
 // 简化数据
