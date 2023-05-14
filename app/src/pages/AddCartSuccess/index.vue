@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 16:09:59
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 17:37:03
+ * @LastEditTime: 2023-05-14 21:51:37
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/AddCartSuccess/index.vue
  * @Description: 路由组件———添加到购物车成功页面(AddCartSuccess)
  * 
@@ -24,8 +24,8 @@
           </div>
         </div>
         <div class="right-gocart">
-          <a href="javascript:" class="sui-btn btn-xlarge">查看商品详情</a>
-          <a href="javascript:" >去购物车结算 > </a>
+          <router-link class="sui-btn btn-xlarge" :to="`/detail/${skuInfo.id}`">查看商品详情</router-link>
+          <router-link to="/shopcart">去购物车结算</router-link>
         </div>
       </div>
     </div>

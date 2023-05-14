@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 16:12:42
+ * @LastEditTime: 2023-05-14 21:47:12
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -22,6 +22,7 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -95,6 +96,12 @@ export default new VueRouter({
             name: 'AddCartSuccess',
             path: '/addcartsuccess',
             component: AddCartSuccess,
+            meta: {isShowFooter: true}
+        },
+        {
+            name: 'ShopCart',
+            path: '/shopcart',
+            component: ShopCart,
             meta: {isShowFooter: true}
         },
         {
