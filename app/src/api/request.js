@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 21:27:38
+ * @LastEditTime: 2023-05-15 22:05:37
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/request.js
  * @Description: 对axios进行二次封装以满足项目的自定义需求，需要注意其暴露的是二次封装的requests
  * 
@@ -15,9 +15,9 @@ import axios from "axios";
 import nProgress from "nprogress";
 // 引入进度条样式
 import "nprogress/nprogress.css"
+// start：进度条开始 done：进度条结束
 // 在当前模块当中引入store
 import store from '@/store'
-// start：进度条开始 done：进度条结束
 
 // 1.利用axios对象的方法create，去创建一个axios实例
 // 2.requests其实就axios，只不过咱们可以稍微配置一下
