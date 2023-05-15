@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 21:40:15
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 22:12:34
+ * @LastEditTime: 2023-05-15 19:27:27
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/ShopCart/index.vue
  * @Description: 
  * 
@@ -129,6 +129,18 @@
 <script>
   export default {
     name: 'ShopCart',
+    mounted() {
+      this.getData()
+    },
+    methods: {
+      /**
+       * @description: 获取个人购物车数据（每个人的购物车数据都应该是不一样的）
+       * @return {*}
+       */
+      getData(){
+        this.$store.dispatch('shopcart/getCartList')
+      }
+    },
   }
 </script>
 

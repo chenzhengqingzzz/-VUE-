@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 16:01:57
+ * @LastEditTime: 2023-05-15 21:27:38
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/request.js
  * @Description: 对axios进行二次封装以满足项目的自定义需求，需要注意其暴露的是二次封装的requests
  * 
@@ -15,6 +15,8 @@ import axios from "axios";
 import nProgress from "nprogress";
 // 引入进度条样式
 import "nprogress/nprogress.css"
+// 在当前模块当中引入store
+import store from '@/store'
 // start：进度条开始 done：进度条结束
 
 // 1.利用axios对象的方法create，去创建一个axios实例
@@ -35,6 +37,10 @@ requests.interceptors.request.use((config) => {
     //config内主要是对请求头Header配置
     //比如添加token
 
+    if (store.state.detail.uuid_token) {
+        // 给请求头添加一个字段(userTempId),得事先和后台商量好
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
     // 开启进度条
     nProgress.start()
 

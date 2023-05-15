@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 17:33:00
+ * @LastEditTime: 2023-05-15 19:14:58
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -89,7 +89,8 @@ export const reqGetGoodInfo = (skuId) => {
 }
 
 /**
- * @description: 将产品添加到购物车中或更新某一个产品的个数
+ * @description: 将产品添加到购物车中或更新某一个产品的个数 是post请求 需要带参数
+ * @url `/cart/addToCart/${skuId}/${skuNum}`
  * @param {*} skuId 被操作的商品Id
  * @param {*} skuNum 商品数量 正数代表增加 负数代表减少
  * @return {Object: Promise}
@@ -98,5 +99,17 @@ export const reqGetAddOrUpdateShopCart = (skuId, skuNum) => {
     return requests({
         method: 'POST',
         url: `/cart/addToCart/${skuId}/${skuNum}`
+    })
+}
+
+/**
+ * @description: 获取购物车列表数据接口 是get请求 无参数
+ * @url /cart/cartList
+ * @return {Object: Promise}
+ */
+export const reqGetCartList = () => {
+    return requests({
+        method: 'GET',
+        url: '/cart/cartList'
     })
 }

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-11 15:11:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 16:30:45
+ * @LastEditTime: 2023-05-15 21:20:46
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/detail/index.js
  * @Description: Detail模块的小仓库
  *
@@ -11,9 +11,13 @@
  */
 
 import { reqGetAddOrUpdateShopCart, reqGetGoodInfo } from "@/api";
+import { getUUID } from "@/utils/uuid_token";
+// 封装游客身份的模块uuid---->生成一个随机的字符串（生成一次了就不能再变）
 const state = {
   // 产品信息的初始值
   goodInfo: {},
+  // 游客临时身份 我们把具体实现封装到了util文件夹里面 生成的临时id不会变
+  uuid_token: getUUID()
 };
 const mutations = {
   UPDATEGOODINFO(state, goodInfo) {
