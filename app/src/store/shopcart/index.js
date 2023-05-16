@@ -5,7 +5,7 @@ import { reqGetCartList } from "@/api"
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-15 19:11:27
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 19:24:05
+ * @LastEditTime: 2023-05-16 17:44:32
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/shopcart/index.js
  * @Description: Shopcart模块的小仓库
  * 
@@ -41,7 +41,16 @@ const actions = {
         )
     }
 }
-const getters = {}
+const getters = {
+    /**
+     * @description: 计算出来的购物车相关数据
+     * @param {*} state 当前仓库中的state
+     * @return {Array}
+     */
+    cartList(state){
+        return state.cartList[0] || []
+    },
+}
 export default{
     namespaced: true,
     state,
