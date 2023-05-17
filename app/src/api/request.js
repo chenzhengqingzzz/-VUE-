@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 22:05:37
+ * @LastEditTime: 2023-05-17 17:30:23
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/request.js
  * @Description: 对axios进行二次封装以满足项目的自定义需求，需要注意其暴露的是二次封装的requests
  * 
@@ -57,7 +57,7 @@ requests.interceptors.response.use((response) => {
     return response.data
 }, (error) => {
     // 请求失败的回调函数
-    console.log("服务器响应失败" + error);
+    alert("服务器响应失败" + error);
     // 这里终止Promise链
     return Promise.reject(new Error('Fail'))
 })

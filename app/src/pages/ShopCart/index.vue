@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 21:40:15
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-17 16:46:42
+ * @LastEditTime: 2023-05-17 20:01:14
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/ShopCart/index.vue
  * @Description: 路由组件——购物车(ShopCart)
  * 
@@ -59,7 +59,7 @@
             <span class="sum">{{ cartInfo.skuNum * cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="deleteCartBySkuId(cartInfo)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -114,7 +114,7 @@ export default {
      * @param {Object} cartInfo 被操作的商品的信息 身上有id、产品数量（skuNum）
      * @return {*}
      */
-    handler: throttle(function(flag, disNum, cartInfo){
+    handler: throttle(async function(flag, disNum, cartInfo){
       // 区分传入的flag
       switch (flag) {
         case 'increment':
@@ -137,13 +137,29 @@ export default {
           // disNum = (isNaN(disNum) || disNum < 1) ? 0 : Math.floor(disNum) - cartInfo.skuNum
           break;
       }
+      try {
       // 带着修改后的商品数量派发action
-      this.$store.dispatch('detail/getAddOrUpdateShopCart', {skuId: cartInfo.skuId, skuNum: disNum}).then(
+        await this.$store.dispatch('detail/getAddOrUpdateShopCart', {skuId: cartInfo.skuId, skuNum: disNum})
         // 成功时，再一次获取服务器最新的数据进行展示
-        this.getData
-        // 发请求失败的回调
-      ).catch(err => console.log(err))
-    }, 100)
+        await this.getData()
+      } catch (error) {
+        alert(error)
+      }
+    }, 100),
+
+    /**
+     * @description: 删除某一个商品的操作
+     * @param {*} cartInfo 被操作的那个商品
+     * @return {*}
+     */
+    deleteCartBySkuId(cartInfo){
+       this.$store.dispatch('shopcart/deleteCartBySkuId', cartInfo.skuId).then(
+        (res) => {
+          // 如果删除成功 则再次发请求获取新的数据进行展示
+          this.getData()
+        }
+      ).catch((err) => alert(err))
+    }
   },
   computed: {
     // 获取仓库中的数据
@@ -155,7 +171,6 @@ export default {
      */
     cartInfoList() {
       return this.cartList.cartInfoList || [];
-
     },
     /**
      * @description: 通过商品信息里的isChecked来计算购物车中商品的总价

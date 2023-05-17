@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-11 15:11:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 21:20:46
+ * @LastEditTime: 2023-05-17 19:11:18
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/detail/index.js
  * @Description: Detail模块的小仓库
  *
@@ -17,7 +17,7 @@ const state = {
   // 产品信息的初始值
   goodInfo: {},
   // 游客临时身份 我们把具体实现封装到了util文件夹里面 生成的临时id不会变
-  uuid_token: getUUID()
+  uuid_token: getUUID(),
 };
 const mutations = {
   UPDATEGOODINFO(state, goodInfo) {
@@ -42,27 +42,24 @@ const actions = {
   },
 
   /**
-   * @description: 将产品添加到购物车中或更新某一个产品的个数的action
+   * @description: 将产品添加到购物车中或更新某一个产品的个数的action 建议使用async/await来等待服务器返回数据
    * @param {*} context action中的上下文
    * @param {*} skuId 被操作的商品Id
    * @param {*} skuNum 商品数量 正数代表增加 负数代表减少
    * @return {Object: Promise}
    */
-  getAddOrUpdateShopCart(context, { skuId, skuNum }) {
-    reqGetAddOrUpdateShopCart(skuId, skuNum).then(
-      // 加入购物车成功的回调
-      // 由于发完这个请求之后服务器没有返回数据 只是通知我们成功所以我们不需要三连环存储数据
-      (res) => {
-        // 要注意，在axios里，状态码200~299都被定义为成功
-        // 我们自定义状态码200才是我们添加商品成功
-        if (res.code === 200) {
-            return 'ok'
-        }else{
-            // 这里终止Promise链
-            return Promise.reject(new Error('faile'))
-        }
-      }
-    )
+  async getAddOrUpdateShopCart(context, { skuId, skuNum }) {
+    const result = await reqGetAddOrUpdateShopCart(skuId, skuNum);
+    // 加入购物车成功的回调
+    // 由于发完这个请求之后服务器没有返回数据 只是通知我们成功所以我们不需要三连环存储数据
+    // 要注意，在axios里，状态码200~299都被定义为成功
+    // 我们自定义状态码200才是我们添加商品成功
+    if (result.code === 200) {
+      return "ok";
+    } else {
+      // 这里终止Promise链
+      return Promise.reject(new Error("添加购物车失败"));
+    }
   },
 };
 // 简化数据

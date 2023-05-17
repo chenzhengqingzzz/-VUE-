@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 19:14:58
+ * @LastEditTime: 2023-05-17 17:30:30
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -111,5 +111,18 @@ export const reqGetCartList = () => {
     return requests({
         method: 'GET',
         url: '/cart/cartList'
+    })
+}
+
+/**
+ * @description: 删除购物车中的商品 是delete请求 需要带参数
+ * @url `cart/deleteCart/${skuId}`
+ * @param {*} skuId 所操作的那个商品的id
+ * @return {*}
+ */
+export const reqDeleteCartBySkuId = (skuId) => {
+    return requests({
+        method: 'DELETE',
+        url: `cart/deleteCart/${skuId}`
     })
 }
