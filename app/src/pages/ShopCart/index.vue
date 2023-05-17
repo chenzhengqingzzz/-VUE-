@@ -3,9 +3,9 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 21:40:15
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-16 20:54:40
+ * @LastEditTime: 2023-05-17 16:46:42
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/ShopCart/index.vue
- * @Description: 
+ * @Description: 路由组件——购物车(ShopCart)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
 -->
@@ -44,15 +44,16 @@
             <span class="price">{{ cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a href="javascript:void(0)" class="mins" @click="handler('decrement', -1, cartInfo)">-</a>
             <input
               autocomplete="off"
               type="text"
               minnum="1"
               class="itxt"
               :value="cartInfo.skuNum"
+              @change="handler('change', $event.target.value * 1, cartInfo)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="plus" @click="handler('increment', 1, cartInfo)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cartInfo.skuNum * cartInfo.skuPrice }}</span>
@@ -91,6 +92,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import throttle from "lodash/throttle";
 export default {
   name: "ShopCart",
   mounted() {
@@ -104,6 +106,44 @@ export default {
     getData() {
       this.$store.dispatch("shopcart/getCartList");
     },
+    
+    /**
+     * @description: 通过各种方式修改商品数量 由于多次点击会出现不正常的情况 我们需要加入节流阀
+     * @param {String} flag 根据传入的标识 来区分我们点击的是加号(increment)、减号（decrement）还是编辑数量(change)
+     * @param {Number} disNum 加:变化量1 减:变化量-1 input:最终的个数（并不是变化量）
+     * @param {Object} cartInfo 被操作的商品的信息 身上有id、产品数量（skuNum）
+     * @return {*}
+     */
+    handler: throttle(function(flag, disNum, cartInfo){
+      // 区分传入的flag
+      switch (flag) {
+        case 'increment':
+          // 带给服务器变化的量
+          disNum = 1
+          break;
+        case 'decrement':
+          // 判断产品的个数大于1时，才可以给服务器传递-1 如果小于等于1则传递给服务器0(原封不动)
+          disNum = cartInfo.skuNum > 1 ? -1 : 0
+          break;
+        case 'change': 
+          // 如果用户最终输入了非法字符（带汉字），则应该不变我们的disNum
+          if (isNaN(disNum) || disNum < 1) {
+            disNum = 0
+          }else{
+            // 特殊情况：遇到小数我们需要取整 既然我们在input框传入的disNum是最终的数量 则我们带给服务器的商品变化量则要经过计算
+            disNum = Math.floor(disNum) - cartInfo.skuNum
+          }
+          // 三元表达式简写：
+          // disNum = (isNaN(disNum) || disNum < 1) ? 0 : Math.floor(disNum) - cartInfo.skuNum
+          break;
+      }
+      // 带着修改后的商品数量派发action
+      this.$store.dispatch('detail/getAddOrUpdateShopCart', {skuId: cartInfo.skuId, skuNum: disNum}).then(
+        // 成功时，再一次获取服务器最新的数据进行展示
+        this.getData
+        // 发请求失败的回调
+      ).catch(err => console.log(err))
+    }, 100)
   },
   computed: {
     // 获取仓库中的数据
@@ -142,7 +182,7 @@ export default {
       return this.cartInfoList.every((obj) => {
         return obj.isChecked == 1
       })
-    }
+    },
   },
 };
 </script>
