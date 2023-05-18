@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-17 17:30:30
+ * @LastEditTime: 2023-05-18 22:14:36
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -124,5 +124,19 @@ export const reqDeleteCartBySkuId = (skuId) => {
     return requests({
         method: 'DELETE',
         url: `cart/deleteCart/${skuId}`
+    })
+}
+
+/**
+ * @description: 修改购物车中商品的选中状态 是get请求 需要带参数
+ * @url `/cart/checkCart/${skuId}/${isChecked}`
+ * @param {*} skuId 所操作的那个商品的id
+ * @param {*} isChecked 所选中商品的勾选状态
+ * @return {*}
+ */
+export const reqUpdateCartCheckedById = (skuId, isChecked) => {
+    return requests({
+        method: 'GET',
+        url: `/cart/checkCart/${skuId}/${isChecked}`
     })
 }

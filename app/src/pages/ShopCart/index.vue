@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 21:40:15
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-17 20:01:14
+ * @LastEditTime: 2023-05-19 01:14:45
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/ShopCart/index.vue
  * @Description: 路由组件——购物车(ShopCart)
  * 
@@ -32,6 +32,7 @@
               type="checkbox"
               name="chk_list"
               :checked="cartInfo.isChecked == 1"
+              @change="updateChecked(cartInfo, $event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -44,7 +45,12 @@
             <span class="price">{{ cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins" @click="handler('decrement', -1, cartInfo)">-</a>
+            <a
+              href="javascript:void(0)"
+              class="mins"
+              @click="handler('decrement', -1, cartInfo)"
+              >-</a
+            >
             <input
               autocomplete="off"
               type="text"
@@ -53,13 +59,20 @@
               :value="cartInfo.skuNum"
               @change="handler('change', $event.target.value * 1, cartInfo)"
             />
-            <a href="javascript:void(0)" class="plus" @click="handler('increment', 1, cartInfo)">+</a>
+            <a
+              href="javascript:void(0)"
+              class="plus"
+              @click="handler('increment', 1, cartInfo)"
+              >+</a
+            >
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cartInfo.skuNum * cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a class="sindelet" @click="deleteCartBySkuId(cartInfo)">删除</a>
+            <a class="sindelet" @click="deleteCartBySkuId(cartInfo, $event)"
+              >删除</a
+            >
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -68,7 +81,12 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isCheckAll"/>
+        <input
+          class="chooseAll"
+          type="checkbox"
+          :checked="isCheckAll"
+          @change="handleCheckAll($event)"
+        />
         <span>全选</span>
       </div>
       <div class="option">
@@ -77,7 +95,10 @@
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">
+          已选择 <span>{{ selectedCartNum }}</span
+          >件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
           <i class="summoney">{{ totalPrice }}</i>
@@ -98,6 +119,9 @@ export default {
   mounted() {
     this.getData();
   },
+  // updated() {
+  //   console.log(this);
+  // },
   methods: {
     /**
      * @description: 获取个人购物车数据（每个人的购物车数据都应该是不一样的）
@@ -106,7 +130,7 @@ export default {
     getData() {
       this.$store.dispatch("shopcart/getCartList");
     },
-    
+
     /**
      * @description: 通过各种方式修改商品数量 由于多次点击会出现不正常的情况 我们需要加入节流阀
      * @param {String} flag 根据传入的标识 来区分我们点击的是加号(increment)、减号（decrement）还是编辑数量(change)
@@ -114,52 +138,96 @@ export default {
      * @param {Object} cartInfo 被操作的商品的信息 身上有id、产品数量（skuNum）
      * @return {*}
      */
-    handler: throttle(async function(flag, disNum, cartInfo){
+    handler: throttle(async function (flag, disNum, cartInfo) {
       // 区分传入的flag
       switch (flag) {
-        case 'increment':
+        case "increment":
           // 带给服务器变化的量
-          disNum = 1
+          disNum = 1;
           break;
-        case 'decrement':
+        case "decrement":
           // 判断产品的个数大于1时，才可以给服务器传递-1 如果小于等于1则传递给服务器0(原封不动)
-          disNum = cartInfo.skuNum > 1 ? -1 : 0
+          disNum = cartInfo.skuNum > 1 ? -1 : 0;
           break;
-        case 'change': 
+        case "change":
           // 如果用户最终输入了非法字符（带汉字），则应该不变我们的disNum
           if (isNaN(disNum) || disNum < 1) {
-            disNum = 0
-          }else{
+            disNum = 0;
+          } else {
             // 特殊情况：遇到小数我们需要取整 既然我们在input框传入的disNum是最终的数量 则我们带给服务器的商品变化量则要经过计算
-            disNum = Math.floor(disNum) - cartInfo.skuNum
+            disNum = Math.floor(disNum) - cartInfo.skuNum;
           }
           // 三元表达式简写：
           // disNum = (isNaN(disNum) || disNum < 1) ? 0 : Math.floor(disNum) - cartInfo.skuNum
           break;
       }
       try {
-      // 带着修改后的商品数量派发action
-        await this.$store.dispatch('detail/getAddOrUpdateShopCart', {skuId: cartInfo.skuId, skuNum: disNum})
+        // 带着修改后的商品数量派发action
+        await this.$store.dispatch("detail/getAddOrUpdateShopCart", {
+          skuId: cartInfo.skuId,
+          skuNum: disNum,
+        });
         // 成功时，再一次获取服务器最新的数据进行展示
-        await this.getData()
+        await this.getData();
       } catch (error) {
-        alert(error)
+        alert(error);
       }
     }, 100),
 
     /**
      * @description: 删除某一个商品的操作
-     * @param {*} cartInfo 被操作的那个商品
+     * @param {Object} cartInfo 被操作的那个商品
      * @return {*}
      */
-    deleteCartBySkuId(cartInfo){
-       this.$store.dispatch('shopcart/deleteCartBySkuId', cartInfo.skuId).then(
-        (res) => {
+    deleteCartBySkuId(cartInfo) {
+      this.$store
+        .dispatch("shopcart/deleteCartBySkuId", cartInfo.skuId)
+        .then((res) => {
           // 如果删除成功 则再次发请求获取新的数据进行展示
-          this.getData()
-        }
-      ).catch((err) => alert(err))
-    }
+          this.getData();
+        })
+        .catch((err) => alert(err));
+    },
+
+    /**
+     * @description: 修改某一个产品的勾选状态
+     * @param {Object} cartInfo 被操作的商品信息 虽然这里面也有isChecked属性，但是这里是单向绑定 里面的isChecked永远为1
+     * @param {Object} $event 事件对象 我们需要通过事件对象来获取当前复选框的状态 通过这个方式获取的checked是实时的，跟cartInfo里面的不一样
+     * @return {*}
+     */
+    async updateChecked(cartInfo, $event) {
+      try {
+        // 获取到当前元素的勾选状态
+        // 带给服务器的参数isChecked不是布尔值 而是0|1 所以我们这里要在发请求之前进行参数的整理
+        let isChecked = $event.target.checked == true ? 1 : 0;
+        await this.$store.dispatch("shopcart/updateCartCheckedById", {
+          skuId: cartInfo.skuId,
+          isChecked: isChecked,
+        });
+        // 如果修改数据成功再次获取服务器的数据
+        // 这里如果节流 虽然在全选时能节省性能（不知道真的节省了还是假的） 但是会造成总价不及时更新的bug 所以这先注掉不用节流
+        // throttle(function () {
+          this.getData();
+        // }, 100);
+      } catch (error) {
+        alert(error);
+      }
+    },
+
+    /**
+     * @description: 操作全选按钮时应该做的事情
+     * @param {*} $event 全选按钮所触发的时间地下
+     * @return {Number}
+     */
+    handleCheckAll($event) {
+      // 遍历整个
+      this.cartInfoList.forEach((cartInfo) => {
+        // 调用上面的函数以改变商品勾选框状态 但是用户购物车商品多的时候 会引起性能负担
+        this.updateChecked(cartInfo, $event);
+        // 进行参数的整理并且返回checked的值
+        return (cartInfo.isChecked = $event.target.checked == true ? 1 : 0);
+      });
+    },
   },
   computed: {
     // 获取仓库中的数据
@@ -172,31 +240,44 @@ export default {
     cartInfoList() {
       return this.cartList.cartInfoList || [];
     },
+
     /**
      * @description: 通过商品信息里的isChecked来计算购物车中商品的总价
      * @return {Number}
      */
     totalPrice() {
-      // 使用filter方法筛选isChecked为1的对象，然后使用reduce方法计算skuPrice属性并累加到num中
-      let num = this.cartInfoList.filter((obj) => {
-        return obj.isChecked === 1
-      }).reduce((accumulator, obj) => {
-        return accumulator + obj.skuPrice
-      }, 0)
+      // 使用filter方法筛选isChecked为1的对象，然后使用reduce方法计算skuPrice * skuNum属性并累加到总价sum中
+      let sum = this.cartInfoList
+        .filter((obj) => {
+          return obj.isChecked === 1;
+        })
+        .reduce((accumulator, obj) => {
+          return accumulator + obj.skuPrice * obj.skuNum;
+        }, 0);
       // 简写方式
-      // let num = this.cartInfoList.filter(obj => obj.isChecked === 1).reduce((acc, obj) => acc + obj.skuPrice, 0)
-      console.log(num);
+      // let sum = this.cartInfoList.filter(obj => obj.isChecked === 1).reduce((acc, obj) => acc + (obj.skuPrice * obj.skuNum), 0)
+      return sum;
     },
 
     /**
      * @description: 判断底部全选的复选框是否应该勾上【全部产品都选中才勾选】
      * @return {Boolean}
      */
-    isCheckAll(){
+    isCheckAll() {
       // every方法用于遍历数组的每一个元素 return后面跟条件 如果每一个元素都满足条件则会返回true
       return this.cartInfoList.every((obj) => {
-        return obj.isChecked == 1
-      })
+        return obj.isChecked == 1;
+      });
+    },
+
+    /**
+     * @description: 组件右下角“已选择x件商品”
+     * @return {Number}
+     */
+    selectedCartNum() {
+      return this.cartInfoList.filter((obj) => {
+        return obj.isChecked === 1;
+      }).length;
     },
   },
 };
