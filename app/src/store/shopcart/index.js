@@ -1,16 +1,15 @@
-import { reqDeleteCartBySkuId, reqGetCartList, reqUpdateCartCheckedById } from "@/api"
-
 /*
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-15 19:11:27
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-18 22:19:42
+ * @LastEditTime: 2023-05-20 21:37:15
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/shopcart/index.js
- * @Description: Shopcart模块的小仓库
+ * @Description: ShopCart模块的小仓库
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
  */
+import { reqDeleteCartBySkuId, reqGetCartList, reqUpdateCartCheckedById } from "@/api"
 const state = {
     cartList: []
 }
@@ -70,6 +69,23 @@ const actions = {
         }else{
             return Promise.reject(new Error('更新勾选状态失败'))
         }
+    },
+
+    /**
+     * @description: 删除全部勾选的商品
+     * @param {*} context action中的上下文 小仓库 里面包含state/getters等
+     * @return {*}
+     */
+    async deleteAllCheckedCart(context){
+        // 获取购物车中的全部商品（是一个数组）
+        let result = []
+        context.getters.cartList.cartInfoList.forEach(cartInfo => {
+            let promise = cartInfo.isChecked == 1 ? context.dispatch('deleteCartBySkuId', cartInfo.skuId) : ''
+            // 将每一次返回的Promise添加到数组当中
+            result.push(promise)
+        });
+        // 等待所有异步操作完成
+        return Promise.all(PromiseAll);
     }
 }
 const getters = {

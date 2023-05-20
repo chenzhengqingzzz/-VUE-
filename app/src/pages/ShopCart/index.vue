@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 21:40:15
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-19 01:14:45
+ * @LastEditTime: 2023-05-19 14:23:08
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/ShopCart/index.vue
  * @Description: 路由组件——购物车(ShopCart)
  * 
@@ -84,13 +84,13 @@
         <input
           class="chooseAll"
           type="checkbox"
-          :checked="isCheckAll"
+          :checked="isCheckAll && cartInfoList.length > 0"
           @change="handleCheckAll($event)"
         />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a @click="deleteAllCheckedCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -116,11 +116,11 @@ import { mapGetters } from "vuex";
 import throttle from "lodash/throttle";
 export default {
   name: "ShopCart",
-  mounted() {
+  created() {
     this.getData();
   },
   // updated() {
-  //   console.log(this);
+  //   this.getData()
   // },
   methods: {
     /**
@@ -216,18 +216,31 @@ export default {
 
     /**
      * @description: 操作全选按钮时应该做的事情
-     * @param {*} $event 全选按钮所触发的时间地下
+     * @param {*} $event 全选按钮所触发的事件对象
      * @return {Number}
      */
     handleCheckAll($event) {
-      // 遍历整个
+      // 我们拿不到上面v-for所在结构 所以需要我们手动遍历
       this.cartInfoList.forEach((cartInfo) => {
         // 调用上面的函数以改变商品勾选框状态 但是用户购物车商品多的时候 会引起性能负担
         this.updateChecked(cartInfo, $event);
-        // 进行参数的整理并且返回checked的值
-        return (cartInfo.isChecked = $event.target.checked == true ? 1 : 0);
       });
     },
+
+    /**
+     * @description: 为了引出Promise.all，我们就不在这里用filter过滤出isChecked为1的商品项目了 我们就当这个回调无法传参
+     * @return {*}
+     */
+    async deleteAllCheckedCart(){
+      try {
+        // 派发一个action
+        await this.$store.dispatch('shopcart/deleteAllCheckedCart')
+        // 然后更新页面 这里涉及到异步 要等服务器数据返回之后再获取
+        await this.getData()
+      } catch (error) {
+        alert(error)
+      }
+    }
   },
   computed: {
     // 获取仓库中的数据

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-14 16:09:59
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 21:51:37
+ * @LastEditTime: 2023-05-19 09:07:57
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/AddCartSuccess/index.vue
  * @Description: 路由组件———添加到购物车成功页面(AddCartSuccess)
  * 
@@ -41,7 +41,8 @@
          * @return {Object}
          */
         skuInfo(){
-            return JSON.parse(sessionStorage.getItem('SKUINFO'))
+          // 这里必须要把字符串转为JSON格式的对象 否则无法拿到数据
+          return JSON.parse(sessionStorage.getItem('SKUINFO'))
         }
     }
   }
