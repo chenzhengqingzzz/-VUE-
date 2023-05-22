@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 22:47:00
+ * @LastEditTime: 2023-05-22 14:58:57
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/ListContainer/index.vue
  * @Description: 主页组件的子组件——列表(ListContainer)
  * 
@@ -185,7 +185,7 @@ export default {
           width: 25%;
 
           .list-item {
-            background-image: url(./images/icons.png);
+            background-image: url(~@/assets/images/icons.png);
             width: 61px;
             height: 40px;
             display: block;
