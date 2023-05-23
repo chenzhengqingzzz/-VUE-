@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 18:20:54
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-15 19:14:22
+ * @LastEditTime: 2023-05-22 16:20:07
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/index.js
  * @Description: Vuex中的集中Store，最后统一暴露给入口文件
  * 
@@ -17,8 +17,9 @@ Vue.use(Vuex)
 // 引入小仓库
 import home from './home'
 import search from './search'
-import detail from "./detail";
-import shopcart from "./shopcart";
+import detail from './detail';
+import shopcart from './shopcart';
+import user from './user'
 
 // 对外暴露Store类的一个实例
 export default new Vuex.Store({
@@ -27,6 +28,7 @@ export default new Vuex.Store({
         home,
         search,
         detail,
-        shopcart
+        shopcart,
+        user
     }
 })

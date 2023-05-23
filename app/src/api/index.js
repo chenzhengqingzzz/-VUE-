@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-18 22:14:36
+ * @LastEditTime: 2023-05-23 16:15:27
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -118,7 +118,7 @@ export const reqGetCartList = () => {
  * @description: 删除购物车中的商品 是delete请求 需要带参数
  * @url `cart/deleteCart/${skuId}`
  * @param {*} skuId 所操作的那个商品的id
- * @return {*}
+ * @return {Object: Promise}
  */
 export const reqDeleteCartBySkuId = (skuId) => {
     return requests({
@@ -132,11 +132,38 @@ export const reqDeleteCartBySkuId = (skuId) => {
  * @url `/cart/checkCart/${skuId}/${isChecked}`
  * @param {*} skuId 所操作的那个商品的id
  * @param {*} isChecked 所选中商品的勾选状态
- * @return {*}
+ * @return {Object: Promise}
  */
 export const reqUpdateCartCheckedById = (skuId, isChecked) => {
     return requests({
         method: 'GET',
         url: `/cart/checkCart/${skuId}/${isChecked}`
+    })
+}
+
+/**
+ * @description: 获取验证码 是get请求 需要带参数
+ * @url `/user/passport/sendCode/${phone}`
+ * @param {String} phone  用户输入的手机号
+ * @return {Object: Promise}
+ */
+export const reqGetCode = (phone) => {
+    return requests({
+        method: 'GET',
+        url: `/user/passport/sendCode/${phone}`
+    })
+}
+
+/**
+ * @description: 注册用户 是post请求 需要带参数
+ * @url user/passport/register
+ * @param {Object} userInfo 包含用户手机、用户密码以及服务器返回来的验证码的对象
+ * @return {Object: Promise}
+ */
+export const reqUserRegister = (userInfo) => {
+    return requests({
+        method: 'POST',
+        url: 'user/passport/register',
+        data: userInfo
     })
 }
