@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-01 17:01:56
+ * @LastEditTime: 2023-05-23 21:20:39
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Home/index.vue
  * @Description: 路由组件——主页（Home）
  * 
@@ -47,6 +47,8 @@ export default {
   mounted() {
     // 派发action，获取floor组件的数据（两个不同的对象）
     this.$store.dispatch("home/getFloorList");
+    // 获取用户信息在首页展示
+    this.$store.dispatch('user/getUserInfo')
   },
   computed: {
     ...mapState({

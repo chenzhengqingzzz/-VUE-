@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-23 16:15:27
+ * @LastEditTime: 2023-05-23 21:11:39
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -165,5 +165,30 @@ export const reqUserRegister = (userInfo) => {
         method: 'POST',
         url: 'user/passport/register',
         data: userInfo
+    })
+}
+
+/**
+ * @description: 用户登录 是post请求请求 需要带参数
+ * @param {*} userLoginInfo 用户登录所带的信息对象 包括用户名 密码
+ * @return {*}
+ */
+export const reqUserLogin = (userLoginInfo) => {
+    return requests({
+        method: 'POST',
+        url: '/user/passport/login',
+        data: userLoginInfo
+    })
+}
+
+/**
+ * @description: 获取用户登录后的信息 需要带着用户的token向服务器索要用户信息
+ * @url /user/passport/auth/getUserInfo
+ * @return {*}
+ */
+export const reqUserInfo = () => {
+    return requests({
+        method: 'GET',
+        url: '/user/passport/auth/getUserInfo'
     })
 }

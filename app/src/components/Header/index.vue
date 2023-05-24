@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-02 18:35:56
+ * @LastEditTime: 2023-05-24 16:07:19
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -17,11 +17,17 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <!-- 没有用户名，表示未登录 则显示这个标签 -->
+          <p v-if="!userName">
             <span>请</span>
             <!-- 只是跳过去，没有别的业务，可以用声明式导航 -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
+          </p>
+          <!-- 有用户名 表示已登录 则显示这个标签 -->
+          <p v-else>
+            <a>{{userName}}</a>
+            <a class="register">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -65,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: "Header",
   data() {
@@ -77,6 +84,7 @@ export default {
     this.$bus.$on('clearKeyword', () => {
       this.keyword = ''
     })
+    console.log(this);
   },
   methods: {
     /**
@@ -136,6 +144,20 @@ export default {
       // })
     },
   },
+  computed: {
+    /**
+     * @description: 用户在登录之后需要展示的用户名信息 
+     * @return {*}
+     */
+    userName(){
+      // 捞取vuex仓库中的数据
+      return this.$store.state.user.userInfo.name
+    },
+    // 简便写法：
+    // ...mapState('user', {
+    //   userName: state => state.userInfo.name
+    // })
+  }
 };
 </script>
 
