@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 20:59:36
+ * @LastEditTime: 2023-05-24 21:45:50
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -27,7 +27,7 @@
           <!-- 有用户名 表示已登录 则显示这个标签 -->
           <p v-else>
             <a>{{userName}}</a>
-            <a class="register" @click="logOut">退出登录</a>
+            <a class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -148,8 +148,18 @@ export default {
      * @description: 点击退出登录按钮的回调
      * @return {*}
      */
-    logOut(){
-      alert(1)
+    async logout(){
+      // 退出登录需要做的事情：
+      // 1. 需要发请求，通知服务器退出登录【清除一些数据：服务器中的token】
+      // 2. 清除项目当中的数据【在前端的userInfo、token】
+      try {
+        // 如果退出成功
+        await this.$store.dispatch('user/userLogout')
+        // 回到首页
+        this.$router.push('/home')
+      } catch (error) {
+        alert(error)
+      }
     }
   },
   computed: {

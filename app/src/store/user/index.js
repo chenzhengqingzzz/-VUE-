@@ -3,15 +3,15 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-22 16:17:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 19:17:09
+ * @LastEditTime: 2023-05-24 21:25:44
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/user/index.js
  * @Description: Regiser和Login模块的小仓库
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
  */
 
-import { reqGetCode, reqUserInfo, reqUserLogin, reqUserRegister } from "@/api"
-import { getToken, setToken } from "@/utils/token"
+import { reqGetCode, reqUserLogout, reqUserInfo, reqUserLogin, reqUserRegister } from "@/api"
+import { getToken, removeToken, setToken } from "@/utils/token"
 
 const state = {
     code: '',
@@ -50,6 +50,20 @@ const mutations = {
      */
     GETUSERINFO(state, userInfo){
         state.userInfo = userInfo
+    },
+
+    /**
+     * @description: 清除本地数据
+     * @param {*} state 仓库中的state
+     * @return {*}
+     */
+    CLEAR(state){
+        // 把仓库中相关用户信息清空
+        state.token = ''
+        state.userInfo = {}
+        // 本地存储数据清空
+        // localStorage.removeItem('TOKEN')
+        removeToken()
     }
 }
 const actions = {
@@ -120,9 +134,23 @@ const actions = {
         }else{
             return Promise.reject(new Error('登录失败！'))
         }
-    }
+    },
 
-    
+    /**
+     * @description: 用户退出登录
+     * @param {*} context actions中的上下文
+     * @return {*}
+     */
+    async userLogout(context){
+        let result = await reqUserLogout()
+        if (result.code === 200) {
+            // 只是向服务器发送请求，通知服务器清除在服务器的token 我们需要提交mutations
+            context.commit('CLEAR')
+            return '退出登录成功'
+        }else{
+            return Promise.reject(new Error('退出登录失败！！'))
+        }
+    }
 }
 const getters = {}
 
