@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-22 16:17:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 15:07:47
+ * @LastEditTime: 2023-05-24 19:17:09
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/user/index.js
  * @Description: Regiser和Login模块的小仓库
  * 
@@ -11,10 +11,13 @@
  */
 
 import { reqGetCode, reqUserInfo, reqUserLogin, reqUserRegister } from "@/api"
+import { getToken, setToken } from "@/utils/token"
 
 const state = {
     code: '',
-    token: '',
+    // 这个属性初始值为null 和空字符串没区别 如果通过mutations存入成功 下一次再刷新则会从localStorage取token而不是通过mutations
+    // token: localStorage.getItem('TOKEN'),
+    token: getToken('TOKEN'),
     userInfo: {}
 }
 const mutations = {
@@ -92,9 +95,12 @@ const actions = {
     async userLogin(context, userLoginData){
         let result = await reqUserLogin(userLoginData)
         if (result.code === 200) {
-            // 服务器下发的token是用户的唯一标识符（uuid）
+            // 服务器下发的token是用户的唯一标识符（像uuid）
             // 将来经常会通过带token找服务器要用户的信息进行展示
             context.commit('USERLOGIN', result.data.token)
+            // 持久化存储token
+            // localStorage.setItem('TOKEN', result.data.token)
+            setToken(result.data.token)
             return '登录成功'
         }else{
             return Promise.reject(new Error('登录失败，用户名或密码错误！'))
@@ -115,6 +121,8 @@ const actions = {
             return Promise.reject(new Error('登录失败！'))
         }
     }
+
+    
 }
 const getters = {}
 

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 16:07:19
+ * @LastEditTime: 2023-05-24 20:59:36
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -27,7 +27,7 @@
           <!-- 有用户名 表示已登录 则显示这个标签 -->
           <p v-else>
             <a>{{userName}}</a>
-            <a class="register">退出登录</a>
+            <a class="register" @click="logOut">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -143,6 +143,14 @@ export default {
       //   query: {k: this.keyword.toUpperCase()}
       // })
     },
+
+    /**
+     * @description: 点击退出登录按钮的回调
+     * @return {*}
+     */
+    logOut(){
+      alert(1)
+    }
   },
   computed: {
     /**

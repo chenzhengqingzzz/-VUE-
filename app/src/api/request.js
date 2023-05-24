@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 14:55:41
+ * @LastEditTime: 2023-05-24 19:28:58
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/request.js
  * @Description: 对axios进行二次封装以满足项目的自定义需求，需要注意其暴露的是二次封装的requests
  * 
@@ -43,7 +43,7 @@ requests.interceptors.request.use((config) => {
         config.headers.userTempId = store.state.detail.uuid_token
     }
 
-    // 非游客使用后端传来的token带给服务器
+    // 非游客使用后端传来的token放在请求头并带给服务器
     if (store.state.user.token) {
         config.headers.token = store.state.user.token
     }
