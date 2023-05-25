@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-14 21:47:12
+ * @LastEditTime: 2023-05-25 19:08:15
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -14,6 +14,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 // 使用插件
 Vue.use(VueRouter)
+// 引入store
+import store from '@/store'
 
 // 引入路由组件
 import Home from '../pages/Home'
@@ -59,7 +61,7 @@ VueRouter.prototype.replace = function(location, resolve, reject) {
 }
 
 // 配置路由
-export default new VueRouter({
+const router =  new VueRouter({
     routes: [
         {
             path: '/home',
@@ -133,3 +135,58 @@ export default new VueRouter({
     }
 
 })
+
+/**
+ * @description: 全局守卫：前置守卫（在路由跳转之前进行判断）
+ * @return {*}
+ */
+router.beforeEach(async (to, from, next) => {
+    // to:可以获取到你要跳转的目标路由信息
+    // from:可以获取到你从哪个路由而来的信息
+    // next:放行函数 next()放行 next(path) 放行到指定路由位置 next(false)
+    // 用户登录了才会有token
+    let token = store.state.user.token
+    let name = store.state.user.userInfo.name
+    // 1、有token代表登录，全部页面放行
+    if (token) {
+        // 用户已经登录了，就无法去login页面了
+        if (to.path === '/login') {
+            next(from.path)
+        }else{
+            // 1.2、因为store中的token是通过localStorage获取的，token有存放在本地
+            // 当页面刷新时，token不会消失，但是store中的其他数据会清空，
+            // 所以不仅要判断token,还要判断用户信息
+
+            // 登录了但是没去login页面[可能是home、detail、shopcart]
+            // 1.2.1、判断仓库中是否有用户信息，如果有就放行，没有就派发actions获取信息
+            if (name) {
+                next()
+            }else{
+                // 1.2.2、如果没有name（用户信息），则派发action，让仓库存储用户信息再跳转
+                try {
+                    // 获取用户信息成功
+                    await store.dispatch('user/getUserInfo')
+                    // 放行
+                    next()
+                } catch (error) {
+                    // 1.2.3、获取用户信息失败，原因：token过期
+                    //清除前后端token，跳转到登陆页面
+                    await store.dispatch('/user/userLogout')
+                    next('/login')
+                }
+            }
+        }
+    }else{
+        // 未登录 首页、登录页、注册页都可以正常访问
+        // if (to.path === '/home' || to.path === '/login' || to.path === 'register') {
+            next()
+        // }else{
+        //     // 登录后才允许访问上述三个页面
+        //     alert('请先登录！')
+        //     next('/login')
+        // }
+    }
+})
+
+// 导出路由器
+export default router

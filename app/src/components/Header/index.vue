@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 21:45:50
+ * @LastEditTime: 2023-05-25 15:02:05
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
@@ -84,7 +84,6 @@ export default {
     this.$bus.$on('clearKeyword', () => {
       this.keyword = ''
     })
-    console.log(this);
   },
   methods: {
     /**

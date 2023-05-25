@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-22 16:17:57
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 21:25:44
+ * @LastEditTime: 2023-05-25 17:12:23
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/user/index.js
  * @Description: Regiser和Login模块的小仓库
  * 
@@ -130,9 +130,9 @@ const actions = {
         let result = await reqUserInfo()
         if (result.code === 200) {
             context.commit('GETUSERINFO', result.data)
-            return '登录成功'
+            return '获取用户信息成功'
         }else{
-            return Promise.reject(new Error('登录失败！'))
+            return Promise.reject(new Error('获取用户信息失败！'))
         }
     },
 
