@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 21:22:19
+ * @LastEditTime: 2023-05-25 21:16:24
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -202,5 +202,29 @@ export const reqUserLogout = () => {
     return requests({
         method: 'GET',
         url: '/user/passport/logout'
+    })
+}
+
+/**
+ * @description: 获取登录后用户地址信息 是get请求 不需要带参数
+ * @url /user/userAddress/auth/findUserAddressList
+ * @return {Object: Promise}
+ */
+export const reqFindUserAddressList = () => {
+    return requests({
+        method: 'GET',
+        url: '/user/userAddress/auth/findUserAddressList'
+    })
+}
+
+/**
+ * @description: 获取结算界面商品清单 是get请求 不需要带参数
+ * @url /order/auth/trade
+ * @return {Object: Promise}
+ */
+export const reqGetOrderInfo = () => {
+    return requests({
+        method: 'GET',
+        url: '/order/auth/trade'
     })
 }

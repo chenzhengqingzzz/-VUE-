@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-25 19:08:15
+ * @LastEditTime: 2023-05-25 20:13:20
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -25,6 +25,7 @@ import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -61,7 +62,7 @@ VueRouter.prototype.replace = function(location, resolve, reject) {
 }
 
 // 配置路由
-const router =  new VueRouter({
+const router = new VueRouter({
     routes: [
         {
             path: '/home',
@@ -107,14 +108,22 @@ const router =  new VueRouter({
             meta: {isShowFooter: true}
         },
         {
+            name: 'Login',
             path: '/login',
             component: Login,
             meta: {isShowFooter: false}
         },
         {
+            name: 'Register',
             path: '/register',
             component: Register,
             meta: {isShowFooter: false},
+        },
+        {
+            name: 'Trade',
+            path: '/trade',
+            component: Trade,
+            meta: {isShowFooter: 'true'}
         },
         // 重定向，在项目跑起来的时候，访问"/"，立马定向到首页
         {
@@ -149,15 +158,15 @@ router.beforeEach(async (to, from, next) => {
     let name = store.state.user.userInfo.name
     // 1、有token代表登录，全部页面放行
     if (token) {
-        // 用户已经登录了，就无法去login页面了
-        if (to.path === '/login') {
+        // 用户已经登录了，就无法去login、register页面了
+        if (to.path === '/login' || to.path === '/register') {
             next(from.path)
         }else{
             // 1.2、因为store中的token是通过localStorage获取的，token有存放在本地
             // 当页面刷新时，token不会消失，但是store中的其他数据会清空，
             // 所以不仅要判断token,还要判断用户信息
 
-            // 登录了但是没去login页面[可能是home、detail、shopcart]
+            // 登录了但是没去login、register页面[可能是home、detail、shopcart]
             // 1.2.1、判断仓库中是否有用户信息，如果有就放行，没有就派发actions获取信息
             if (name) {
                 next()
@@ -171,7 +180,7 @@ router.beforeEach(async (to, from, next) => {
                 } catch (error) {
                     // 1.2.3、获取用户信息失败，原因：token过期
                     //清除前后端token，跳转到登陆页面
-                    await store.dispatch('/user/userLogout')
+                    await store.dispatch('user/userLogout')
                     next('/login')
                 }
             }
