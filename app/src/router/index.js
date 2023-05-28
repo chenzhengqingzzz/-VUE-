@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-25 20:13:20
+ * @LastEditTime: 2023-05-26 19:08:50
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -26,6 +26,7 @@ import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
 
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -123,7 +124,13 @@ const router = new VueRouter({
             name: 'Trade',
             path: '/trade',
             component: Trade,
-            meta: {isShowFooter: 'true'}
+            meta: {isShowFooter: true}
+        },
+        {
+            name: 'Pay',
+            path: '/pay',
+            component: Pay,
+            meta: {isShowFooter: true}
         },
         // 重定向，在项目跑起来的时候，访问"/"，立马定向到首页
         {

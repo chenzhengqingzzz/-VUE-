@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-25 21:16:24
+ * @LastEditTime: 2023-05-26 19:35:28
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -226,5 +226,20 @@ export const reqGetOrderInfo = () => {
     return requests({
         method: 'GET',
         url: '/order/auth/trade'
+    })
+}
+
+/**
+ * @description: 提交订单 是post请求 需要带参数
+ * @url `/order/auth/submitOrder?tradeNo=${tradeNo}`
+ * @param {*} tradeNo 拼接在路径上的交易编号
+ * @param {*} data 带给服务器的数据 里面包含收件人信息、商品信息
+ * @return {Object: Promise}
+ */
+export const reqSubmitOrder = (tradeNo, data) => {
+    return requests({
+        method: 'POST',
+        url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        data
     })
 }
