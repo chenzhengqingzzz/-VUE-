@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-25 20:09:59
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-26 21:03:24
+ * @LastEditTime: 2023-05-29 14:42:37
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Trade/index.vue
  * @Description: 路由组件————交易结算(Trade)
  * 
@@ -127,7 +127,7 @@ export default {
     return {
       // 收集买家的留言信息
       customerMsg: '',
-      // 交易成功的dingdanhao 
+      // 交易成功的订单号
       orderId: ''
     };
   },
