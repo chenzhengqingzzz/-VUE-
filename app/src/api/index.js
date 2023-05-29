@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-26 19:35:28
+ * @LastEditTime: 2023-05-29 15:28:52
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
@@ -241,5 +241,18 @@ export const reqSubmitOrder = (tradeNo, data) => {
         method: 'POST',
         url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
         data
+    })
+}
+
+/**
+ * @description: 获取支付信息
+ * @url `/payment/weixin/createNative/${orderId}`
+ * @param {*} orderId 通过提交订单得到的支付订单ID
+ * @return {Object: Promise}
+ */
+export const reqGetPayInfo = (orderId) => {
+    return requests({
+        method: 'GET',
+        url: `/payment/weixin/createNative/${orderId}`
     })
 }
