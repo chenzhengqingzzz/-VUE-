@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-26 15:34:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 11:43:23
+ * @LastEditTime: 2023-05-30 17:26:04
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Pay/index.vue
  * @Description: 路由组件————支付(Pay)
  * 
@@ -87,7 +87,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <a class="btn" @click="open">立即支付</a>
+          <a class="btn" @click="showPaymentDialog">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -104,11 +104,16 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
   name: "Pay",
   data() {
     return {
-      payInfo: {}
+      payInfo: {},
+      WeChatPayURL: 'wxp://f2f0_FDUoi35d7hssBL-olB9FHCcP2-caak6YknmJ5ZVMc98TG4Kp4gRBLlF3sW-tJLe',
+      AliPayURL: 'https://qr.alipay.com/fkx10563gpzqag4mwbnkkcb',
+      WeChatPayCode: '',
+      AliPayPayCode: ''
     }
   },
   computed: {
@@ -132,13 +137,35 @@ export default {
         this.payInfo = result.data
       }
     },
-
     /**
-     * @description: 按“立即支付”会出现遮罩层，弹出框
+     * @description: 将不可见的付款码链接转化为可被浏览器读取二维码图片
      * @return {*}
      */
-    open(){
-      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
+    generateCodes(){
+      // 将不可见的微信二维码转化为可读取的微信二维码
+      QRCode.toDataURL(this.WeChatPayURL)
+      // 这里的url本质是一个保存我们付款码的字符串链接
+      .then(url => {
+        this.WeChatPayCode = url
+        // 在使用.then方法进行链式调用时，需要返回一个Promise对象，以便在后续的.then方法中继续处理该Promise对象的结果。这样可以将一个异步操作的结果传递给下一个.then方法进行处理。
+        // 可以紧接着将支付宝的二维码发生转换
+        return QRCode.toDataURL(this.AliPayURL)
+      })
+      // Promise的链式调用
+      .then(url => {
+        this.AliPayPayCode = url
+      })
+      // 捕获错误
+      .catch(err => {
+        console.log(err);
+      })
+    },
+    /**
+     * @description: 按“立即支付”会出现遮罩层，弹出框，生成微信支付宝收款码
+     * @return {*}
+     */
+    showPaymentDialog(){
+      this.$alert(`<img >`, '请扫描支付二维码', {
           dangerouslyUseHTMLString: true,
           // 中间布局
           center: true,
