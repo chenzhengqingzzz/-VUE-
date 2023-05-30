@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-26 20:01:21
+ * @LastEditTime: 2023-05-30 11:25:44
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
@@ -37,9 +37,15 @@ import Pagination from '@/components/Pagination'
 Vue.component(Pagination.name, Pagination)
 
 // 按需引入ElementUI
-import { Icon } from 'element-ui'
+import { Icon, MessageBox } from 'element-ui'
 // 应用ElementUI
 Vue.component(Icon.name, Icon)
+Vue.component(MessageBox.name, MessageBox)
+// 按需引入并注册全局配置 $msgbox、$alert本质是一个函数
+// ElementUI应用还有一种写法：挂在原型上
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false

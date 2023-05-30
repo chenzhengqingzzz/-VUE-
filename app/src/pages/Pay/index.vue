@@ -3,14 +3,14 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-26 15:34:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-29 16:02:35
+ * @LastEditTime: 2023-05-30 11:43:23
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Pay/index.vue
  * @Description: 路由组件————支付(Pay)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
 -->
 <template>
-  <div class="pay-main">
+  <div class="pay-main">    
     <div class="pay-container">
       <div class="checkout-tit">
         <h4 class="tit-txt">
@@ -87,7 +87,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -132,6 +132,26 @@ export default {
         this.payInfo = result.data
       }
     },
+
+    /**
+     * @description: 按“立即支付”会出现遮罩层，弹出框
+     * @return {*}
+     */
+    open(){
+      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
+          dangerouslyUseHTMLString: true,
+          // 中间布局
+          center: true,
+          // 是否显示取消按钮
+          showCancelButton: true,
+          // 取消按钮的文本内容
+          cancelButtonText: '支付遇到问题？',
+          // 确认按钮的文本内容
+          confirmButtonText: '已经支付成功',
+          // 右上角x按钮
+          showClose: false
+        })
+    }
   },
 };
 </script>
