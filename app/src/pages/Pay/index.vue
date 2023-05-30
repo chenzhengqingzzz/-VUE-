@@ -3,14 +3,14 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-26 15:34:47
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 17:26:04
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Pay/index.vue
+ * @LastEditTime: 2023-05-30 23:57:09
+ * @FilePath: /shangpinhuishop/app/src/pages/Pay/index.vue
  * @Description: 路由组件————支付(Pay)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
 -->
 <template>
-  <div class="pay-main">    
+  <div class="pay-main">
     <div class="pay-container">
       <div class="checkout-tit">
         <h4 class="tit-txt">
@@ -28,7 +28,7 @@
           >
           <span class="fr"
             ><em class="lead">应付金额：</em
-            ><em class="orange money">{{payInfo.totalFee}}</em></span
+            ><em class="orange money">{{ payInfo.totalFee }}</em></span
           >
         </div>
       </div>
@@ -104,27 +104,44 @@
 </template>
 
 <script>
-import QRCode from 'qrcode'
+import QRCode from "qrcode";
 export default {
   name: "Pay",
   data() {
     return {
       payInfo: {},
-      WeChatPayURL: 'wxp://f2f0_FDUoi35d7hssBL-olB9FHCcP2-caak6YknmJ5ZVMc98TG4Kp4gRBLlF3sW-tJLe',
-      AliPayURL: 'https://qr.alipay.com/fkx10563gpzqag4mwbnkkcb',
-      WeChatPayCode: '',
-      AliPayPayCode: ''
-    }
-  },
-  computed: {
-    orderId() {
-      return this.$route.query.orderId;
-    },
+      // 模拟传过来的微信支付URL
+      WeChatPayURL:
+        "wxp://f2f0_FDUoi35d7hssBL-olB9FHCcP2-caak6YknmJ5ZVMc98TG4Kp4gRBLlF3sW-tJLe",
+      // 模拟传过来的支付宝URL
+      AliPayURL: "https://qr.alipay.com/fkx10563gpzqag4mwbnkkcb",
+      // 由方法处理得出的微信支付code
+      WeChatPayCode: "",
+      // 由方法处理得出的支付宝code
+      AliPayCode: "",
+      // 定时器
+      timer: null,
+      // 支付状态码
+      code: "",
+    };
   },
   mounted() {
     // 因为不能在生命周期钩子中使用异步语句 所以我们决定把请求封装成函数
     this.getPayInfo();
+    // 将服务器传过来的收款码url转换为code
+    this.generateCodes();
   },
+
+  computed: {
+    /**
+     * @description: 计算属性orderId
+     * @return {*}
+     */
+    orderId() {
+      return this.$route.query.orderId;
+    },
+  },
+
   methods: {
     /**
      * @description: 获取支付信息 仍然在组件内存储数据
@@ -134,51 +151,119 @@ export default {
       let result = await this.$API.reqGetPayInfo(this.orderId);
       // 如果成功 在组件存储支付信息
       if (result.code === 200) {
-        this.payInfo = result.data
+        this.payInfo = result.data;
       }
     },
+
     /**
      * @description: 将不可见的付款码链接转化为可被浏览器读取二维码图片
      * @return {*}
      */
-    generateCodes(){
+    generateCodes() {
       // 将不可见的微信二维码转化为可读取的微信二维码
       QRCode.toDataURL(this.WeChatPayURL)
-      // 这里的url本质是一个保存我们付款码的字符串链接
-      .then(url => {
-        this.WeChatPayCode = url
-        // 在使用.then方法进行链式调用时，需要返回一个Promise对象，以便在后续的.then方法中继续处理该Promise对象的结果。这样可以将一个异步操作的结果传递给下一个.then方法进行处理。
-        // 可以紧接着将支付宝的二维码发生转换
-        return QRCode.toDataURL(this.AliPayURL)
-      })
-      // Promise的链式调用
-      .then(url => {
-        this.AliPayPayCode = url
-      })
-      // 捕获错误
-      .catch(err => {
-        console.log(err);
-      })
+        // 这里的url本质是一个保存我们付款码的字符串链接
+        .then((url) => {
+          this.WeChatPayCode = url;
+          // 在使用.then方法进行链式调用时，需要返回一个Promise对象，以便在后续的.then方法中继续处理该Promise对象的结果。这样可以将一个异步操作的结果传递给下一个.then方法进行处理。
+          // 可以紧接着将支付宝的二维码发生转换
+          return QRCode.toDataURL(this.AliPayURL);
+        })
+        // Promise的链式调用
+        .then((url) => {
+          this.AliPayCode = url;
+        })
+        // 捕获错误
+        .catch((err) => {
+          console.log(err);
+        });
     },
+
     /**
-     * @description: 按“立即支付”会出现遮罩层，弹出框，生成微信支付宝收款码
+     * @description: 按“立即支付”会出现遮罩层，弹出框，生成微信支付宝收款码 以及我们关闭的时候所做的逻辑
      * @return {*}
      */
-    showPaymentDialog(){
-      this.$alert(`<img >`, '请扫描支付二维码', {
+    showPaymentDialog() {
+      this.$alert(
+        `
+        <div>
+          <div>
+            <img src="${this.WeChatPayCode}">
+            <div>微信支付</div>
+          </div>
+          <div>
+            <img src="${this.AliPayCode}">
+            <div>支付宝支付</div>
+          </div>
+        </div>`,
+        "请扫描支付二维码",
+        {
           dangerouslyUseHTMLString: true,
           // 中间布局
           center: true,
           // 是否显示取消按钮
           showCancelButton: true,
           // 取消按钮的文本内容
-          cancelButtonText: '支付遇到问题？',
+          cancelButtonText: "支付遇到问题？",
           // 确认按钮的文本内容
-          confirmButtonText: '已经支付成功',
+          confirmButtonText: "我已支付成功",
           // 右上角x按钮
-          showClose: false
-        })
-    }
+          showClose: false,
+          /**
+           * @description: 关闭弹出框之前的配置 ElementUI自己定义的生命周期钩子
+           * @param {*} clickedButton 我们点击按钮的类型 confirm/cancel
+           * @param {*} vc 当前组件实例对象
+           * @param {*} done 关闭弹窗的方法 这里使用了this.$nextTick
+           * @return {*}
+           */
+          beforeClose: (clickedButton, vc, done) => {
+            if (clickedButton == "cancel") {
+              alert("若多次支付失败，请联系管理员解决！！");
+              console.log(this.timer);
+              // 清除定时器
+              clearInterval(this.timer);
+              this.timer = null;
+              // 关闭弹出框
+              done();
+            } else {
+              // 判断是否真的支付成功了 为了让开发人员不花钱 我们就默认点支付成功按钮直接通过
+              // if (this.code === 205) {
+              // 1. 清除定时器
+              clearInterval(this.timer);
+              this.timer = null;
+              // 2. 关闭弹出框
+              done();
+              // 3. 路由跳转
+              this.$router.push("/paysuccess");
+              // }
+            }
+          },
+        }
+      );
+      // 需要知道支付的成功|失败
+      // 支付成功：进行路由跳转 支付失败：提示信息
+      if (!this.timer) {
+        this.timer = setInterval(() => {
+          // 发请求获取用户的支付状态
+          this.$API.reqPayStatus(this.orderId).then(
+            // 这里按理来说应该是状态码===200（支付成功）的时候才会让我们跳转 但是由于粘贴的是我自己的收款码 一直会显示支付中 状态码为205 所以状态码永远不会返回200  则设置默认为205（支付中）为支付成功 进入成功的回调
+            (res) => {
+              if (res.code === 205) {
+                // 1. 清除定时器
+                clearInterval(this.timer);
+                this.timer = null;
+                // 2. 实际开发需要把状态码保存起来 如果为200（支付成功）才能跳转 这里默认默认205(支付中)为支付成功
+                this.code = res.code;
+                // 3. 关闭弹出框
+                this.$msgbox.close();
+                // 4. 跳转到下一个路由
+                this.$router.push("/paysuccess");
+              }
+            }
+          );
+        }, 1000);
+      }
+    },
   },
 };
 </script>
