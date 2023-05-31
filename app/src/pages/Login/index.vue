@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-24 15:47:31
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Login/index.vue
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-05-31 22:53:43
+ * @FilePath: /shangpinhuishop/app/src/pages/Login/index.vue
  * @Description: 路由组件——登录(Login)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -112,8 +112,8 @@ export default {
         const { phone, password } = this;
         if (phone && password) {
           await this.$store.dispatch("user/userLogin", { phone, password });
-          // 登录成功 需要进行路由的跳转
-          this.$router.push("/home");
+          // 登录的时候：得看路由是否包含query参数（在守卫中存储了要去的路由） 是：跳到query参数指定的路由 否：跳到home
+          this.$router.push(this.$route.query.redirect || '/home')
         }
       } catch (error) {
         alert(error);

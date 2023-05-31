@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-25 15:02:05
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Header/index.vue
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-05-31 21:50:52
+ * @FilePath: /shangpinhuishop/app/src/components/Header/index.vue
  * @Description: 全局组件——头部(Header)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -31,8 +31,8 @@
           </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
+          <router-link to="/center/myorder">我的订单</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>

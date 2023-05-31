@@ -2,8 +2,8 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-31 14:41:00
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-05-31 23:10:39
  * @FilePath: /shangpinhuishop/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -231,14 +231,18 @@ router.beforeEach(async (to, from, next) => {
             }
         }
     }else{
-        // 未登录 首页、登录页、注册页都可以正常访问
-        // if (to.path === '/home' || to.path === '/login' || to.path === 'register') {
+        // 未登录：不能去交易相关的【trade】、支付相关的【pay、paysuccesss】、个人中心【center】的页面
+        // 未登录访问上述页面时，应该弹出未登录警告并且定向到目标页
+        let toPath = to.path
+        // 判断toPath如果包含有目标url则弹窗+重定向
+        if (toPath.indexOf('/trade') != -1 || toPath.indexOf('/pay') !== -1 || toPath.indexOf('/center') != -1) {
+            alert('请先登录')
+            // 把未登录时 想去而又没去成的信息存储在地址栏当中【路由的query参数】
+            next('/login?redirect=' + toPath)
+        }else{
+            // 未登录的时候首页、登录页、注册页、购物车(home、login、register、shopcart)都可以正常访问
             next()
-        // }else{
-        //     // 登录后才允许访问上述三个页面
-        //     alert('请先登录！')
-        //     next('/login')
-        // }
+        }
     }
 })
 

@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-31 16:44:09
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-05-31 20:43:45
+ * @LastEditTime: 2023-05-31 21:45:36
  * @FilePath: /shangpinhuishop/app/src/store/center/index.js
  * @Description: 个人中心组件(center)的小仓库
  *
