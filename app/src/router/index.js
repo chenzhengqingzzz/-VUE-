@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 21:45:47
+ * @LastEditTime: 2023-05-31 14:41:00
  * @FilePath: /shangpinhuishop/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -28,6 +28,10 @@ import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+// 引入二级路由组件
+import MyOrder from '@/pages/Center/MyOrder'
+import GroupOrder from '@/pages/Center/GroupOrder'
  
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -138,6 +142,33 @@ const router = new VueRouter({
             path: '/paysuccess',
             component: PaySuccess,
             meta: {isShowFooter: true}
+        },
+        {
+            name: 'Center',
+            path: '/center',
+            component: Center,
+            meta: {isShowFooter: true},
+            // 二级路由配置
+            children: [
+                {
+                    name: 'MyOrder',
+                    path: 'myorder',
+                    component: MyOrder
+                },
+                {
+                    name: 'GroupOrder',
+                    path: 'grouporder',
+                    component: GroupOrder
+                },
+                // 写在二级路由里
+                // {
+                //     path: '/center',
+                //     redirect: 'center/myorder'
+                // }
+            ],
+            //一级路由默认重定向到myorder界面 避免一打开网页右侧是空白的
+            // 写在一级路由里
+            redirect: '/center/myorder'
         },
         // 重定向，在项目跑起来的时候，访问"/"，立马定向到首页
         {
