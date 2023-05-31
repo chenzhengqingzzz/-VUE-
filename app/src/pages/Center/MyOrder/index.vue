@@ -1,13 +1,13 @@
 <!--
- * @Author: czqzzzzzz(czq)
+ * @Author: czqczqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
- * @Date: 2023-05-31 14:15:03
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-31 17:32:04
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Center/MyOrder/index.vue
+ * @Date: 2023-05-31 17:53:15
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-05-31 20:49:16
+ * @FilePath: /shangpinhuishop/app/src/pages/Center/MyOrder/index.vue
  * @Description: 个人中心的子组件————我的订单(MyOrder)
  * 
- * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
+ * Copyright (c) by czqczqzzzzzz(czq), All Rights Reserved. 
 -->
 <template>
   <!-- 右侧内容 -->
@@ -45,63 +45,50 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(orderDetail, index) in order.orderDetailList" :key="orderDetail.id">
+            <tr v-for="(cart, index) in order.orderDetailList" :key="cart.id">
               <td width="60%">
                 <div class="typographic">
-                  <img :src="{{orderDetail.imgUrl}}" />
-                  <a href="#" class="block-text">{{orderDetail.skuName}}</a>
-                  <span>x{{orderDetail.skuNum}}</span>
+                  <img :src="cart.imgUrl" width="100px; height=100px"/>
+                  <a href="#" class="block-text">{{cart.skuName}}</a>
+                  <span>x{{cart.skuNum}}</span>
                   <a href="#" class="service">售后申请</a>
                 </div>
               </td>
-              <td rowspan="2" width="8%" class="center">小丽</td>
-              <td rowspan="2" width="13%" class="center">
-                <ul class="unstyled">
-                  <li>总金额¥138.00</li>
-                  <li>在线支付</li>
-                </ul>
-              </td>
-              <td rowspan="2" width="8%" class="center">
-                <a href="#" class="btn">已完成 </a>
-              </td>
-              <td rowspan="2" width="13%" class="center">
-                <ul class="unstyled">
-                  <li>
-                    <a href="mycomment.html" target="_blank">评价|晒单</a>
-                  </li>
-                </ul>
-              </td>
+              <!-- rowspan指的是表格的一列可跨越的行数 我们这里把它设置为商品的数量 让信息实现纵向跨越 -->
+              <!-- 后面的用户信息只需要遍历第一次的结果就行 其他的都是多出来的 所以我们只让第一次的显示出来 让信息实现横向跨越 -->
+              <template v-if="index == 0">
+                  <td :rowspan="order.orderDetailList.length"  width="8%" class="center">{{order.consignee}}</td>
+                  <td :rowspan="order.orderDetailList.length"  width="13%" class="center">
+                    <ul class="unstyled">
+                      <li>总金额</li>
+                      <span style="color: red">￥{{order.totalAmount}}</span>
+                      <li>在线支付</li>
+                    </ul>
+                  </td>
+                  <td :rowspan="order.orderDetailList.length" width="8%" class="center">
+                    <a href="#" class="btn">{{order.orderStatusName}}</a>
+                  </td>
+                  <td :rowspan="order.orderDetailList.length" width="13%" class="center">
+                    <ul class="unstyled">
+                      <li>
+                        <a href="mycomment.html" target="_blank">评价|晒单</a>
+                      </li>
+                    </ul>
+                  </td>
+              </template>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="choose-order">
-        <div class="pagination">
-          <ul>
-            <li class="prev disabled">
-              <a href="javascript:">«上一页</a>
-            </li>
-            <li class="page actived">
-              <a href="javascript:">1</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">2</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">3</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">4</a>
-            </li>
-
-            <li class="next disabled">
-              <a href="javascript:">下一页»</a>
-            </li>
-          </ul>
-          <div>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;共2页&nbsp;</span>
-          </div>
-        </div>
+          <!-- 分页器 -->
+          <Pagination
+            :pageNo="this.myOrderList.current"
+            :pageSize="this.myOrderList.size"
+            :total="this.page"
+            :continues="this.limit"
+            @getPageNo="getPageNo"
+          />
       </div>
     </div>
     <!--猜你喜欢-->
@@ -167,8 +154,19 @@ export default {
     // 获取我的订单数据
     this.$store.dispatch('center/getMyOrderList')
   },
+  methods: {
+    /**
+     * @description: 子组件Pagination通过自定义事件给父组件传递过来的当前页码
+     * @param {*} receivedPageNo 从子组件接收到的当前页码
+     * @return {*}
+     */
+    getPageNo(receivedPageNo){
+      // 修改仓库中的page并发请求
+      this.$store.dispatch('center/getMyOrderList', receivedPageNo)
+    }
+  },
   computed: {
-    ...mapState('center', ['myOrderList'])
+    ...mapState('center', ['page', 'limit', 'myOrderList'])
   }
 };
 </script>

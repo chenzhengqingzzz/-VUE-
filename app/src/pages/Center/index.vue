@@ -2,8 +2,8 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-31 14:01:05
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-31 14:31:37
+ * @LastEditors: 陈正清MacPro tenchenzhengqing@qq.com
+ * @LastEditTime: 2023-05-31 18:34:05
  * @FilePath: /shangpinhuishop/app/src/pages/Center/index.vue
  * @Description: 路由组件————个人中心(Center)
  * 
@@ -94,7 +94,7 @@ export default {
         clear: both;
       }
 
-      //左边
+      // 左边
       .order-left {
         float: left;
         width: 16.67%;

@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-31 16:44:09
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-31 16:58:56
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/center/index.js
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-05-31 20:43:45
+ * @FilePath: /shangpinhuishop/app/src/store/center/index.js
  * @Description: 个人中心组件(center)的小仓库
  *
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved.
@@ -28,11 +28,12 @@ const mutations = {
 const actions = {
   /**
    * @description: 获取我的订单列表
+   * @param {*} page 用户所点击的页码数 默认为1
    * @param {*} context actions中的上下文
    * @return {*}
    */
-  getMyOrderList(context) {
-    reqGetMyOrderList(context.state.page, context.state.limit)
+  getMyOrderList(context, page) {
+    reqGetMyOrderList(page || context.state.page, context.state.limit)
       .then((res) => {
         context.commit("UPDATEMYORDERLIST", res.data);
       })
