@@ -3,8 +3,8 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 21:10:52
- * @FilePath: /shangpinhuishop/app/src/api/index.js
+ * @LastEditTime: 2023-05-31 16:32:09
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/api/index.js
  * @Description: 对API接口进行统一管理
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -267,5 +267,19 @@ export const reqPayStatus = (orderId) => {
     return requests({
         method: 'GET',
         url: `/payment/weixin/queryPayStatus/${orderId}`
+    })
+}
+
+/**
+ * @description: 获取个人中心的数据 是get请求 需要带参数
+ * @url `/order/auth/${page}/${limit}`
+ * @param {String} page 页码
+ * @param {String} limit 每页显示的数量
+ * @return {Object: Promise}
+ */
+export const reqGetMyOrderList = (page, limit) => {
+    return requests({
+        method: 'GET',
+        url: `/order/auth/${page}/${limit}`
     })
 }
