@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-05-31 23:10:39
+ * @LastEditTime: 2023-06-01 20:33:20
  * @FilePath: /shangpinhuishop/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -129,13 +129,27 @@ const router = new VueRouter({
             name: 'Trade',
             path: '/trade',
             component: Trade,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true},
+            // 路由独享守卫
+            beforeEnter: (to, from, next) => {
+                if (from.path == '/shopcart') {
+                    // 如果是从购物车页面而来，则放行
+                    next()
+                }else{
+                    // 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
+                    next(false)
+                }
+            }
         },
         {
             name: 'Pay',
             path: '/pay',
             component: Pay,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true},
+            beforeEnter: (to, from, next) => {
+                // 三元表达式
+                from.path == '/trade' ? next() : next(false)
+            }
         },
         {
             name: 'PaySuccess',

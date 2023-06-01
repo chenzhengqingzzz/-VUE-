@@ -2,8 +2,8 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-30 21:42:43
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 23:03:22
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-06-01 21:55:58
  * @FilePath: /shangpinhuishop/app/src/pages/PaySuccess/index.vue
  * @Description: 路由组件————支付成功(PaySuccess)
  * 
@@ -31,6 +31,21 @@
 <script>
   export default {
     name: 'PaySuccess',
+    /**
+     * @description: 组件内守卫
+     * @param {Route} to 即将要进入的目标路由对象
+     * @param {Route} from 当前导航正要离开的路由
+     * @param {*} next 跳转的行为
+     * @return {*}
+     */
+    beforeRouteEnter (to, from, next) {
+      // 在渲染该组件的对应路由被 confirm 前调用
+      // 不！能！获取组件实例 `this`
+      // 因为当守卫执行前，组件实例还没被创建
+
+      // 根据条件决定是放行还是中断导航
+      from.path == '/pay' ? next() : next(false)
+    }
   }
 </script>
 
