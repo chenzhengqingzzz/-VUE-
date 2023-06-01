@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-30 11:25:44
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-06-02 00:28:05
+ * @FilePath: /shangpinhuishop/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -46,6 +46,15 @@ Vue.component(MessageBox.name, MessageBox)
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert
 
+// 引入图片懒加载插件
+import VueLazyload from 'vue-lazyload'
+// 引入懒加载的默认图片(JSON、图片默认对外暴露)
+import kunkunGIF from '@/assets/kunkun.gif';
+// 注册插件
+Vue.use(VueLazyload, {
+  // 懒加载默认的图片
+  loading: kunkunGIF
+})
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false
