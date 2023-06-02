@@ -2,8 +2,8 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-23 16:30:34
+ * @LastEditors: 陈正清macbook pro
+ * @LastEditTime: 2023-06-02 15:22:12
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
@@ -17,11 +17,18 @@
         <span class="go">我有账号，去 <a href="login.html" target="_blank">登陆</a>
         </span>
       </h3>
-      <div class="content">
-        <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号" v-model="phone">
-        <span class="error-msg">错误提示信息</span>
-      </div>
+      <el-form :model="formData" ref="formData" label-width="100px" class="demo-ruleForm">
+        <el-form-item
+          label="年龄"
+          prop="phone"
+          :rules="[
+            { required: true, message: '年龄不能为空'},
+            { type: 'number', message: '年龄必须为数字值'}
+          ]"
+        >
+          <el-input v-model.number="formData.phone" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
       <div class="content">
         <label>验证码:</label>
         <input type="text" placeholder="请输入验证码" v-model="code">
@@ -73,16 +80,18 @@
     name: 'Register',
     data() {
       return {
-        // 收集表单数据————手机号
-        phone: '',
-        // 收集表单数据————验证码
-        code: '',
-        // 收集表单数据————登录密码
-        password: '',
-        // 收集表单数据————确认密码
-        confirmPassword: '',
-        // 收集表单数据————是否同意协议
-        agree: true
+        formData: {
+          // 收集表单数据————手机号
+          phone: '',
+          // 收集表单数据————验证码
+          code: '',
+          // 收集表单数据————登录密码
+          password: '',
+          // 收集表单数据————确认密码
+          confirmPassword: '',
+          // 收集表单数据————是否同意协议
+          agree: true
+        }
       }
     },
     methods: {

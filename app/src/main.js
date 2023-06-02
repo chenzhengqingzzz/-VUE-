@@ -37,9 +37,10 @@ import Pagination from '@/components/Pagination'
 Vue.component(Pagination.name, Pagination)
 
 // 按需引入ElementUI
-import { Icon, MessageBox } from 'element-ui'
+import { Icon, MessageBox, Form } from 'element-ui'
 // 应用ElementUI
 Vue.component(Icon.name, Icon)
+Vue.component(Form.name. Form)
 Vue.component(MessageBox.name, MessageBox)
 // 按需引入并注册全局配置 $msgbox、$alert本质是一个函数
 // ElementUI应用还有一种写法：挂在原型上
