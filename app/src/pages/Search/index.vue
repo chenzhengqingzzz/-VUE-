@@ -2,8 +2,8 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-10 16:56:48
+ * @LastEditors: 陈正清macbook pro
+ * @LastEditTime: 2023-06-02 08:40:00
  * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Search/index.vue
  * @Description: 路由组件——搜索(Search)
  * 
@@ -104,7 +104,7 @@
                   <div class="p-img">
                     <!-- 在路由跳转的时候要记得带参数 -->
                     <router-link :to="`/detail/${good.id}`">
-                      <img :src="good.defaultImg" />
+                      <img v-lazy="good.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">

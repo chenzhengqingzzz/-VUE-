@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-02 00:28:05
- * @FilePath: /shangpinhuishop/app/src/main.js
+ * @LastEditors: 陈正清macbook pro
+ * @LastEditTime: 2023-06-02 11:13:57
+ * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -55,6 +55,13 @@ Vue.use(VueLazyload, {
   // 懒加载默认的图片
   loading: kunkunGIF
 })
+
+// 引入自定义插件
+// import myPlugins from '@/plugins/MyPlugins'
+
+// Vue.use(myPlugins, {
+//   name: 'upper'
+// })
 
 // 关闭Vue生产提示
 Vue.config.productionTip = false
