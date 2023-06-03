@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: 陈正清macbook pro
- * @LastEditTime: 2023-06-02 11:13:57
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/main.js
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-06-03 23:35:33
+ * @FilePath: /shangpinhuishop/app/src/main.js
  * @Description: 整个应用的入口文件
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -37,10 +37,16 @@ import Pagination from '@/components/Pagination'
 Vue.component(Pagination.name, Pagination)
 
 // 按需引入ElementUI
-import { Icon, MessageBox, Form } from 'element-ui'
+import { Icon, MessageBox, Form, FormItem, Input, Button, Switch, Checkbox } from 'element-ui'
 // 应用ElementUI
 Vue.component(Icon.name, Icon)
-Vue.component(Form.name. Form)
+Vue.component(Form.name, Form)
+Vue.component(FormItem.name, FormItem)
+Vue.component(Input.name, Input)
+Vue.component(Button.name, Button)
+Vue.component(Switch.name, Switch)
+Vue.component(Checkbox.name, Checkbox)
+
 Vue.component(MessageBox.name, MessageBox)
 // 按需引入并注册全局配置 $msgbox、$alert本质是一个函数
 // ElementUI应用还有一种写法：挂在原型上

@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: 陈正清macbook pro
- * @LastEditTime: 2023-06-02 15:22:12
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/pages/Register/index.vue
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-06-03 23:47:20
+ * @FilePath: /shangpinhuishop/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -17,25 +17,18 @@
         <span class="go">我有账号，去 <a href="login.html" target="_blank">登陆</a>
         </span>
       </h3>
-      <el-form :model="formData" ref="formData" label-width="100px" class="demo-ruleForm">
+      <el-form :rules="rules" :model="formData" ref="formData" class="demo-ruleForm">
         <el-form-item
-          label="年龄"
+          label="手机号："
           prop="phone"
-          :rules="[
-            { required: true, message: '年龄不能为空'},
-            { type: 'number', message: '年龄必须为数字值'}
-          ]"
         >
-          <el-input v-model.number="formData.phone" autocomplete="off"></el-input>
+          <el-input v-model="formData.phone" placeholder="请输入手机号" autocomplete="off"></el-input>
         </el-form-item>
-      </el-form>
-      <div class="content">
-        <label>验证码:</label>
-        <input type="text" placeholder="请输入验证码" v-model="code">
+      <el-form-item label="验证码">
+        <el-input v-model="formData.code" placeholder="请输入验证码"  autocomplete="off"></el-input>
         <button style="width:100px;height:38px" @click="getCode">获取验证码</button>
         <!-- <img ref="code" src="http://gmall-h5-api.atguigu.cn/api/user/passport/code" alt="code"> -->
-        <span class="error-msg">错误提示信息</span>
-      </div>
+      </el-form-item>
       <div class="content">
         <label>登录密码:</label>
         <input type="password" placeholder="请输入你的登录密码" v-model="password">
@@ -54,6 +47,7 @@
       <div class="btn">
         <button @click="userRegister">完成注册</button>
       </div>
+      </el-form>
     </div>
 
     <!-- 底部 -->
@@ -91,6 +85,11 @@
           confirmPassword: '',
           // 收集表单数据————是否同意协议
           agree: true
+        },
+        rules: {
+          phone: [
+            {required: true, message: '请输入手机号', trigger: 'blur'}
+          ]
         }
       }
     },
