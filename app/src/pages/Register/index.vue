@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-03 23:47:20
+ * @LastEditTime: 2023-06-04 04:09:08
  * @FilePath: /shangpinhuishop/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
@@ -13,40 +13,63 @@
   <div class="register-container">
     <!-- 注册内容 -->
     <div class="register">
-      <h3>注册新用户
-        <span class="go">我有账号，去 <a href="login.html" target="_blank">登陆</a>
+      <h3 class="title">
+        注册新用户
+        <span class="go"
+          >我有账号，去 <a href="login.html" target="_blank">登陆</a>
         </span>
       </h3>
-      <el-form :rules="rules" :model="formData" ref="formData" class="demo-ruleForm">
-        <el-form-item
-          label="手机号："
-          prop="phone"
-        >
-          <el-input v-model="formData.phone" placeholder="请输入手机号" autocomplete="off"></el-input>
+      <el-form
+        :rules="rules"
+        :model="formData"
+        status-icon
+        ref="formData"
+        class="content"
+        label-width="80px"
+      >
+        <el-form-item label="手机号" prop="phone">
+          <el-input
+            v-model="formData.phone"
+            placeholder="请输入手机号"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
-      <el-form-item label="验证码">
-        <el-input v-model="formData.code" placeholder="请输入验证码"  autocomplete="off"></el-input>
-        <button style="width:100px;height:38px" @click="getCode">获取验证码</button>
-        <!-- <img ref="code" src="http://gmall-h5-api.atguigu.cn/api/user/passport/code" alt="code"> -->
-      </el-form-item>
-      <div class="content">
-        <label>登录密码:</label>
-        <input type="password" placeholder="请输入你的登录密码" v-model="password">
-        <span class="error-msg">错误提示信息</span>
-      </div>
-      <div class="content">
-        <label>确认密码:</label>
-        <input type="password" placeholder="请输入确认密码" v-model="confirmPassword">
-        <span class="error-msg">错误提示信息</span>
-      </div>
-      <div class="controls">
-        <input name="m1" type="checkbox" :checked="agree">
-        <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
-      </div>
-      <div class="btn">
-        <button @click="userRegister">完成注册</button>
-      </div>
+        <el-form-item label="验证码" prop="code">
+          <el-input
+            v-model="formData.code"
+            placeholder="请输入验证码"
+            autocomplete="off"
+          ></el-input>
+          <el-button type="primary" size="medium" @click="getCode"
+            >获取验证码</el-button
+          >
+          <!-- <img ref="code" src="http://gmall-h5-api.atguigu.cn/api/user/passport/code" alt="code"> -->
+        </el-form-item>
+        <el-form-item label="登录密码" prop="password">
+          <el-input
+            type="password"
+            placeholder="请输入登录密码"
+            v-model="formData.password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input
+            type="password"
+            placeholder="确认密码"
+            v-model="formData.confirmPassword"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="agree">
+          <el-switch
+            v-model="formData.agree"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="同意协议并注册《尚品汇用户协议》"
+          ></el-switch>
+        </el-form-item>
+        <el-button type="primary" @click="userRegister">完成注册</el-button>
       </el-form>
     </div>
 
@@ -63,188 +86,242 @@
         <li>尚品汇社区</li>
       </ul>
       <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
-      <div class="beian">京ICP备19006430号
-      </div>
+      <div class="beian">京ICP备19006430号</div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'Register',
-    data() {
-      return {
-        formData: {
-          // 收集表单数据————手机号
-          phone: '',
-          // 收集表单数据————验证码
-          code: '',
-          // 收集表单数据————登录密码
-          password: '',
-          // 收集表单数据————确认密码
-          confirmPassword: '',
-          // 收集表单数据————是否同意协议
-          agree: true
-        },
-        rules: {
-          phone: [
-            {required: true, message: '请输入手机号', trigger: 'blur'}
-          ]
+export default {
+  name: "Register",
+  data() {
+    var validatePassword = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.formData.confirmPassword !== "") {
+          this.$refs.formData.validateField("confirmPassword");
         }
+        callback();
       }
-    },
-    methods: {
-      /**
-       * @description: 获取用户的验证码
-       * @return {*}
-       */
-      async getCode(){
-        try {
-          // 简单判断一下
-          // 解构赋值
-          const {phone} = this
-          // 判断 如果有phone 则执行dispatch 如果没有就不执行任何操作
-          phone && await this.$store.dispatch('user/getCode', this.phone)
-          // 将组件的code属性变为仓库中的验证码[验证码直接自己填写 正常开发应该是要用户看手机输入]
-          this.code = this.$store.state.user.code
-        } catch (error) {
-          alert(error)
-        }
+    };
+    var validateConfirmPassword = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.formData.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      formData: {
+        // 收集表单数据————手机号
+        phone: "",
+        // 收集表单数据————验证码
+        code: "",
+        // 收集表单数据————登录密码
+        password: "",
+        // 收集表单数据————确认密码
+        confirmPassword: "",
+        // 收集表单数据————是否同意协议
+        agree: true,
       },
-
-      /**
-       * @description: 点击完成注册的回调 用的是当前组件存储的数据
-       * @return {*}
-       */
-      async userRegister(){
-        try {
-          // 如果成功 则进行路由跳转
-          const {phone, code, password, confirmPassword} = this
-          // dispatch的条件
-          if (phone && code && password == confirmPassword) {
-            await this.$store.dispatch('user/userRegister', {phone, code, password})
-            this.$router.push('/login')
-          }
-        } catch (error) {
-          alert(error)
-        }
+      rules: {
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            min: 11,
+            max: 11,
+            message: "手机号必须为11个字符",
+            trigger: "blur",
+          },
+        ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          { min: 6, max: 6, message: "验证码必须为6个字符", trigger: "blur" },
+        ],
+        password: [
+          { required: true, validator: validatePassword, trigger: "blur" },
+        ],
+        confirmPassword: [
+          {
+            required: true,
+            validator: validateConfirmPassword,
+            trigger: "blur",
+          },
+        ],
+        agree: [
+          { required: true, message: "请同意勾选协议", trigger: "change" },
+        ],
+      },
+    };
+  },
+  methods: {
+    /**
+     * @description: 获取用户的验证码
+     * @return {*}
+     */
+    async getCode() {
+      try {
+        // 简单判断一下
+        // 解构赋值
+        const { phone } = this.formData;
+        // 判断 如果有phone 则执行dispatch 如果没有就不执行任何操作
+        phone &&
+          (await this.$store.dispatch("user/getCode", this.formData.phone));
+        // 将组件的code属性变为仓库中的验证码[验证码直接自己填写 正常开发应该是要用户看手机输入]
+        this.formData.code = this.$store.state.user.code;
+      } catch (error) {
+        alert(error);
       }
     },
-  }
+
+    /**
+     * @description: 点击完成注册的回调 用的是当前组件存储的数据
+     * @return {*}
+     */
+    async userRegister() {
+      try {
+        // 如果成功 则进行路由跳转
+        const { phone, code, password, confirmPassword } = this.formData;
+        // dispatch的条件
+        if (phone && code && password == confirmPassword) {
+          await this.$store.dispatch("user/userRegister", {
+            phone,
+            code,
+            password,
+          });
+          this.$router.push("/login");
+        }
+      } catch (error) {
+        alert(error);
+      }
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-  .register-container {
-    .register {
-      width: 1200px;
-      height: 445px;
-      border: 1px solid rgb(223, 223, 223);
-      margin: 0 auto;
+.register-container {
+  .register {
+    /* 添加背景色和边框样式 */
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
 
-      h3 {
-        background: #ececec;
-        margin: 0;
-        padding: 6px 15px;
-        color: #333;
-        border-bottom: 1px solid #dfdfdf;
-        font-size: 20.04px;
-        line-height: 30.06px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-        span {
-          font-size: 14px;
-          float: right;
+    h3 {
+      /* 调整标题样式 */
+      background: #ececec;
+      margin: 0;
+      padding: 10px 15px;
+      color: #333;
+      border-bottom: 1px solid #dfdfdf;
+      font-size: 20px;
+      line-height: 1.5;
+    }
 
-          a {
-            color: #e1251b;
-          }
-        }
+    .el-input {
+      width: 200px;
+    }
+    /* 调整输入框的样式 */
+    .content {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      label {
+        width: 80px;
+        text-align: right;
+        display: inline-block;
+        margin-right: 10px;
       }
 
-      div:nth-of-type(1) {
-        margin-top: 40px;
-      }
-
-      .content {
-        padding-left: 390px;
-        margin-bottom: 18px;
-        position: relative;
-
-        label {
-          font-size: 14px;
-          width: 96px;
-          text-align: right;
-          display: inline-block;
-        }
-
-        input {
-          width: 270px;
-          height: 38px;
-          padding-left: 8px;
-          box-sizing: border-box;
-          margin-left: 5px;
-          outline: none;
-          border: 1px solid #999;
-        }
-
-        img {
-          vertical-align: sub;
-        }
-
-        .error-msg {
-          position: absolute;
-          top: 100%;
-          left: 495px;
-          color: red;
-        }
-      }
-
-      .controls {
-        text-align: center;
-        position: relative;
-
-        input {
-          vertical-align: middle;
-        }
-
-        .error-msg {
-          position: absolute;
-          top: 100%;
-          left: 495px;
-          color: red;
-        }
-      }
-
-      .btn {
-        text-align: center;
-        line-height: 36px;
-        margin: 17px 0 0 55px;
-
-        button {
-          outline: none;
-          width: 270px;
-          height: 36px;
-          background: #e1251b;
-          color: #fff !important;
-          display: inline-block;
-          font-size: 16px;
-        }
+      input[type="text"],
+      input[type="password"] {
+        width: 200px;
+        height: 30px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
       }
     }
 
-    .copyright {
-      width: 1200px;
-      margin: 0 auto;
+    /* 调整按钮容器样式 */
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    /* 调整按钮的样式 */
+    .btn {
       text-align: center;
-      line-height: 24px;
+      margin-top: 20px;
 
-      ul {
-        li {
-          display: inline-block;
-          border-right: 1px solid #e4e4e4;
-          padding: 0 20px;
-          margin: 15px 0;
-        }
+      button {
+        width: 120px;
+        height: 36px;
+        background-color: #e1251b;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
       }
     }
   }
+
+  /* 调整底部版权信息的样式 */
+  .copyright {
+    margin-top: 40px;
+    text-align: center;
+    line-height: 24px;
+    color: #999;
+
+    ul {
+      li {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 0 5px;
+        border-right: 1px solid #ccc;
+      }
+      li:last-child {
+        border-right: none;
+      }
+    }
+
+    .address {
+      margin-top: 10px;
+    }
+
+    .beian {
+      margin-top: 10px;
+    }
+  }
+}
+
+/* 调整“我有账号，去登陆”部分的样式 */
+.register-container .go {
+  font-size: 14px;
+  float: right;
+  margin-top: 10px;
+}
+
+.register-container .go a {
+  color: #e1251b;
+  text-decoration: none;
+}
+
+.register-container .go a:hover {
+  text-decoration: underline;
+}
+
+.register-container .register .title {
+  width: 100%; /* 或者根据需要设置具体的宽度值，例如 'width: 400px;' */
+}
 </style>
