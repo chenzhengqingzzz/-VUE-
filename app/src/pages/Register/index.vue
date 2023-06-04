@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-04 04:09:08
+ * @LastEditTime: 2023-06-04 14:45:25
  * @FilePath: /shangpinhuishop/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
@@ -40,6 +40,7 @@
             placeholder="请输入验证码"
             autocomplete="off"
           ></el-input>
+          &nbsp;
           <el-button type="primary" size="medium" @click="getCode"
             >获取验证码</el-button
           >
@@ -66,10 +67,17 @@
             v-model="formData.agree"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-text="同意协议并注册《尚品汇用户协议》"
+            active-text="已阅读并同意《尚品汇用户协议》"
           ></el-switch>
         </el-form-item>
-        <el-button type="primary" @click="userRegister">完成注册</el-button>
+        <div class="button-container">
+          <el-button type="warning" round @click="resetForm('formData')"
+            >重置注册信息</el-button
+          >
+          <el-button type="success" round @click="userRegister('formData')"
+            >完成注册</el-button
+          >
+        </div>
       </el-form>
     </div>
 
@@ -95,16 +103,35 @@
 export default {
   name: "Register",
   data() {
+    /**
+     * @description: 自定义校验规则————密码
+     * @param {Object} rule 约定的验证规则
+     * @param {String} value 当前表单元素的值
+     * @param {Function} callback 个人理解：类似于路由跳转中next的作用
+     * @return {*}
+     */
     var validatePassword = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
+      }
+      else if(value.length > 16 || value.length < 6){
+        callback(new Error("请输入6~16位的字符"))
       } else {
+        // 如果输入密码符合要求，则跳到校验确认密码那一项并且此次校验通过
         if (this.formData.confirmPassword !== "") {
           this.$refs.formData.validateField("confirmPassword");
         }
         callback();
       }
     };
+
+    /**
+     * @description: 自定义校验规则————确认密码
+     * @param {Object} rule 约定的验证规则
+     * @param {String} value 当前表单元素的值
+     * @param {Function} callback 个人理解：类似于路由跳转中next的作用
+     * @return {*}
+     */
     var validateConfirmPassword = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
@@ -114,7 +141,23 @@ export default {
         callback();
       }
     };
+
+    /**
+     * @description: 自定义校验规则————是否同意用户协议
+     * @param {Object} rule 约定的验证规则
+     * @param {Boolean} value 当前表单元素的值
+     * @param {Function} callback 个人理解：类似于路由跳转中next的作用
+     * @return {*}
+     */
+    var validateButton = (rule, value, callback) => {
+      if (value == false) {
+        callback(new Error("请同意用户协议"));
+      } else {
+        callback();
+      }
+    };
     return {
+      // 存储表单的数据
       formData: {
         // 收集表单数据————手机号
         phone: "",
@@ -127,6 +170,8 @@ export default {
         // 收集表单数据————是否同意协议
         agree: true,
       },
+
+      // 具体的表单元素验证规则 其中密码、确认密码、开关按钮都包含自定义校验规则
       rules: {
         phone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
@@ -152,7 +197,7 @@ export default {
           },
         ],
         agree: [
-          { required: true, message: "请同意勾选协议", trigger: "change" },
+          { required: true, validator: validateButton, trigger: "change" },
         ],
       },
     };
@@ -181,23 +226,60 @@ export default {
      * @description: 点击完成注册的回调 用的是当前组件存储的数据
      * @return {*}
      */
-    async userRegister() {
-      try {
-        // 如果成功 则进行路由跳转
-        const { phone, code, password, confirmPassword } = this.formData;
-        // dispatch的条件
-        if (phone && code && password == confirmPassword) {
-          await this.$store.dispatch("user/userRegister", {
-            phone,
-            code,
-            password,
-          });
-          this.$router.push("/login");
+    // async userRegister() {
+    //   try {
+    //     // 如果成功 则进行路由跳转
+    //     const { phone, code, password, confirmPassword } = this.formData;
+    //     // dispatch的条件
+    //     if (phone && code && password == confirmPassword) {
+    //       await this.$store.dispatch("user/userRegister", {
+    //         phone,
+    //         code,
+    //         password,
+    //       });
+    //       this.$router.push("/login");
+    //     }
+    //   } catch (error) {
+    //     alert(error);
+    //   }
+    // },
+    /**
+     * @description: 点击完成注册的回调 用的是elementUI验证表单的逻辑
+     * @param {Object} formData 存放在当前组件中的数据
+     * @return {*}
+     */
+    userRegister(formData) {
+      const { phone, code, password } = this.formData;
+      this.$refs[formData].validate((valid) => {
+        // 表单符合规则，代表验证成功 则发请求以及处理错误
+        if (valid) {
+          this.$store.dispatch("user/userRegister", { phone, code, password })
+            .then((res) => {
+              // 提醒用户注册成功并进行路由跳转
+              alert('注册成功，请尽快登录吧！')
+              this.$router.push("/login");
+            })
+            .catch((err) => {
+              // 提醒用户出现错误并对该表单项进行重置
+              this.resetForm(formData)
+              alert(err);
+            });
+        } else {
+          // 不符合规则，则显示错误
+          return false;
         }
-      } catch (error) {
-        alert(error);
-      }
+      });
     },
+
+    /**
+     * @description: 重置表单的方法 将其值重置为初始值并移除校验结果
+     * @param {*} formData 被重置的表单元素
+     * @return {*}
+     */
+    resetForm(formData){
+      // 使用ElementUI提供的方法 resetFields
+      this.$refs[formData].resetFields();
+    }
   },
 };
 </script>

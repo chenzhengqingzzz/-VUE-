@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-05-22 16:17:57
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-05-25 17:12:23
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/store/user/index.js
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-06-04 14:48:10
+ * @FilePath: /shangpinhuishop/app/src/store/user/index.js
  * @Description: Regiser和Login模块的小仓库
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -94,9 +94,9 @@ const actions = {
     async userRegister(context, userInfo){
         let result = await reqUserRegister(userInfo)
         if (result.code === 200) {
-            return '成功'
+            return '注册成功'
         }else{
-            return Promise.reject(new Error('注册失败，可能此用户已经存在！'))
+            return Promise.reject(new Error(result.message))
         }
     },
 
