@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-04 14:45:25
+ * @LastEditTime: 2023-06-05 19:22:26
  * @FilePath: /shangpinhuishop/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
@@ -181,10 +181,12 @@ export default {
             message: "手机号必须为11个字符",
             trigger: "blur",
           },
+          {type: 'number', message: "手机号必须为数字"}
         ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { min: 6, max: 6, message: "验证码必须为6个字符", trigger: "blur" },
+          {type: 'number', message: "验证码必须为数字"}
         ],
         password: [
           { required: true, validator: validatePassword, trigger: "blur" },
