@@ -1,5 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  // 去掉npm run build生成dist/js中的map文件
+  productionSourceMap: false,
+
   transpileDependencies: true,
   // 关闭eslint
   lintOnSave: false,
