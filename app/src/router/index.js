@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-03 23:18:04
+ * @LastEditTime: 2023-06-05 19:50:26
  * @FilePath: /shangpinhuishop/app/src/router/index.js
  * @Description: 路由器，配置路由器的地方
  * 
@@ -18,20 +18,21 @@ Vue.use(VueRouter)
 import store from '@/store'
 
 // 引入路由组件
-import Home from '../pages/Home'
-import Search from '@/pages/Search'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
-import Trade from '@/pages/Trade'
-import Pay from '@/pages/Pay'
-import PaySuccess from '@/pages/PaySuccess'
-import Center from '@/pages/Center'
-// 引入二级路由组件
-import MyOrder from '@/pages/Center/MyOrder'
-import GroupOrder from '@/pages/Center/GroupOrder'
+// 我们将全部使用路由懒加载 所以这里的就注释掉了
+// import Home from '../pages/Home'
+// import Search from '@/pages/Search'
+// import Login from '@/pages/Login'
+// import Register from '@/pages/Register'
+// import Detail from '@/pages/Detail'
+// import AddCartSuccess from '@/pages/AddCartSuccess'
+// import ShopCart from '@/pages/ShopCart'
+// import Trade from '@/pages/Trade'
+// import Pay from '@/pages/Pay'
+// import PaySuccess from '@/pages/PaySuccess'
+// import Center from '@/pages/Center'
+// // 引入二级路由组件
+// import MyOrder from '@/pages/Center/MyOrder'
+// import GroupOrder from '@/pages/Center/GroupOrder'
  
 // 先把VueRouter原型对象上的push保存一份
 let originPush = VueRouter.prototype.push
@@ -70,16 +71,17 @@ VueRouter.prototype.replace = function(location, resolve, reject) {
 // 配置路由
 const router = new VueRouter({
     routes: [
+        // 我们将在这里使用路由懒加载
         {
             path: '/home',
-            component: Home,
+            component: () => import('@/pages/Home'),
             meta: {isShowFooter: true}
         },
         {
             name: 'Search',
             // ?代表参数可传可不传
             path: '/search/:keyword?',
-            component: Search,
+            component: () => import('@/pages/Search'),
             meta: {isShowFooter: true},
             // 路由组件可以传递props数据
             // 1.对象写法 额外给路由组件传递一些props
@@ -98,37 +100,37 @@ const router = new VueRouter({
             name: 'Detail',
             // 路由跳转的时候带上产品id给详情页
             path: '/detail/:skuid',
-            component: Detail,
+            component: () => import('@/pages/Detail'),
             meta: {isShowFooter: true}
         },
         {
             name: 'AddCartSuccess',
             path: '/addcartsuccess',
-            component: AddCartSuccess,
+            component: () => import('@/pages/AddCartSuccess'),
             meta: {isShowFooter: true}
         },
         {
             name: 'ShopCart',
             path: '/shopcart',
-            component: ShopCart,
+            component: () => import('@/pages/ShopCart'),
             meta: {isShowFooter: true}
         },
         {
             name: 'Login',
             path: '/login',
-            component: Login,
+            component: () => import('@/pages/Login'),
             meta: {isShowFooter: false}
         },
         {
             name: 'Register',
             path: '/register',
-            component: Register,
+            component: () => import('@/pages/Register'),
             meta: {isShowFooter: false},
         },
         {
             name: 'Trade',
             path: '/trade',
-            component: Trade,
+            component: () => import('@/pages/Trade'),
             meta: {isShowFooter: true},
             // 路由独享守卫
             beforeEnter: (to, from, next) => {
@@ -144,7 +146,7 @@ const router = new VueRouter({
         {
             name: 'Pay',
             path: '/pay',
-            component: Pay,
+            component: () => import('@/pages/Pay'),
             meta: {isShowFooter: true},
             beforeEnter: (to, from, next) => {
                 // 三元表达式
@@ -154,25 +156,25 @@ const router = new VueRouter({
         {
             name: 'PaySuccess',
             path: '/paysuccess',
-            component: PaySuccess,
+            component: () => import('@/pages/PaySuccess'),
             meta: {isShowFooter: true}
         },
         {
             name: 'Center',
             path: '/center',
-            component: Center,
+            component: () => import('@/pages/Center'),
             meta: {isShowFooter: true},
             // 二级路由配置
             children: [
                 {
                     name: 'MyOrder',
                     path: 'myorder',
-                    component: MyOrder
+                    component: () => import('@/pages/Center/MyOrder')
                 },
                 {
                     name: 'GroupOrder',
                     path: 'grouporder',
-                    component: GroupOrder
+                    component: () => import('@/pages/Center/GroupOrder')
                 },
                 // 写在二级路由里
                 // {
