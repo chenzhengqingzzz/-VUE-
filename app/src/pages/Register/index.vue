@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-06-05 19:22:26
+ * @LastEditTime: 2023-07-05 15:02:40
  * @FilePath: /shangpinhuishop/app/src/pages/Register/index.vue
  * @Description: 路由组件——注册(Register)
  * 
@@ -29,16 +29,22 @@
       >
         <el-form-item label="手机号" prop="phone">
           <el-input
+            type="text"
+            maxlength="11"
             v-model="formData.phone"
             placeholder="请输入手机号"
             autocomplete="off"
+            show-word-limit
           ></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="code">
           <el-input
+            type="text"
+            maxlength="6"
             v-model="formData.code"
             placeholder="请输入验证码"
             autocomplete="off"
+            show-word-limit
           ></el-input>
           &nbsp;
           <el-button type="primary" size="medium" @click="getCode"
@@ -93,8 +99,8 @@
         <li>销售联盟</li>
         <li>尚品汇社区</li>
       </ul>
-      <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
-      <div class="beian">京ICP备19006430号</div>
+      <div class="address">地址：湖北省荆州市荆州区太湖港管理区长江大学工程技术学院4418室</div>
+      <div class="beian">鄂ICP备2023010909号-1</div>
     </div>
   </div>
 </template>
@@ -178,15 +184,14 @@ export default {
           {
             min: 11,
             max: 11,
-            message: "手机号必须为11个字符",
+            message: "手机号必须为11个数字",
             trigger: "blur",
           },
-          {type: 'number', message: "手机号必须为数字"}
+          {type: 'string', message: "手机号必须为数字"}
         ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { min: 6, max: 6, message: "验证码必须为6个字符", trigger: "blur" },
-          {type: 'number', message: "验证码必须为数字"}
         ],
         password: [
           { required: true, validator: validatePassword, trigger: "blur" },
