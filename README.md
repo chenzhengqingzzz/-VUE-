@@ -8,8 +8,8 @@
 # 克隆项目
 git clone git@github.com:chenzhengqingzzz/shangpinhuishop.git
 
-# 进入项目目录
-cd shangpinhuishop
+# 进入项目目录（其他的都是项目源码等文件）
+cd app/
 
 # 安装依赖
 npm install
