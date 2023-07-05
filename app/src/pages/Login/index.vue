@@ -3,7 +3,7 @@
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
  * @LastEditors: 陈正清MacPro
- * @LastEditTime: 2023-05-31 22:53:43
+ * @LastEditTime: 2023-07-05 14:26:44
  * @FilePath: /shangpinhuishop/app/src/pages/Login/index.vue
  * @Description: 路由组件——登录(Login)
  * 
@@ -85,8 +85,8 @@
         <li>销售联盟</li>
         <li>尚品汇社区</li>
       </ul>
-      <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
-      <div class="beian">京ICP备19006430号</div>
+      <div class="address">地址：湖北省荆州市荆州区太湖港管理区长江大学工程技术学院4418室</div>
+      <div class="beian">鄂ICP备2023010909号-1</div>
     </div>
   </div>
 </template>

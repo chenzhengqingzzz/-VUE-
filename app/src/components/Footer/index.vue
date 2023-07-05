@@ -2,9 +2,9 @@
  * @Author: czqzzzzzz(czq)
  * @Email: tenchenzhengqing@qq.com
  * @Date: 2023-04-23 17:02:24
- * @LastEditors: czqzzzzzz(czq)
- * @LastEditTime: 2023-04-23 17:20:27
- * @FilePath: /尚硅谷VUE项目实战——尚品汇/app/src/components/Footer/index.vue
+ * @LastEditors: 陈正清MacPro
+ * @LastEditTime: 2023-07-05 14:24:35
+ * @FilePath: /shangpinhuishop/app/src/components/Footer/index.vue
  * @Description: 全局组件——底部(Footer)
  * 
  * Copyright (c) 2023 by czqzzzzzz(czq), All Rights Reserved. 
@@ -109,8 +109,8 @@
           </li>
           <li>关于我们</li>
         </ul>
-        <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-        <p>京ICP备19006430号</p>
+        <p>地址：湖北省荆州市荆州区太湖港管理区长江大学工程技术学院4418室</p>
+        <p>鄂ICP备2023010909号-1</p>
       </div>
     </div>
   </div>
