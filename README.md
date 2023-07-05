@@ -6,7 +6,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/wearetheone777/shangpinhuishop.git
+git clone git@github.com:chenzhengqingzzz/shangpinhuishop.git
 
 # 进入项目目录
 cd shangpinhuishop
