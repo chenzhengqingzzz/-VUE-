@@ -74,7 +74,7 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 
 ## Footer组件
 
-![image-20220608152337887](https://150-9155-1312350958.cos.ap-chengdu.myqcloud.com/img202206091116059.png)
+<img src="/Users/chenzhengqing/Library/Application Support/typora-user-images/image-20230705152808411.png" alt="image-20230705152808411" style="zoom:50%;" />
 
 利用路由元信息meta配置和v-show控制footer组件的显示和隐藏在
 
